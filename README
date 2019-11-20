@@ -1,0 +1,9 @@
+This is our github repository
+[10:31, 11/20/2019] Jori: First you clone the github directory into your computer somewhere
+[10:32, 11/20/2019] Jori: with: clone "repository link"
+[10:32, 11/20/2019] Jori: if you want the latest version to start editing
+[10:33, 11/20/2019] Jori: you go to your github directory in your own system and type: git pull
+[10:33, 11/20/2019] Jori: when you edited a file your do these three commands:
+[10:33, 11/20/2019] Jori: git add -A
+[10:34, 11/20/2019] Jori: git commit -am "mention what you changed between these quotes so we see what you did"
+[10:34, 11/20/2019] Jori: git push
