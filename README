@@ -1,8 +1,7 @@
 This is our GitHub repository
 - First you clone the github directory into your computer somewhere with: 
 git clone "repository link"
-- If you want the latest version to start editing
-- you go to your github directory in your own system and type: 
+- If you want the latest version to start editing you go to your github directory in your own system and type: 
 git pull
 - When you edited a file you perform these three commands:
 git add -A
