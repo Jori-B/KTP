@@ -1,0 +1,34 @@
+#created on: Dec 7, 2019
+package cityrules
+
+
+// list any import classes here.
+import com.other.ItemCity;
+import java.math.BigDecimal;
+
+import com.other.HelloCity;
+import function com.sample.Utility.helper;
+
+// declare any global variables here
+dialect "java"
+rule "Pune Medicine Item"
+   when
+      item : ItemCity (purchaseCity == ItemCity.City.PUNE,
+         typeofItem == ItemCity.Type.MEDICINES)
+   then
+      BigDecimal tax = new BigDecimal(0.0);
+      item.setLocalTax(tax.multiply(item.getSellPrice()));
+      HelloCity.writeHello(item.getPurchaseCity().toString());
+      helper(drools);
+end
+
+rule "Pune Groceries Item"
+   when
+      item : ItemCity(purchaseCity == ItemCity.City.PUNE,
+         typeofItem == ItemCity.Type.GROCERIES)
+   then
+      BigDecimal tax = new BigDecimal(2.0);
+      item.setLocalTax(tax.multiply(item.getSellPrice()));
+      helper(drools);
+end
+
