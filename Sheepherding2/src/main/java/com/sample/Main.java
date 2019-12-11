@@ -41,7 +41,7 @@ public class Main {
          
          //First Order Facts
          Fact facts[] = new Fact [100];
-         facts[0] = new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK);
+//         facts[0] = new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK);
          facts[1] = new Fact("hasShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK);    
          
          ksession.fireAllRules();
@@ -50,13 +50,13 @@ public class Main {
          
          facts[3] = new Fact("hasTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK);
          facts[4] = new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK);
-         facts[5] = new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK);
+//         facts[5] = new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK);
          //No rules         
-         facts[6] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend?", ASK);
-         facts[7] = new Fact("ynNeigbourLease", YESNO, ksession, "Do your neighbours have a land that you can lease? No (0) Yes (1)", ASK);
-         facts[8] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself", ASK);     
-         facts[9] = new Fact("ynShaveWhool", YESNO, ksession, "Do you want to sell wool? No (0) Yes (1)", ASK);
-         facts[10] = new Fact("ynRegisteredUBNandKvK", MC, ksession, "Are you UBN and KvK registered? UBN (0) KvK (1)", ASK);
+//         facts[6] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend?", ASK);
+//         facts[7] = new Fact("ynNeigbourLease", YESNO, ksession, "Do your neighbours have a land that you can lease? No (0) Yes (1)", ASK);
+//         facts[8] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself", ASK);     
+//         facts[9] = new Fact("ynShaveWhool", YESNO, ksession, "Do you want to sell wool? No (0) Yes (1)", ASK);
+//         facts[10] = new Fact("ynRegisteredUBNandKvK", MC, ksession, "Are you UBN and KvK registered? UBN (0) KvK (1)", ASK);
          
          //Second Order Facts
          facts[11] = new Fact("landSize", NUMB, ksession, "How big is your land (in acres)?");

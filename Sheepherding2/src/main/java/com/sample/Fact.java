@@ -1,7 +1,6 @@
 package com.sample;
 import java.util.Scanner;
 
- 
 import org.drools.runtime.StatefulKnowledgeSession;
 
 //import java.math.BigDecimal;
