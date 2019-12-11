@@ -1,0 +1,109 @@
+<object-stream>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>1</type>
+  <factId>1</factId>
+  <objectToString>com.sample.LazarTest$FactYesNo@be68757</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>1</type>
+  <factId>2</factId>
+  <objectToString>com.sample.LazarTest$FactYesNo@59a008ba</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>1</type>
+  <factId>3</factId>
+  <objectToString>com.sample.LazarTest$FactYesNo@338c99c8</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>Enough Land Size [4, 1]</activationId>
+  <rule>Enough Land Size</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@be68757(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>Enough Land Lease [4, 2]</activationId>
+  <rule>Enough Land Lease</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@59a008ba(2)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>Own A shed [4, 3]</activationId>
+  <rule>Own A shed</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@338c99c8(3)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>1</type>
+  <factId>4</factId>
+  <objectToString>com.sample.LazarTest$FactYesNo@21ba0741</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>Own A shed [4, 3]</activationId>
+  <rule>Own A shed</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@338c99c8(3)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>2</type>
+  <factId>3</factId>
+  <objectToString>com.sample.LazarTest$FactYesNo@338c99c8</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>Own A shed [4, 3]</activationId>
+  <rule>Own A shed</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@338c99c8(3)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>Enough Land Lease [4, 2]</activationId>
+  <rule>Enough Land Lease</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@59a008ba(2)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>2</type>
+  <factId>2</factId>
+  <objectToString>com.sample.LazarTest$FactYesNo@59a008ba</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>Enough Land Lease [4, 2]</activationId>
+  <rule>Enough Land Lease</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@59a008ba(2)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>Enough Land Size [4, 1]</activationId>
+  <rule>Enough Land Size</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@be68757(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>4</type>
+  <activationId>ADVICE Start sheep herding [4, 1, 2, 3]</activationId>
+  <rule>ADVICE Start sheep herding</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f1=com.sample.LazarTest$FactYesNo@338c99c8(3); f2=com.sample.LazarTest$FactYesNo@59a008ba(2); f3=com.sample.LazarTest$FactYesNo@be68757(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ObjectLogEvent>
+  <type>2</type>
+  <factId>1</factId>
+  <objectToString>com.sample.LazarTest$FactYesNo@be68757</objectToString>
+</org.drools.audit.event.ObjectLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>Enough Land Size [4, 1]</activationId>
+  <rule>Enough Land Size</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f=com.sample.LazarTest$FactYesNo@be68757(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>6</type>
+  <activationId>ADVICE Start sheep herding [4, 1, 2, 3]</activationId>
+  <rule>ADVICE Start sheep herding</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f1=com.sample.LazarTest$FactYesNo@338c99c8(3); f2=com.sample.LazarTest$FactYesNo@59a008ba(2); f3=com.sample.LazarTest$FactYesNo@be68757(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+<org.drools.audit.event.ActivationLogEvent>
+  <type>7</type>
+  <activationId>ADVICE Start sheep herding [4, 1, 2, 3]</activationId>
+  <rule>ADVICE Start sheep herding</rule>
+  <declarations>ff=com.sample.LazarTest$FactYesNo@21ba0741(4); f1=com.sample.LazarTest$FactYesNo@338c99c8(3); f2=com.sample.LazarTest$FactYesNo@59a008ba(2); f3=com.sample.LazarTest$FactYesNo@be68757(1)</declarations>
+</org.drools.audit.event.ActivationLogEvent>
+</object-stream>

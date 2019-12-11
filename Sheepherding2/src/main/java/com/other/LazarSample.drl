@@ -1,0 +1,81 @@
+package com.sample
+ 
+import com.other.LazarTest.FactYesNo;
+
+ 
+rule "Enough Land Size"
+    when
+        f : FactYesNo(FactYesNo.Name == "factLandSize", status == FactYesNo.UNIDETERMINED)
+        ff : FactYesNo( status != FactYesNo.YES, FactYesNo.Name == "finished" )
+    then
+        System.out.println( "Do you have enough land?" );
+        f.setStatus();
+        update( f );
+end
+
+rule "Enough Land Lease"
+    when
+        f : FactYesNo(FactYesNo.Name == "factLandLease", status == FactYesNo.UNIDETERMINED)
+        ff : FactYesNo( status != FactYesNo.YES, FactYesNo.Name == "finished" )
+    then
+        System.out.println( "Can you lease enough land?" );
+        f.setStatus();
+        update( f );
+end
+
+rule "Own A shed"
+    when
+        f : FactYesNo(FactYesNo.Name == "factOwnShed", status == FactYesNo.UNIDETERMINED)
+        ff : FactYesNo( status != FactYesNo.YES, FactYesNo.Name == "finished" )
+    then
+        System.out.println( "Do you own a shed?" );
+        f.setStatus();
+        update( f );
+end
+
+rule "Shed big enough"
+    when
+        f1 : FactYesNo(FactYesNo.Name == "factShedSize", status == FactYesNo.UNIDETERMINED) &&
+        f2 : FactYesNo(FactYesNo.Name == "factOwnShed", status == FactYesNo.YES) 
+         ff : FactYesNo( status != FactYesNo.YES, FactYesNo.Name == "finished" )
+    then
+        System.out.println( "Is the shed big enough?" );
+        f1.setStatus();
+        update(f1);
+end
+
+rule "ADVICE build a shed"
+    when
+        f1 : FactYesNo( status == FactYesNo.NO, FactYesNo.Name == "factOwnShed" ) 
+        f2 : FactYesNo( status == FactYesNo.YES, FactYesNo.Name == "factLandLease" ) 
+        f3 : FactYesNo( status == FactYesNo.YES, FactYesNo.Name == "factLandSize" )
+        ff : FactYesNo( status != FactYesNo.YES, FactYesNo.Name == "finished" )
+    then
+        System.out.println( "Build a shed" );
+        ff.setStatus(1);
+        
+
+end
+
+rule "ADVICE Get more land"
+    when
+        f1 : FactYesNo( status == FactYesNo.NO, FactYesNo.Name == "factLandSize" ) 
+        ff : FactYesNo( status != FactYesNo.YES, FactYesNo.Name == "finished" )
+    then
+        System.out.println( "Get more land" ); 
+        ff.setStatus(1);
+        
+
+end
+
+rule "ADVICE Start sheep herding"
+    when
+        f1 : FactYesNo( status == FactYesNo.YES, FactYesNo.Name == "factOwnShed" ) 
+        f2 : FactYesNo( status == FactYesNo.YES, FactYesNo.Name == "factLandLease" ) 
+        f3 : FactYesNo( status == FactYesNo.YES, FactYesNo.Name == "factLandSize" )
+        ff : FactYesNo( status != FactYesNo.YES, FactYesNo.Name == "finished" )
+    then
+        System.out.println( "You can choose to start sheepherding professionally or as a hobby" );
+        ff.setStatus(1);
+
+end
