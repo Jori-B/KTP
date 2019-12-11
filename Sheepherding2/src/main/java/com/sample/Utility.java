@@ -1,4 +1,5 @@
 package com.sample;
+
 import org.drools.spi.KnowledgeHelper;
 
 /* This class is used to tell us that a rule has fired. It is useful for debugging */
