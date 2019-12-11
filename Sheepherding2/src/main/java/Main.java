@@ -15,19 +15,19 @@ import org.drools.runtime.StatefulKnowledgeSession;
 //import com.sample.Answer.Shed;
 //import com.sample.Answer.Birth;
 //import com.sample.Answer;
-import com.sample.ReadInput;
-
 /* 
  * This class creates all the questions and asks them
  */
 
 public class Main {
     
-	public static final int YESNO = 0; //ynXXX
+	public static final int YESNO = 0; //ynXXX, hasXXX, isXXX...
     public static final int MC = 1; // mcXXX
     public static final int NUMB = 2; // nmXXX
     public static final int OPEN = 3; // opXXX
-	
+    
+    public static final boolean ASK = true;
+    public static final boolean DONTASK = false;
 	public static final void main(String[] args) {
 	   
 	   try {
@@ -36,49 +36,32 @@ public class Main {
          StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
          
          // Questions go here. For every question the input from the user is read. 
-         System.out.println("Do you want do farming as a (0) hobby or (1) professionally?");
          // The question name, type and ksession (for inserting the fact) are passed to the ReadInput function
-         ReadInput.read("hobProf", MC, ksession);
+         
+         //First Order Facts
+         Fact facts[] = new Fact [100];
+         facts[0] = new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?",ASK);
+         facts[1] = new Fact("hasShed", YESNO, ksession,"Do you have a shed? No (0) Yes (1)",ASK);    
+         facts[2] = new Fact("hasLand", YESNO, ksession,"Do you have land (including the land you lease)? No (0) Yes (1)",ASK);
+         facts[3] = new Fact("hasTractor", YESNO, ksession,"Do you have have a tractor? No (0) Yes (1)",ASK);
+         facts[4] = new Fact("nmSheep", NUMB, ksession,"How many sheep would you like to have?",ASK);
+         facts[5] = new Fact("mcBirth", MC, ksession,"Do you want do birthing (0) yourself or (1) let someone else do it?",ASK);
+         //No rules         
+         facts[6] = new Fact("nmCapitol", NUMB, ksession,"How much capitol do you have to spend?",ASK);
+         facts[7] = new Fact("ynNeigbourLease", YESNO, ksession,"Do your neighbours have a land that you can lease? No (0) Yes (1)",ASK);
+         facts[8] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself",ASK);     
+         facts[9] = new Fact("ynShaveWhool", YESNO, ksession,"Do you want to sell wool? No (0) Yes (1)",ASK);
+         facts[10] = new Fact("ynRegisteredUBNandKvK", MC, ksession,"Are you UBN and KvK registered? UBN (0) KvK (1)",ASK);
+         
+         //Second Order Facts
+         
 
-         System.out.println("Do you have a shed? No (0) Yes (1)");
-         ReadInput.read("hasShed", YESNO, ksession);
          
-         // Fire rules now so that the question: "How big is your shed?" is asked in case of having one.
-       //  ksession.fireAllRules();
          
-         System.out.println("Do you have land (including the land you lease)? No (0) Yes (1)");
-         ReadInput.read("hasLand", YESNO, ksession);
          
-         // Fire rules now so that the question: "How much land do you have?" is asked in case of having land.
-       //  ksession.fireAllRules();
+         ksession.fireAllRules();
          
-         System.out.println("Do you have have a tractor? No (0) Yes (1)");
-         ReadInput.read("hasTractor", YESNO, ksession);
-         
-         System.out.println("How many sheep would you like to have?");
-         ReadInput.read("nSheep", NUMB, ksession);
-         
-         System.out.println("Do you want do birthing (0) yourself or (1) let someone else do it?");
-         ReadInput.read("birth", MC, ksession);
-         
-         //No rules
-         System.out.println("How much capitol do you have to spend?");
-         ReadInput.read("amoundCapitol", NUMB, ksession);
-
-         System.out.println("Do your neighbours have a land that you can lease? No (0) Yes (1)");
-         ReadInput.read("neighboursLease", YESNO, ksession);
-         
-         System.out.println("Do you want to shave yourself? No (0) Yes (1)");
-         ReadInput.read("shaveYourself", YESNO, ksession);
-         
-         System.out.println("Do you want to sell wool? No (0) Yes (1)");
-         ReadInput.read("sellWhool", YESNO, ksession);
-         
-         System.out.println("Are you UBN and KvK registered? UBN (0) KvK (1)");
-         ReadInput.read("registeredUBNandKvK", MC, ksession);
-        // ksession.fireAllRules();
-         
-         ReadInput.scanner.close();
+         Fact.scanner.close();
 
                             
       } catch (Throwable t) {
