@@ -63,8 +63,8 @@ rule "Has shed"
 		shedsize: Fact(Fact.Name =="shedSize", status == NOANSWER); // status == UNUSED
 	then
 		help(drools,"Testing if the system gets here");
-		shedsize.askQuestion(false);
-		update(shedsize);
+		modify(shedsize) { askQuestion(false) }
+		//update(shedsize);
 		
 end
 
@@ -75,8 +75,8 @@ rule "Has land"
 		landsize : Fact(Fact.Name == "landSize", status == NOANSWER);
 	then
 		help(drools,"info");
-		landsize.askQuestion(false);
-		update(landsize);
+		modify(landsize) { askQuestion(false) }
+		//update(landsize);
 		
 end
 
@@ -90,7 +90,7 @@ rule "Has land and wants n sheep"
 	then
 		help(drools,"info");
 		advice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
-		sheep.getAnswer() + " sheep, and you have " + landsize.getAnswer() + " acres of land, your need " +
+		sheep.getAnswer() + " sheep, and you have " + landsize.getAnswer() + " acres of land, you need " +
 		numberOfAcresMore(sheep.getAnswer(), landsize.getAnswer()) + " acres more land.\n" +
 		"An acre of land costs rougly 50.000€. Therefore you'll need " + 
 		neededMoneyForLand(sheep.getAnswer(), landsize.getAnswer()) + "€ for buying land.\n" + 
@@ -103,7 +103,7 @@ end
 rule "Has enough land and wants n sheep"
 	when
 		sheep : Fact(Fact.Name == "nmSheep");
-		landsize : Fact(Fact.Name == "landSize", status == HASANSWER, answer >= (landsize.getAnswer() * 2.85));
+		landsize : Fact(Fact.Name == "landSize", status == HASANSWER, answer >= (sheep.getAnswer() * 2.85));
 	then
 		help(drools,"info");
 		advice("You have enough land. Per acre you can hold roughly 3 sheep. Since you have " + 
