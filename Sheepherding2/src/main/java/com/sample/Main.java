@@ -1,7 +1,7 @@
 package com.sample;
 
 
-import java.util.Scanner;
+import java.util.Scanner;	
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -37,33 +37,36 @@ public class Main {
          StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
          
          // Questions go here. For every question the input from the user is read. 
-         // The question name, type and ksession (for inserting the fact) are passed to the ReadInput function
+         // The question name, type and ksession (for inserting the fact) are passed to the Fact function
          
          //First Order Facts
          Fact facts[] = new Fact [100];
-//         facts[0] = new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK);
+         facts[0] = new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK);
          facts[1] = new Fact("hasShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK);    
-         
+         facts[2] = new Fact("shedSize", NUMB, ksession, "How big is your shed (in meters squared)?");
+         /* Fire all rules directly after shedSize question is in the fact base, so it fires instantly */
          ksession.fireAllRules();
          
-         facts[2] = new Fact("hasLand", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK);
+         facts[3] = new Fact("hasLand", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK);
+         facts[4] = new Fact("landSize", NUMB, ksession, "How big is your land (in acres)?");
+         ksession.fireAllRules();
+         /* We can make a land size + possible lease size function */
+         facts[5] = new Fact("ynNeigbourLease", YESNO, ksession, "Do your neighbours have a land that you can lease? No (0) Yes (1)", ASK);
          
-         facts[3] = new Fact("hasTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK);
-         facts[4] = new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK);
-//         facts[5] = new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK);
-         //No rules         
-//         facts[6] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend?", ASK);
-//         facts[7] = new Fact("ynNeigbourLease", YESNO, ksession, "Do your neighbours have a land that you can lease? No (0) Yes (1)", ASK);
-//         facts[8] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself", ASK);     
-//         facts[9] = new Fact("ynShaveWhool", YESNO, ksession, "Do you want to sell wool? No (0) Yes (1)", ASK);
-//         facts[10] = new Fact("ynRegisteredUBNandKvK", MC, ksession, "Are you UBN and KvK registered? UBN (0) KvK (1)", ASK);
          
-         //Second Order Facts
-         facts[11] = new Fact("landSize", NUMB, ksession, "How big is your land (in acres)?");
-         facts[12] = new Fact("shedSize", NUMB, ksession, "How big is your shed (in meters squared)?");
-
-         System.out.println("at the end");
+         facts[6] = new Fact("hasTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK);
+         facts[7] = new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK);
+         facts[8] = new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK);
+         /* Probably should add a class that saves all the needed money, so we can subtract this from the capitol */       
+         facts[9] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend on the sheep business?", ASK);
          
+         facts[10] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK);     
+         /* How much time does it cost to shave yourself? How much money do you gain from selling wool per sheep */
+         facts[11] = new Fact("ynShaveWool", YESNO, ksession, "Do you want to sell wool? No (0) Yes (1)", ASK);
+         /* Simple rules like if you don't have one of these two "get them" could be added */
+         facts[12] = new Fact("ynRegisteredUBN", YESNO, ksession, "Does your farm already have a unique business number (UBN)? No (0) Yes (1)", ASK);
+         facts[13] = new Fact("ynRegisteredKvK", MC, ksession, "Is your farm already registered at the Kamer van Koophandel (KvK)? No (0) Yes (1)", ASK);
+                  
          ksession.fireAllRules();
          
          Fact.scanner.close();

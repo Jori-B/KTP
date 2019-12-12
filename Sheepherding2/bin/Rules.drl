@@ -62,7 +62,7 @@ rule "Has shed"
 		shed : Fact(Fact.Name == "hasShed", answer == YES);
 		shedsize: Fact(Fact.Name =="shedSize", status == NOANSWER); // status == UNUSED
 	then
-		help(drools,"Testing if the system gets here");
+		help(drools,"info");
 		modify(shedsize) { askQuestion(false) }
 		//update(shedsize);
 		
