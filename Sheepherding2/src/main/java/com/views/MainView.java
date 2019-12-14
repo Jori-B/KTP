@@ -1,5 +1,8 @@
 package com.views;
 
+/* This import can be used to reference the Main class, however, there should be another way to initialize the program */
+import com.sample.Main;	
+
 import java.awt.BorderLayout;		
 import java.awt.EventQueue;
 
@@ -31,6 +34,8 @@ public class MainView extends JFrame {
 	private JPanel contentPane;
 	private JLabel lblQuestion;
 
+//	private static Main startProgram = new Main();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -75,7 +80,16 @@ public class MainView extends JFrame {
 		lblQuestion = new JLabel("QUESTION");
 //		lblQuestion.setText();
 		
+		
+		
 		JButton btnYes = new JButton("Yes");
+		btnYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				/* This is not the correct way to do this, but something like this should be possible */
+//				lblQuestion.setText(startProgram.facts[0].getQuestion());
+			}
+		});
+		
 		
 		JButton btnNo = new JButton("No");
 		

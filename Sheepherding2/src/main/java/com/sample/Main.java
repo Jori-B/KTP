@@ -29,6 +29,9 @@ public class Main {
     
     public static final boolean ASK = true;
     public static final boolean DONTASK = false;
+    
+    /* if we make this static it probably isn't able to change facts?*/
+    
 	public static final void main(String[] args) {
 	   
 	   try {
