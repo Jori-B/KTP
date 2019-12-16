@@ -11,6 +11,7 @@ import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
+import com.sample.Values;
 
 //import com.sample.Answer.Hobby;
 //import com.sample.Answer.Shed;
@@ -22,16 +23,13 @@ import org.drools.runtime.StatefulKnowledgeSession;
 
 public class Main {
     
-	public static final int YESNO = 0; //ynXXX, hasXXX, isXXX...
-    public static final int MC = 1; // mcXXX
-    public static final int NUMB = 2; // nmXXX
-    public static final int OPEN = 3; // opXXX
+	public static final int YESNO = 0; //ynXxxXxx
+    public static final int MC = 1; // mcXxxXxx
+    public static final int NUMB = 2; // nmXxxXxx
+    public static final int OPEN = 3; // opXxxXxx
     
     public static final boolean ASK = true;
     public static final boolean DONTASK = false;
-    
-    /* if we make this static it probably isn't able to change facts?*/
-    
 	public static final void main(String[] args) {
 	   
 	   try {
@@ -41,23 +39,24 @@ public class Main {
          
          // Questions go here. For every question the input from the user is read. 
          // The question name, type and ksession (for inserting the fact) are passed to the Fact function
+         ksession.setGlobal("gvalues", new Values());
          
          //First Order Facts
          Fact facts[] = new Fact [100];
          facts[0] = new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK);
-         facts[1] = new Fact("hasShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK);    
-         facts[2] = new Fact("shedSize", NUMB, ksession, "How big is your shed (in meters squared)?");
-         /* Fire all rules directly after shedSize question is in the fact base, so it fires instantly */
+         facts[1] = new Fact("ynShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK);    
+         facts[2] = new Fact("nmShedSize", NUMB, ksession, "How big is your shed (in meters squared)?");
+         /* Fire all rules directly after nmShedSize question is in the fact base, so it fires instantly */
          ksession.fireAllRules();
          
-         facts[3] = new Fact("hasLand", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK);
-         facts[4] = new Fact("landSize", NUMB, ksession, "How big is your land (in acres)?");
+         facts[3] = new Fact("ynLand", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK);
+         facts[4] = new Fact("nmLandSize", NUMB, ksession, "How big is your land (in acres)?");
          ksession.fireAllRules();
          /* We can make a land size + possible lease size function */
          facts[5] = new Fact("ynNeigbourLease", YESNO, ksession, "Do your neighbours have a land that you can lease? No (0) Yes (1)", ASK);
          
          
-         facts[6] = new Fact("hasTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK);
+         facts[6] = new Fact("ynTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK);
          facts[7] = new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK);
          facts[8] = new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK);
          /* Probably should add a class that saves all the needed money, so we can subtract this from the capitol */       
@@ -71,7 +70,10 @@ public class Main {
          facts[13] = new Fact("ynRegisteredKvK", MC, ksession, "Is your farm already registered at the Kamer van Koophandel (KvK)? No (0) Yes (1)", ASK);
                   
          ksession.fireAllRules();
-         
+
+       
+         System.out.println("The Result is ");
+         ((Values) ksession.getGlobal("gvalues")).test();
          Fact.scanner.close();
 
                             

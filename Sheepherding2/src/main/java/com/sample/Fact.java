@@ -35,11 +35,12 @@ public class Fact {
 	   /* Name variable is very important for referencing the questions in the Rules.dlr file */
 	   private String name;
 	   
-	   private int numbofSheep; /* NOT USED RIGHT NOW */
+	   private int numbOfSheep; /* NOT USED RIGHT NOW */
 	   private int questionType;
 	   private String question;
 	   private String openAnswer;
 	   private int answer;
+	   private String warning;
 	   /* We don't use the status variable at the moment. But it might be useful to prevent rules from firing twice */
 	   private int status = NOANSWER;
 	   
@@ -84,20 +85,26 @@ public class Fact {
 	   
 	   public void askQuestion(boolean doInsert) {
 		   System.out.println(question);
-		   String userInput = scanner.nextLine();
+		  
 	        /* Check if user inputs a number */
-	        try {       	 	
-	       	 	if(questionType != OPEN) { 
-	       	 		int numbUserIn = Integer.parseInt(userInput); 
-		       	 	setAnswer(numbUserIn);
-	       	 	} else { /* It's a YESNO, MC or NUMB question */    	 	
-	       	 		setOpenAnswer(userInput);
-	       	 	}
-	       	 	
-	        } catch (NumberFormatException e) {
-	        	// AT THIS MOMENT THE USER DOESNT GET A CHANCE TO TRY AGAIN
-	            System.out.println("Not a number, please try again.");
-	        }
+		   while (true){ 
+			   String userInput = scanner.nextLine();
+		        try {       	 	
+		       	 	if(questionType != OPEN) { 
+		       	 		int numbUserIn = Integer.parseInt(userInput); 
+			       	 	setAnswer(numbUserIn);
+			       	 	break;
+		       	 	} else { /* It's a YESNO, MC or NUMB question */    	 	
+		       	 		setOpenAnswer(userInput);
+		       	 		break;
+		       	 	}
+		       	 	
+		        } catch (NumberFormatException e) {
+		        	// AT THIS MOMENT THE USER DOESNT GET A CHANCE TO TRY AGAIN
+		        	setWarning("Not a number, please try again.");
+		            System.out.println(getWarning());
+		        }
+		   }
 	        setStatus(HASANSWER);
 	        /* SOMETHING WEIRD IS HAPPENING WITH THE KSESSION */
 	        if(doInsert) {
@@ -149,8 +156,13 @@ public class Fact {
 	   
 	   /* We don't know yet how big a shed should be for xx sheep but for now we just multiply by 10. However we don't use this right now */
 	   public int shedSize() { /* NOT USED RIGHT NOW */
-		   return numbofSheep * 10; 
+		   return numbOfSheep * 10; 
 	   }
 	  
-
+	   public void setWarning(String warning){
+		   this.warning = warning;
+	   }
+	   public String getWarning(){
+		   return warning;
+	   }
 }

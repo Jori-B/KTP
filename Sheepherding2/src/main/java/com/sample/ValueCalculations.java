@@ -1,6 +1,6 @@
 package com.sample;
 
-public class Cost {
+public class ValueCalculations {
 	   
 	public static float numberOfSheepMore(float land, int sheep) {
 		   	return (float) (land - (landNeeded(sheep) * 2.85));
