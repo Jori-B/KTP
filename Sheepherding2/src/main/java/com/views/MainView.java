@@ -1,5 +1,6 @@
 package com.views;
 
+import com.sample.Fact;
 /* This import can be used to reference the Main class, however, there should be another way to initialize the program */
 import com.sample.Main;	
 
@@ -30,6 +31,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Color;
+import java.awt.Component;
 
 public class MainView extends JFrame {
 
@@ -41,23 +43,23 @@ public class MainView extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainView frame = new MainView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MainView frame = new MainView();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -67,6 +69,14 @@ public class MainView extends JFrame {
 		initComponents();
 		createEvents();
 	}
+	
+//	public static void setQuestion(Fact fact) {
+//		this.lblQuestion.setText(fact.getQuestion());
+//	}
+	
+//	public void createQuestion(JLabel lblQuestion) {
+//		this.lblQuestion = lblQuestion;
+//	}
 
 	private void initComponents() {
 		//SETTING UP FRAME
@@ -80,19 +90,21 @@ public class MainView extends JFrame {
 		setContentPane(contentPane);		
 		
 		//QUESTION PART OF VIEW
-		lblQuestion = new JLabel("QUESTION");
+		lblQuestion = new JLabel(Main.facts[0].getQuestion()); // THIS IS NOT THE BEST WAY TO DO IT BUT IT WORKS
+		lblQuestion.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblQuestion.setBackground(new Color(47, 79, 79));
 		lblQuestion.setForeground(SystemColor.controlLtHighlight);
-		lblQuestion.setFont(new Font("Roboto", Font.PLAIN, 30));
+		lblQuestion.setFont(new Font("Roboto", Font.PLAIN, 20));
 //		lblQuestion.setText();
 		
 		
 		
 		JButton btnYes = new JButton("Yes");
-		btnYes.setFont(new Font("Roboto", Font.PLAIN, 25));
+		btnYes.setFont(new Font("Roboto", Font.PLAIN, 20));
 		btnYes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				/* This is not the correct way to do this, but something like this should be possible */
-//				lblQuestion.setText(startProgram.facts[0].getQuestion());
+//				lblQuestion.setText(Main.facts[0].getQuestion());
 			}
 		});
 		
@@ -103,6 +115,7 @@ public class MainView extends JFrame {
 		//BELOW THIS BELONGS TO THE RIGHTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(47, 79, 79));
+		/* Tried to import an image here. It did not work to get the size small */
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
 //		Image img = sheepPic.getImage();
@@ -119,29 +132,29 @@ public class MainView extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(226)
-							.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-							.addGap(60))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(83)
 							.addComponent(btnYes, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
 							.addGap(96)
 							.addComponent(btnNo, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+							.addGap(105))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(18)
+							.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addContainerGap())))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(184, Short.MAX_VALUE)
-					.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-					.addGap(108)
+					.addGap(128)
+					.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(btnNo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnYes, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
 					.addGap(219))
-				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
 		);
 		
 		JButton btnPrevious = new JButton("Previous");
