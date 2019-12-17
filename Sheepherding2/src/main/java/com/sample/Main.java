@@ -1,7 +1,7 @@
 package com.sample;
 
 
-import java.util.Scanner;	
+import java.util.Scanner;		
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
