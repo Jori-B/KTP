@@ -1,8 +1,9 @@
 package com.views;
 
-import com.sample.Fact;	
+import com.sample.Fact;		
 /* This import can be used to reference the Main class, however, there should be another way to initialize the program */
-import com.sample.Model;	
+import com.sample.Model;
+import com.sample.VariableDefinitions;
 
 import java.awt.BorderLayout;		
 import java.awt.EventQueue;
@@ -32,13 +33,17 @@ import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JTextArea;
 
-public class MainView extends JFrame {
+public class MainView extends JFrame implements VariableDefinitions {
 
 	private JPanel contentPane;
 	private JLabel lblQuestion;
 	public Model model;
-	
+	private JButton btnYes;
+	private JButton btnNo;
+	private JButton enterInput;
+	private JTextArea textArea;
 	/**
 	 * Create the frame.
 	 */
@@ -48,22 +53,21 @@ public class MainView extends JFrame {
 		createEvents();
 	}
 	
-//	public static void setQuestion(Fact fact) {
-//		this.lblQuestion.setText(fact.getQuestion());
-//	}
-	
-//	public void createQuestion(JLabel lblQuestion) {
-//		this.lblQuestion = lblQuestion;
-//	}
-	
-	private void setModel(Model model) {
-		this.model = model;
+	private void setButtons(Fact current) {
+		if (current.getQuestionType() == YESNO) {
+			textArea.setVisible(false);
+			enterInput.setVisible(false);
+			btnYes.setVisible(true);
+			btnNo.setVisible(true);
+		};
+		if (current.getQuestionType() == NUMB) {
+			textArea.setVisible(true);
+			enterInput.setVisible(true);
+			btnYes.setVisible(false);
+			btnNo.setVisible(false);
+		};
 	}
 	
-	private Model getModel() {
-		return model;
-	}
-
 	private void initComponents() {
 		//SETTING UP FRAME
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
@@ -78,6 +82,7 @@ public class MainView extends JFrame {
 		//QUESTION PART OF VIEW
 		lblQuestion = new JLabel(model.facts[0].getQuestion()); // THIS IS NOT THE BEST WAY TO DO IT BUT IT WORKS
 		lblQuestion.setAlignmentX(Component.CENTER_ALIGNMENT);
+//		lblQuestion.setAlignmentY(Component.CENTER_ALIGNMENT); // Does not align the question in the middle sadly :( 
 		lblQuestion.setBackground(new Color(47, 79, 79));
 		lblQuestion.setForeground(SystemColor.controlLtHighlight);
 		lblQuestion.setFont(new Font("Roboto", Font.PLAIN, 20));
@@ -86,60 +91,100 @@ public class MainView extends JFrame {
 		
 		
 		JButton btnYes = new JButton("Yes");
+		setYesBtn(btnYes);
 		btnYes.setFont(new Font("Roboto", Font.PLAIN, 20));
-		btnYes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				/* This is not the correct way to do this, but something like this should be possible */
-				lblQuestion.setText(model.facts[1].getQuestion());
-			}
-		});
-		
 		
 		JButton btnNo = new JButton("No");
+		setNoBtn(btnNo);
 		btnNo.setFont(new Font("Roboto", Font.PLAIN, 25));
 		
 		//BELOW THIS BELONGS TO THE RIGHTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(47, 79, 79));
 		/* Tried to import an image here. It did not work to get the size small */
+		
+		JTextArea textArea = new JTextArea();
+		setTextArea(textArea);
+		textArea.setFont(new Font("SansSerif", Font.PLAIN, 25));
+		textArea.setText("");
+		
+		JButton enterInput = new JButton("Enter");
+		setInputBtn(enterInput);
+		enterInput.setFont(new Font("Dialog", Font.PLAIN, 20));
+		
+		enterInput.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Fact current = model.getCurrentQuestion();
+				//current.setAnswer(textArea.getText());
+				System.out.println(textArea.getText());
+				setButtons(current);
+			}
+		});
+		
+		btnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Fact current = model.getCurrentQuestion();
+				current.setAnswer(NO);
+				lblQuestion.setText(current.getQuestion());
+				setButtons(current);
+			}
+		});
+		
+		btnYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Fact current = model.getCurrentQuestion();
+				current.setAnswer(YES);
+				lblQuestion.setText(current.getQuestion());
+				setButtons(current);
+			}
+		});
+		
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
 //		Image img = sheepPic.getImage();
 //		Image newImg = img.getScaledInstance(lblSheepimg.getWidth(), lblSheepimg.getHeight(), Image.SCALE_SMOOTH);
 //		ImageIcon image = new ImageIcon(newImg);
 //		lblSheepimg.setIcon(image);
-		
-		
 
-		
-		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(83)
-							.addComponent(btnYes, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
-							.addGap(96)
-							.addComponent(btnNo, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-							.addGap(105))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(18)
 							.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addContainerGap())))
+							.addGap(0))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(btnYes, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+									.addGap(96)
+									.addComponent(btnNo, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(127)
+									.addComponent(enterInput, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(102)
+									.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)))
+							.addGap(82))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 					.addGap(128)
 					.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+					.addGap(91)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnNo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnYes, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
-					.addGap(219))
+						.addComponent(btnYes, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnNo))
+					.addGap(41)
+					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(enterInput, GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+					.addGap(105))
 				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
 		);
 		
@@ -186,6 +231,46 @@ public class MainView extends JFrame {
 		);
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	private void setModel(Model model) {
+		this.model = model;
+	}
+	
+	private Model getModel() {
+		return model;
+	}
+	
+	private JButton getYesBtn() {
+		return btnYes;
+	}
+
+	private void setYesBtn(JButton btnYes) {
+		this.btnYes = btnYes;
+	}
+	
+	private JButton getNoBtn() {
+		return btnNo;
+	}
+
+	private void setNoBtn(JButton btnNo) {
+		this.btnNo = btnNo;
+	}
+	
+	private JButton getInputBtn() {
+		return enterInput;
+	}
+
+	private void setInputBtn(JButton enterInput) {
+		this.enterInput = enterInput;
+	}
+
+	private JTextArea getTextArea() {
+		return textArea;
+	}
+
+	private void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
 	}
 
 	private void createEvents() {
