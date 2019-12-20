@@ -1,4 +1,5 @@
 package com.sample;
+import java.util.ArrayList;
 import java.util.Scanner;	
 
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -6,6 +7,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 public class Fact implements VariableDefinitions {
 	public StatefulKnowledgeSession ksession;
 	public Model model;
+	
 	    
 	/* Create a scanner that can be closed in the Main.java file */ 
 	public static Scanner scanner = new Scanner( System.in );
@@ -19,6 +21,7 @@ public class Fact implements VariableDefinitions {
 	private String openAnswer;
 	private int answer;
 	private String warning;
+	public boolean askNow;
 	
 	private int status = NOANSWER;
 	   
@@ -39,11 +42,20 @@ public class Fact implements VariableDefinitions {
 		this.ksession = ksession;
 		this.question = question;
 		this.model = model;
-		if(askNow) {
-			askQuestion(true);
-		}
+		this.askNow = askNow;
+//		ksession.insert(this);
+//		if(askNow) {
+//			askQuestion(true);
+//		}
 	}
-   
+	
+	public void setAskNow(boolean askNow) {
+		this.askNow = askNow;
+	}
+	
+	public boolean getAskNow() {
+		return askNow;
+	}
 	/* Name of the question */
 	public String getName() {
 		return name;
@@ -56,38 +68,64 @@ public class Fact implements VariableDefinitions {
 	/* These answers are used in the Rules.dlr file */
 	public void setAnswer(int numbUserIn) {
 		this.answer = numbUserIn;
+		getKSession().insert(this);
+		this.setStatus(HASANSWER);
+		getKSession().fireAllRules();
 	}
-   
+
+	public void setAnswer(String userInput) {
+		try {       	 	
+        	if(questionType != OPEN) { 
+        		int numbUserIn = Integer.parseInt(userInput); 
+	       	 	setAnswer(numbUserIn);
+       	 	} else { /* It's a YESNO, MC or NUMB question */    	 	
+       	 		setOpenAnswer(userInput);
+       	 	}
+       	 	
+        } catch (NumberFormatException e) {
+        	setWarning("Not a number, please try again.");
+            System.out.println(getWarning());
+        }
+		getKSession().insert(this);
+		this.setStatus(HASANSWER);
+		getKSession().fireAllRules();
+//		this.answer = numbUserIn;
+	}
+	
 	public int getAnswer() {
 		return answer;
 	}
    
-	public void askQuestion(boolean doInsert) {
-		System.out.println(question);
+	public void askQuestion(boolean askNow) {
+		//System.out.println(question);
 		model.setCurrentQuestion(this);
-        /* Check if user inputs a number */
-		while (true) { 
-			String userInput = scanner.nextLine();
-	        try {       	 	
-	        	if(questionType != OPEN) { 
-	        		int numbUserIn = Integer.parseInt(userInput); 
-		       	 	setAnswer(numbUserIn);
-		       	 	break;
-	       	 	} else { /* It's a YESNO, MC or NUMB question */    	 	
-	       	 		setOpenAnswer(userInput);
-	       	 		break;
-	       	 	}
-	       	 	
-	        } catch (NumberFormatException e) {
-	        	setWarning("Not a number, please try again.");
-	            System.out.println(getWarning());
-	        }
-		}
-        setStatus(HASANSWER);
-
-        if(doInsert) {
-        	ksession.insert(this);
-        } 
+		this.setAskNow(askNow);
+//		ArrayList<Fact> factsArr = model.getFacts();
+//		System.out.println(factsArr.indexOf(this));
+////		model.setNextQuestion();
+//        /* Check if user inputs a number */
+//		while (true) { 
+//			String userInput = scanner.nextLine();
+//	        try {       	 	
+//	        	if(questionType != OPEN) { 
+//	        		int numbUserIn = Integer.parseInt(userInput); 
+//		       	 	setAnswer(numbUserIn);
+//		       	 	break;
+//	       	 	} else { /* It's a YESNO, MC or NUMB question */    	 	
+//	       	 		setOpenAnswer(userInput);
+//	       	 		break;
+//	       	 	}
+//	       	 	
+//	        } catch (NumberFormatException e) {
+//	        	setWarning("Not a number, please try again.");
+//	            System.out.println(getWarning());
+//	        }
+//		}
+//        setStatus(HASANSWER);
+//
+//        if(doInsert) {
+//        	ksession.insert(this);
+//        } 
 	}
    
 	public String getQuestion() {

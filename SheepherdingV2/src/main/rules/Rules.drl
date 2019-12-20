@@ -61,20 +61,25 @@ rule "No shed"
 		sheep : Fact(Fact.Name == "nmSheep");
 	then
 		help(drools,"info");
-		advice("You should buy a shed. Since you want " + sheep.getAnswer() + 
+		advice("You should build a shed. Since you want " + sheep.getAnswer() + 
 		" sheep your shed should be " + sheep.getAnswer() * 10 + " square meters big");
 end
  
 rule "Has shed"
 	when
-		shed : Shed(hasShed.answer == YES);
-		nmShedSize: Fact(Fact.Name =="nmShedSize", status == NOANSWER); // status == UNUSED
+		//thisShed : Shed(hasShed.answer == YES, curShedSize.answer == 0);
+		ownsShed : Fact(Fact.Name == "ynShed", answer == YES);
+		//fertilizer : Shed(hasFertilizerPlate.status == NOANSWER);
+		nmShedSize: Fact(Fact.Name =="nmShedSize", askNow == false); // status == UNUSED
 	then
-		help(drools,"info");
-		modify(nmShedSize) { askQuestion(false) }
+		
+		help(drools,"he has a shed");
+		
+		modify(nmShedSize) { askQuestion(true) }
+		//nmShedSize.askQuestion(true);
 		//update(nmShedSize);
 		//Add values
-		gvalues.addShedSize(nmShedSize.getAnswer());
+		//gvalues.addShedSize(nmShedSize.getAnswer());
 		
 end
 
@@ -82,10 +87,11 @@ rule "Has land"
 	when
 	// status is a variable that's not yet used, but I thought it might be useful to have such a variable to prevent rules from firing twice...
 		land : Fact(Fact.Name == "ynLand", answer == YES);
-		nmLandSize : Fact(Fact.Name == "nmLandSize", status == NOANSWER);
+		nmLandSize : Fact(Fact.Name == "nmLandSize", askNow == false);
 	then
 		help(drools,"info");
-		modify(nmLandSize) { askQuestion(false) }
+		//nmLandSize.askQuestion(true);
+		modify(nmLandSize) { askQuestion(true) }
 		//update(nmLandSize);
 		//Add values
 		gvalues.addAvailableLand(nmLandSize.getAnswer());
@@ -97,17 +103,17 @@ end
 rule "Has land and wants n sheep"
 	when
 		sheep : Fact(Fact.Name == "nmSheep");
-		nmLandSize : Fact(Fact.Name == "nmLandSize", status == HASANSWER, answer < (sheep.getAnswer() * 2.85));
+		nmLandSize : Fact(Fact.Name == "nmLandSize", answer < (sheep.getAnswer() * 2.85));
 // Only talking about buying land. How much will leasing land cost rougly?
 	then
 		help(drools,"info");
 		advice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
 		sheep.getAnswer() + " sheep, and you have " + nmLandSize.getAnswer() + " acres of land, you need " +
 		numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()) + " acres more land.\n" +
-		"An acre of land costs rougly 50.000�. Therefore you'll need " + 
-		neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()) + "� for buying land.\n" + 
-		"Also one needs to keep in mind that 300� entitlement (i.e. toeslagrechten) need to be paid per used acre of land. In your case this will cost you " + 
-		toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()) + "�");
+		"An acre of land costs rougly 50.000 euros. Therefore you'll need " + 
+		neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()) + "euros for buying land.\n" + 
+		"Also one needs to keep in mind that 300 euros entitlement (i.e. toeslagrechten) need to be paid per used acre of land. In your case this will\n cost you " + 
+		toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()) + "euros");
 		//Add values
 		gvalues.addSheep(sheep.getAnswer());
 		gvalues.addNeededLand(numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()));
@@ -121,7 +127,7 @@ end
 rule "Has enough land and wants n sheep"
 	when
 		sheep : Fact(Fact.Name == "nmSheep");
-		nmLandSize : Fact(Fact.Name == "nmLandSize", status == HASANSWER, answer >= (sheep.getAnswer() * 2.85));
+		nmLandSize : Fact(Fact.Name == "nmLandSize", answer >= (sheep.getAnswer() * 2.85));
 	then
 		help(drools,"info");
 		advice("You have enough land. Per acre you can hold roughly 3 sheep. Since you have " + 
@@ -135,19 +141,21 @@ rule "Phosphate rights"
 		sheep : Fact(Fact.Name == "nmSheep", answer > 5);
 	then
 		help(drools, "phosphate");  
-		advice("When you have more than five sheep you'll need to pay (90�) phosphate rights per sheep. For " + sheep.getAnswer() + " this will cost " + (sheep.getAnswer() * 90) + "� per ??");
+		advice("When you have more than five sheep you'll need to pay (90 euros) phosphate rights per sheep. For " 
+		+ sheep.getAnswer() + " this will cost " + (sheep.getAnswer() * 90) + "euros per ??");
 end
 
 // multiplying the amount of sheep times the shed size is arbitrary. Only during birthing (some) sheep need to be inside
 rule "Has shed and wants n sheep"
 	when
 		sheep : Fact(Fact.Name == "nmSheep");
-		shedsize : Fact(Fact.Name == "nmShedSize", status == HASANSWER, answer < sheep.getAnswer() * 10);
+		thisShed : Shed(curShedSize.answer < sheep.getAnswer() * 2.5);
+		//shedsize : Fact(Fact.Name == "nmShedSize", status == HASANSWER, answer < sheep.getAnswer() * 10);
 	then
 		help(drools,"info");
 		advice("You should build another shed or expand your shed. Since you want " + sheep.getAnswer() + 
-		" sheep, and your shed is " + shedsize.getAnswer() + " square meters, your shed should be " + 
-		shedSize(sheep.getAnswer(),shedsize.getAnswer()) + " square meters bigger");
+		" \nsheep, and your shed is " + thisShed.curShedSize.getAnswer() + " square meters, your shed should be\n" + 
+		shedSize(sheep.getAnswer(),thisShed.curShedSize.getAnswer()) + " square meters bigger");
 end
 
 // Why should people have a tractor? What are the alternatives? How much does a tractor cost exactly (https://edepot.wur.nl/429700)? 

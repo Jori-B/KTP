@@ -8,6 +8,7 @@ import com.sample.Shed;
 import com.sample.Care;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import javax.swing.UIManager;
 
@@ -26,10 +27,13 @@ import com.views.MainView;
 public class Model implements VariableDefinitions {
    
     public boolean allQuestionsAsked;    
-    public Fact facts[] = new Fact [100];
+    /* Maybe make this into an arraylist */
+    //public Fact facts[] = new Fact [100];
+    public ArrayList<Fact> facts = new ArrayList<Fact>();
     public MainView frame;  
     public Fact currentQuestion;
     public Fact nextQuestion;
+    public Fact prevQuestion;
     
     public Model() {
     	this.allQuestionsAsked = false;
@@ -46,12 +50,54 @@ public class Model implements VariableDefinitions {
 	  	}	
     }
     
+    public void setFacts(ArrayList<Fact> facts) {
+    	this.facts = facts;
+    }
+    
+    public ArrayList<Fact> getFacts() {
+    	return facts;
+    }
+    
     public void setCurrentQuestion(Fact fact) {
     	this.currentQuestion = fact;
     }
     
     public Fact getCurrentQuestion() {
     	return currentQuestion;
+    }
+    
+    public void setPrevQuestion(Fact fact) {
+    	this.prevQuestion = fact;
+    }
+    
+    public Fact getPrevQuestion() {
+    	return prevQuestion;
+    }
+    
+    public void setNextQuestion(Fact fact) {
+    	this.nextQuestion = fact;
+    }
+    
+    public Fact getNextQuestion() {
+    	return nextQuestion;
+    }
+    
+    public void setAllQuestionsAsked(boolean allAsked) {
+    	this.allQuestionsAsked = allAsked;
+    }
+    
+    public void findNextQuestion(Fact previous) {
+    	setPrevQuestion(previous);
+    	for (int i = (facts.indexOf(previous) + 1); i < facts.size(); i++) {
+    		Fact nextFact = facts.get(i);
+    		if(nextFact.askNow == true) {
+    			setCurrentQuestion(nextFact);
+    			break;
+    		}
+    	}
+    	/* If no fact is found then return the current fact and infrom the model all questions are asked */
+    	setAllQuestionsAsked(true);
+//    	return current;
     }
     
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {
@@ -71,55 +117,59 @@ public class Model implements VariableDefinitions {
     	
     	ksession.setGlobal("gvalues", new Values());
 
-        facts[0] = new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK, model);
-        business.setHobSemiPro(facts[0]);
+        facts.add(new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK, model));
+        business.setHobSemiPro(facts.get(0));
+        setCurrentQuestion(facts.get(0));
         
-        facts[1] = new Fact("ynShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model);    
-        shed.setHasShed(facts[1]);
+        facts.add(new Fact("ynShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
+        //facts.get(1).askQuestion(true);
+        shed.setHasShed(facts.get(1));
+        setNextQuestion(facts.get(1));
+//        System.out.println(facts.get(facts.indexOf(shed.hasShed)).getQuestion());
         
-        setWindow(model);
+
+//        facts[3] = new Fact("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate", model);
+//        
+//        shed.setHasFertilizerPlate(facts[3]);
+//        shed.getHasFertilizerPlate().setAnswer(YES);
         
-        facts[2] = new Fact("nmShedSize", NUMB, ksession, "How big is your shed (in meters squared)?", model);
-        shed.setCurShedSize(facts[2]);
-        /* Inserting the shed here, else variables are NULL */
+        facts.add(new Fact("nmShedSize", NUMB, ksession, "How big is your shed (in meters squared)?", model));
+        shed.setCurShedSize(facts.get(2));
+        facts.add(new Fact("ynLand", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK, model));
+        land.setHasLand(facts.get(3));
+        
+        facts.add(new Fact("nmLandSize", NUMB, ksession, "How big is your land (in acres)?", model));
+        land.setOwnedLandSize(facts.get(4));
+        
+        facts.add(new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK, model));
+        sheep.setTotalNSheepWanted(facts.get(5));
+        
+        facts.add(new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model));
+        care.setWantsSelfBirth(facts.get(6));
+        
         ksession.insert(shed);
         
-        /* Fire all rules directly after nmShedSize question is in the fact base, so it fires instantly */
-        ksession.fireAllRules();
-        facts[3] = new Fact("ynLand", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK, model);
-        land.setHasLand(facts[3]);
+        setWindow(model);
+//        facts[6] = new Fact("ynNeigbourLease", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model);    
+//        land.setHasLeasedLand(facts[6]);
         
-        facts[4] = new Fact("nmLandSize", NUMB, ksession, "How big is your land (in acres)?", model);
-        land.setOwnedLandSize(facts[4]);
-        
-        ksession.fireAllRules();
-        /* We can make a land size + possible lease size function */
-        facts[5] = new Fact("ynNeigbourLease", YESNO, ksession, "Do your neighbours have a land that you can lease? No (0) Yes (1)", ASK, model);    
-        land.setHasLeasedLand(facts[5]);
-        
-        facts[6] = new Fact("ynTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model);
-        materials.setHasTractor(facts[6]);
-        
-        facts[7] = new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK, model);
-        sheep.setTotalNSheepWanted(facts[7]);
-        
-        facts[8] = new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model);
-        care.setWantsSelfBirth(facts[8]);
+//        facts[7] = new Fact("ynTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model);
+//        materials.setHasTractor(facts[7]);
         
         /* Probably should add a class that saves all the needed money, so we can subtract this from the capitol */       
-        facts[9] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend on the sheep business?", ASK, model);
-        business.setMoneyToSpend(facts[9]);
+//        facts[9] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend on the sheep business?", ASK, model);
+//        business.setMoneyToSpend(facts[9]);
         
         /* How much time does it cost to shave yourself? */
-        facts[10] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model);     
-        care.setWantsSelfShave(facts[10]);        
+//        facts[10] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model);     
+//        care.setWantsSelfShave(facts[10]);        
         
         /* Simple rules like if you don't have one of these two "get them" could be added */
-        facts[11] = new Fact("ynRegisteredUBN", YESNO, ksession, "Does your farm already have a unique business number (UBN)? No (0) Yes (1)", ASK, model);
-        business.setIsUBNRegistered(facts[11]);
+//        facts[11] = new Fact("ynRegisteredUBN", YESNO, ksession, "Does your farm already have a unique business number (UBN)? No (0) Yes (1)", ASK, model);
+//        business.setIsUBNRegistered(facts[11]);
         
-        facts[12] = new Fact("ynRegisteredKvK", MC, ksession, "Is your farm already registered at the Kamer van Koophandel (KvK)? No (0) Yes (1)", ASK, model);
-        business.setIsKvKRegistered(facts[12]);
+//        facts[12] = new Fact("ynRegisteredKvK", MC, ksession, "Is your farm already registered at the Kamer van Koophandel (KvK)? No (0) Yes (1)", ASK, model);
+//        business.setIsKvKRegistered(facts[12]);
         
         
         ksession.fireAllRules();

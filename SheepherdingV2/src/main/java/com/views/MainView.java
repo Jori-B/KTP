@@ -44,6 +44,8 @@ public class MainView extends JFrame implements VariableDefinitions {
 	private JButton btnNo;
 	private JButton enterInput;
 	private JTextArea textArea;
+	private JButton btnPrevious;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -54,11 +56,18 @@ public class MainView extends JFrame implements VariableDefinitions {
 	}
 	
 	private void setButtons(Fact current) {
+		if (model.getFacts().indexOf(current) == 0) {
+			btnPrevious.setEnabled(false);
+		} else {
+			btnPrevious.setEnabled(true);
+		}
 		if (current.getQuestionType() == YESNO) {
 			textArea.setVisible(false);
 			enterInput.setVisible(false);
 			btnYes.setVisible(true);
 			btnNo.setVisible(true);
+			btnYes.setText("Yes");
+			btnNo.setText("No");
 		};
 		if (current.getQuestionType() == NUMB) {
 			textArea.setVisible(true);
@@ -66,6 +75,31 @@ public class MainView extends JFrame implements VariableDefinitions {
 			btnYes.setVisible(false);
 			btnNo.setVisible(false);
 		};
+		// THIS METHOD SHOULD INCLUDE ALL MULTIPLE CHOICE ANSWERS 
+		if (current.getQuestionType() == MC) {
+			textArea.setVisible(false);
+			enterInput.setVisible(false);
+			btnYes.setVisible(true);
+			btnNo.setVisible(true);
+			btnNo.setText("Hobby");
+			btnYes.setText("Proffesional");
+		};
+	}
+	
+	private void preparePrevQuestion() {
+		Fact prev = model.getPrevQuestion();
+		model.setCurrentQuestion(prev);
+		setButtons(prev);
+		lblQuestion.setText(prev.getQuestion());
+	}
+	
+	private void prepareNextQuestion(Fact previous) {
+		/* !!!!!!!!!  Am I inserting facts too many times?????? */
+		previous.getKSession().insert(previous);
+		model.findNextQuestion(previous);
+		Fact current = model.getCurrentQuestion();
+		setButtons(current);
+		lblQuestion.setText(current.getQuestion());
 	}
 	
 	private void initComponents() {
@@ -80,7 +114,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setContentPane(contentPane);		
 		
 		//QUESTION PART OF VIEW
-		lblQuestion = new JLabel(model.facts[0].getQuestion()); // THIS IS NOT THE BEST WAY TO DO IT BUT IT WORKS
+		lblQuestion = new JLabel(model.getCurrentQuestion().getQuestion()); // THIS IS NOT THE BEST WAY TO DO IT BUT IT WORKS
 		lblQuestion.setAlignmentX(Component.CENTER_ALIGNMENT);
 //		lblQuestion.setAlignmentY(Component.CENTER_ALIGNMENT); // Does not align the question in the middle sadly :( 
 		lblQuestion.setBackground(new Color(47, 79, 79));
@@ -112,12 +146,29 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setInputBtn(enterInput);
 		enterInput.setFont(new Font("Dialog", Font.PLAIN, 20));
 		
+		JButton btnPrevious = new JButton("Previous");
+		setPrevBtn(btnPrevious);
+		btnPrevious.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				preparePrevQuestion();
+			}
+		});
+		
+		JButton btnNext = new JButton("Next");
+		
+		setButtons(model.getCurrentQuestion());
+		
 		enterInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Fact current = model.getCurrentQuestion();
-				//current.setAnswer(textArea.getText());
-				System.out.println(textArea.getText());
-				setButtons(current);
+				current.setAnswer(textArea.getText());
+				textArea.setText("");
+				prepareNextQuestion(current);
+				//System.out.println(textArea.getText());
+//				Fact next = model.findNextQuestion(current);
+//				setButtons(next);
+//				lblQuestion.setText(next.getQuestion());
+				
 			}
 		});
 		
@@ -125,8 +176,9 @@ public class MainView extends JFrame implements VariableDefinitions {
 			public void actionPerformed(ActionEvent arg0) {
 				Fact current = model.getCurrentQuestion();
 				current.setAnswer(NO);
-				lblQuestion.setText(current.getQuestion());
-				setButtons(current);
+				prepareNextQuestion(current);
+//				lblQuestion.setText(current.getQuestion());
+//				setButtons(current);
 			}
 		});
 		
@@ -134,8 +186,9 @@ public class MainView extends JFrame implements VariableDefinitions {
 			public void actionPerformed(ActionEvent arg0) {
 				Fact current = model.getCurrentQuestion();
 				current.setAnswer(YES);
-				lblQuestion.setText(current.getQuestion());
-				setButtons(current);
+				prepareNextQuestion(current);
+//				lblQuestion.setText(current.getQuestion());
+//				setButtons(current);
 			}
 		});
 		
@@ -187,14 +240,6 @@ public class MainView extends JFrame implements VariableDefinitions {
 					.addGap(105))
 				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
 		);
-		
-		JButton btnPrevious = new JButton("Previous");
-		btnPrevious.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		
-		JButton btnNext = new JButton("Next");
 		
 		JLabel lblAnsweredQuestions = new JLabel("Answered Questions:");
 		lblAnsweredQuestions.setForeground(new Color(255, 255, 255));
@@ -273,6 +318,14 @@ public class MainView extends JFrame implements VariableDefinitions {
 		this.textArea = textArea;
 	}
 
+	private JButton getPrevBtn() {
+		return btnPrevious;
+	}
+
+	private void setPrevBtn(JButton btnPrevious) {
+		this.btnPrevious = btnPrevious;
+	}
+	
 	private void createEvents() {
 		// TODO Auto-generated method stub
 		

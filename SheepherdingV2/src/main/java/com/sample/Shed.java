@@ -35,6 +35,7 @@ public class Shed implements VariableDefinitions {
 
 	public void setCurShedSize(Fact curShedSize) {
 		this.curShedSize = curShedSize;
+		
 	}
 
 	public Fact getRoomForShed() {
