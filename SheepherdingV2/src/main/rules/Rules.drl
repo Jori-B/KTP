@@ -79,8 +79,7 @@ rule "Has shed"
 		//nmShedSize.askQuestion(true);
 		//update(nmShedSize);
 		//Add values
-		//gvalues.addShedSize(nmShedSize.getAnswer());
-		
+		//gvalues.addShedSize(nmShedSize.getAnswer());	
 end
 
 rule "Has land"

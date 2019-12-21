@@ -28,6 +28,8 @@ import java.awt.Font;
 import javax.swing.JTable;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.SystemColor;
@@ -45,7 +47,8 @@ public class MainView extends JFrame implements VariableDefinitions {
 	private JButton enterInput;
 	private JTextArea textArea;
 	private JButton btnPrevious;
-	
+	private JList<String> list;
+	private DefaultListModel<String> answeredQs;
 	/**
 	 * Create the frame.
 	 */
@@ -93,9 +96,18 @@ public class MainView extends JFrame implements VariableDefinitions {
 		lblQuestion.setText(prev.getQuestion());
 	}
 	
+	private void setList(JList<String> list) {
+		this.list = list;
+	}
+	
+	private void setAnsweredQs(DefaultListModel<String> answeredQs) {
+		this.answeredQs = answeredQs;
+	}
+	
 	private void prepareNextQuestion(Fact previous) {
 		/* !!!!!!!!!  Am I inserting facts too many times?????? */
-		previous.getKSession().insert(previous);
+		//previous.getKSession().insert(previous);
+		answeredQs.addElement(previous.getName());
 		model.findNextQuestion(previous);
 		Fact current = model.getCurrentQuestion();
 		setButtons(current);
@@ -245,7 +257,13 @@ public class MainView extends JFrame implements VariableDefinitions {
 		lblAnsweredQuestions.setForeground(new Color(255, 255, 255));
 		lblAnsweredQuestions.setFont(new Font("Roboto", Font.PLAIN, 15));
 		
-		JList list_1 = new JList();
+//		JList list_1 = new JList();
+		DefaultListModel<String> answeredQs = new DefaultListModel<String>();
+		setAnsweredQs(answeredQs);
+		JList<String> list_1 = new JList<String>(answeredQs);
+		setList(list_1);
+		
+		
 		list_1.setBackground(new Color(112, 128, 144));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
