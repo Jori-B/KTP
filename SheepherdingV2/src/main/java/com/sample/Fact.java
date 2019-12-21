@@ -48,22 +48,6 @@ public class Fact implements VariableDefinitions {
 //			askQuestion(true);
 //		}
 	}
-	
-	public void setAskNow(boolean askNow) {
-		this.askNow = askNow;
-	}
-	
-	public boolean getAskNow() {
-		return askNow;
-	}
-	/* Name of the question */
-	public String getName() {
-		return name;
-	}
-   
-	public void setName(String name) {
-		this.name = name;
-	}
    
 	/* These answers are used in the Rules.dlr file */
 	public void setAnswer(int numbUserIn) {
@@ -128,6 +112,22 @@ public class Fact implements VariableDefinitions {
 //        } 
 	}
    
+	public void setAskNow(boolean askNow) {
+		this.askNow = askNow;
+	}
+	
+	public boolean getAskNow() {
+		return askNow;
+	}
+	/* Name of the question */
+	public String getName() {
+		return name;
+	}
+   
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getQuestion() {
 		return question;
 	}

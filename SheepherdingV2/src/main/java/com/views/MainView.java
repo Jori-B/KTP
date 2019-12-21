@@ -58,55 +58,52 @@ public class MainView extends JFrame implements VariableDefinitions {
 		createEvents();
 	}
 	
+	private void setVisibilityBtns(boolean textFields, boolean yesNoBtns) {
+		textArea.setVisible(textFields);
+		enterInput.setVisible(textFields);
+		btnYes.setVisible(yesNoBtns);
+		btnNo.setVisible(yesNoBtns);
+	}
+	
 	private void setButtons(Fact current) {
+		/* If it's the first fact, there is no previous question, so button disabled */
 		if (model.getFacts().indexOf(current) == 0) {
 			btnPrevious.setEnabled(false);
+		/* Else enable the button */
 		} else {
 			btnPrevious.setEnabled(true);
 		}
-		if (current.getQuestionType() == YESNO) {
-			textArea.setVisible(false);
-			enterInput.setVisible(false);
-			btnYes.setVisible(true);
-			btnNo.setVisible(true);
-			btnYes.setText("Yes");
-			btnNo.setText("No");
-		};
-		if (current.getQuestionType() == NUMB) {
-			textArea.setVisible(true);
-			enterInput.setVisible(true);
-			btnYes.setVisible(false);
-			btnNo.setVisible(false);
-		};
-		// THIS METHOD SHOULD INCLUDE ALL MULTIPLE CHOICE ANSWERS 
-		if (current.getQuestionType() == MC) {
-			textArea.setVisible(false);
-			enterInput.setVisible(false);
-			btnYes.setVisible(true);
-			btnNo.setVisible(true);
-			btnNo.setText("Hobby");
-			btnYes.setText("Proffesional");
-		};
+		/* Depending on the question type certain buttons need to be visible or have their text adjusted */
+		switch(current.getQuestionType()) {
+			case YESNO:
+				setVisibilityBtns(false, true);
+				btnYes.setText("Yes");
+				btnNo.setText("No");
+				break;
+			case NUMB:
+				setVisibilityBtns(true, false);
+				break;
+			case MC: // THIS METHOD SHOULD INCLUDE ALL MULTIPLE CHOICE ANSWERS
+				setVisibilityBtns(false, true);
+				btnNo.setText("Hobby");
+				btnYes.setText("Proffesional");
+				break;
+		}
 	}
 	
 	private void preparePrevQuestion() {
 		Fact prev = model.getPrevQuestion();
+		/* Remove the previous question element to the left hand side list, since it's going to be answered again */
+		answeredQs.removeElement(prev.getName());
 		model.setCurrentQuestion(prev);
 		setButtons(prev);
 		lblQuestion.setText(prev.getQuestion());
 	}
 	
-	private void setList(JList<String> list) {
-		this.list = list;
-	}
-	
-	private void setAnsweredQs(DefaultListModel<String> answeredQs) {
-		this.answeredQs = answeredQs;
-	}
-	
 	private void prepareNextQuestion(Fact previous) {
-		/* !!!!!!!!!  Am I inserting facts too many times?????? */
+		/* No insert here because we're already doing it in  */
 		//previous.getKSession().insert(previous);
+		/* Add the element to the left hand side list */
 		answeredQs.addElement(previous.getName());
 		model.findNextQuestion(previous);
 		Fact current = model.getCurrentQuestion();
@@ -131,10 +128,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 //		lblQuestion.setAlignmentY(Component.CENTER_ALIGNMENT); // Does not align the question in the middle sadly :( 
 		lblQuestion.setBackground(new Color(47, 79, 79));
 		lblQuestion.setForeground(SystemColor.controlLtHighlight);
-		lblQuestion.setFont(new Font("Roboto", Font.PLAIN, 20));
-//		lblQuestion.setText();
-		
-		
+		lblQuestion.setFont(new Font("Roboto", Font.PLAIN, 20));		
 		
 		JButton btnYes = new JButton("Yes");
 		setYesBtn(btnYes);
@@ -147,7 +141,6 @@ public class MainView extends JFrame implements VariableDefinitions {
 		//BELOW THIS BELONGS TO THE RIGHTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(47, 79, 79));
-		/* Tried to import an image here. It did not work to get the size small */
 		
 		JTextArea textArea = new JTextArea();
 		setTextArea(textArea);
@@ -160,50 +153,13 @@ public class MainView extends JFrame implements VariableDefinitions {
 		
 		JButton btnPrevious = new JButton("Previous");
 		setPrevBtn(btnPrevious);
-		btnPrevious.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				preparePrevQuestion();
-			}
-		});
 		
 		JButton btnNext = new JButton("Next");
 		
-		setButtons(model.getCurrentQuestion());
+		setButtons(model.getCurrentQuestion());		
 		
-		enterInput.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fact current = model.getCurrentQuestion();
-				current.setAnswer(textArea.getText());
-				textArea.setText("");
-				prepareNextQuestion(current);
-				//System.out.println(textArea.getText());
-//				Fact next = model.findNextQuestion(current);
-//				setButtons(next);
-//				lblQuestion.setText(next.getQuestion());
-				
-			}
-		});
-		
-		btnNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fact current = model.getCurrentQuestion();
-				current.setAnswer(NO);
-				prepareNextQuestion(current);
-//				lblQuestion.setText(current.getQuestion());
-//				setButtons(current);
-			}
-		});
-		
-		btnYes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fact current = model.getCurrentQuestion();
-				current.setAnswer(YES);
-				prepareNextQuestion(current);
-//				lblQuestion.setText(current.getQuestion());
-//				setButtons(current);
-			}
-		});
-		
+		/* Tried to import an image here. It did not work to get the size small.
+		 * This should be a way to enter a scaled down image, however I can't get it to work */
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
 //		Image img = sheepPic.getImage();
@@ -262,7 +218,6 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setAnsweredQs(answeredQs);
 		JList<String> list_1 = new JList<String>(answeredQs);
 		setList(list_1);
-		
 		
 		list_1.setBackground(new Color(112, 128, 144));
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -344,8 +299,46 @@ public class MainView extends JFrame implements VariableDefinitions {
 		this.btnPrevious = btnPrevious;
 	}
 	
+	private void setList(JList<String> list) {
+		this.list = list;
+	}
+	
+	private void setAnsweredQs(DefaultListModel<String> answeredQs) {
+		this.answeredQs = answeredQs;
+	}
+	
 	private void createEvents() {
 		// TODO Auto-generated method stub
+		btnYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Fact current = model.getCurrentQuestion();
+				current.setAnswer(YES);
+				prepareNextQuestion(current);
+			}
+		});
 		
+		btnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Fact current = model.getCurrentQuestion();
+				current.setAnswer(NO);
+				prepareNextQuestion(current);
+			}
+		});
+		
+		btnPrevious.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				preparePrevQuestion();
+			}
+		});
+		
+		enterInput.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Fact current = model.getCurrentQuestion();
+				current.setAnswer(textArea.getText());
+				/* Empty the user input text in the field after 'enter' is pressed */
+				textArea.setText("");
+				prepareNextQuestion(current);
+			}
+		});
 	}
 }

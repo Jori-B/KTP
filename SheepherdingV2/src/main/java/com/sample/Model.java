@@ -50,42 +50,6 @@ public class Model implements VariableDefinitions {
 	  	}	
     }
     
-    public void setFacts(ArrayList<Fact> facts) {
-    	this.facts = facts;
-    }
-    
-    public ArrayList<Fact> getFacts() {
-    	return facts;
-    }
-    
-    public void setCurrentQuestion(Fact fact) {
-    	this.currentQuestion = fact;
-    }
-    
-    public Fact getCurrentQuestion() {
-    	return currentQuestion;
-    }
-    
-    public void setPrevQuestion(Fact fact) {
-    	this.prevQuestion = fact;
-    }
-    
-    public Fact getPrevQuestion() {
-    	return prevQuestion;
-    }
-    
-    public void setNextQuestion(Fact fact) {
-    	this.nextQuestion = fact;
-    }
-    
-    public Fact getNextQuestion() {
-    	return nextQuestion;
-    }
-    
-    public void setAllQuestionsAsked(boolean allAsked) {
-    	this.allQuestionsAsked = allAsked;
-    }
-    
     public void findNextQuestion(Fact previous) {
     	setPrevQuestion(previous);
     	for (int i = (facts.indexOf(previous) + 1); i < facts.size(); i++) {
@@ -211,5 +175,41 @@ public class Model implements VariableDefinitions {
 		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 		return kbase;
 	}
+	
+    public void setFacts(ArrayList<Fact> facts) {
+    	this.facts = facts;
+    }
+    
+    public ArrayList<Fact> getFacts() {
+    	return facts;
+    }
+    
+    public void setCurrentQuestion(Fact fact) {
+    	this.currentQuestion = fact;
+    }
+    
+    public Fact getCurrentQuestion() {
+    	return currentQuestion;
+    }
+    
+    public void setPrevQuestion(Fact fact) {
+    	this.prevQuestion = fact;
+    }
+    
+    public Fact getPrevQuestion() {
+    	return prevQuestion;
+    }
+    
+    public void setNextQuestion(Fact fact) {
+    	this.nextQuestion = fact;
+    }
+    
+    public Fact getNextQuestion() {
+    	return nextQuestion;
+    }
+    
+    public void setAllQuestionsAsked(boolean allAsked) {
+    	this.allQuestionsAsked = allAsked;
+    }
 }
 	
