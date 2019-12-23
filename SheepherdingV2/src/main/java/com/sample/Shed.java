@@ -13,7 +13,9 @@ public class Shed implements VariableDefinitions {
 	public Fact hasFertilizerPlate;
 	public Fact hasAdjustableFences;
 	public Fact hasLamps;
-	public Fact goalSize; 
+	public double goalSize; 
+	public double goalCurSizeDiff;
+	public boolean shedTooSmall;
 	public Fact problem;
 	public Fact advice;
 	
@@ -21,6 +23,23 @@ public class Shed implements VariableDefinitions {
 		
 	}
 	
+	/* Calculations */
+	public void calcGoalSize(int totalNSheepWanted) { 
+		this.goalSize = totalNSheepWanted * 2.5;
+	}
+	
+	public void calcGoalCurSizeDiff() { 
+		this.goalCurSizeDiff = goalSize - curShedSize.getAnswer();
+		if(goalCurSizeDiff > 0) {
+			this.shedTooSmall = true;
+		} else {
+			this.shedTooSmall = false;
+		}
+	}
+	
+	
+	
+	/* Getters and setters */
 	public Fact getHasShed() {
 		return hasShed;
 	}
@@ -102,12 +121,20 @@ public class Shed implements VariableDefinitions {
 		this.hasLamps = hasLamps;
 	}
 
-	public Fact getGoalSize() {
+	public double getGoalSize() {
 		return goalSize;
 	}
 
-	public void setGoalSize(Fact goalSize) {
+	public void setGoalSize(double goalSize) {
 		this.goalSize = goalSize;
+	}
+	
+	public double getGoalCurSizeDiff() {
+		return goalCurSizeDiff;
+	}
+	
+	public void setGoalCurSizeDiff(double goalCurSizeDiff) {
+		this.goalCurSizeDiff = goalCurSizeDiff;
 	}
 
 	public Fact getProblem() {

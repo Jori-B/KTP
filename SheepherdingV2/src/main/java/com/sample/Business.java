@@ -7,7 +7,7 @@ public class Business {
 	public Fact level;
 	public Fact isUBNRegistered;
 	public Fact isKvKRegistered;
-	public Fact moneyToSpend;
+	public Fact moneyToSpend; // We still need a total calculation for if money to spend is smaller than money needed
 	public Fact timeWillingToSpend;
 	public Fact advice;
 	

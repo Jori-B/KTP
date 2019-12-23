@@ -34,9 +34,16 @@ public class Model implements VariableDefinitions {
     public Fact currentQuestion;
     public Fact nextQuestion;
     public Fact prevQuestion;
+    public StatefulKnowledgeSession ksession;
+	public Land land = new Land();
+	public Materials materials = new Materials();
+	public Sheep sheep = new Sheep();
+	public Business business = new Business();
+	public Shed shed = new Shed();
+	public Care care = new Care();
     
     public Model() {
-    	this.allQuestionsAsked = false;
+    	//this.allQuestionsAsked = false;
     } 
     
     public void createKnowledgeBase(Model model) {
@@ -44,10 +51,15 @@ public class Model implements VariableDefinitions {
 			// Load up the knowledge base
 			KnowledgeBase kbase = readKnowledgeBase();
 			StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
+			setKSession(ksession);
 			createQuestions(ksession, model);
 		} catch (Throwable t) {
 			t.printStackTrace();
 	  	}	
+    }
+    
+    public void setKSession(StatefulKnowledgeSession ksession) {
+    	this.ksession = ksession;
     }
     
     public void findNextQuestion(Fact previous) {
@@ -56,21 +68,23 @@ public class Model implements VariableDefinitions {
     		Fact nextFact = facts.get(i);
     		if(nextFact.askNow == true) {
     			setCurrentQuestion(nextFact);
-    			break;
+    			return;
     		}
     	}
     	/* If no fact is found then return the current fact and infrom the model all questions are asked */
+    	System.out.println("all asked");
     	setAllQuestionsAsked(true);
+ 
 //    	return current;
     }
     
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {
-    	Land land = new Land();
-    	Materials materials = new Materials();
-    	Sheep sheep = new Sheep();
-    	Business business = new Business();
-    	Shed shed = new Shed();
-    	Care care = new Care();
+//    	Land land = new Land();
+//    	Materials materials = new Materials();
+//    	Sheep sheep = new Sheep();
+//    	Business business = new Business();
+//    	Shed shed = new Shed();
+//    	Care care = new Care();
     	
 //    	ksession.insert(land);
 //    	ksession.insert(materials);
@@ -88,6 +102,7 @@ public class Model implements VariableDefinitions {
         facts.add(new Fact("ynShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
         //facts.get(1).askQuestion(true);
         shed.setHasShed(facts.get(1));
+        //shed.getHasShed().setAnswer(-1);
         setNextQuestion(facts.get(1));
 //        System.out.println(facts.get(facts.indexOf(shed.hasShed)).getQuestion());
         
@@ -106,19 +121,19 @@ public class Model implements VariableDefinitions {
         land.setOwnedLandSize(facts.get(4));
         
         facts.add(new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK, model));
-        sheep.setTotalNSheepWanted(facts.get(5));
+        sheep.setDesiresNMoreSheep(facts.get(5));
         
         facts.add(new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model));
         care.setWantsSelfBirth(facts.get(6));
         
-        ksession.insert(shed);
+        //ksession.insert(shed);
         
         setWindow(model);
 //        facts[6] = new Fact("ynNeigbourLease", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model);    
 //        land.setHasLeasedLand(facts[6]);
         
-//        facts[7] = new Fact("ynTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model);
-//        materials.setHasTractor(facts[7]);
+        facts.add(new Fact("ynTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model));
+        materials.setHasTractor(facts.get(7));
         
         /* Probably should add a class that saves all the needed money, so we can subtract this from the capitol */       
 //        facts[9] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend on the sheep business?", ASK, model);
@@ -208,8 +223,37 @@ public class Model implements VariableDefinitions {
     	return nextQuestion;
     }
     
+    public boolean getAllQuestionsAsked() {
+    	return allQuestionsAsked;
+    }
+    
     public void setAllQuestionsAsked(boolean allAsked) {
     	this.allQuestionsAsked = allAsked;
+    	ksession.insert(this);
+    	ksession.fireAllRules();
     }
+    
+	public Land getLand() {
+		return land;
+	}
+	
+	public Materials getMaterials() {
+		return materials;
+	}
+	
+	public Sheep getSheep() {
+		return sheep;
+	}
+	
+	public Business getBusiness() {
+		return business;
+	}
+	public Shed getShed() {
+		return shed;
+	}
+	
+	public Care getCare() {
+		return care;
+	}
 }
 	

@@ -5,12 +5,20 @@ import com.sample.Fact;
 public class Care implements VariableDefinitions {
 	public Fact wantsSelfShave;
 	public Fact wantsSelfBirth;
-	public Fact shaveOtherCost;
-	public Fact woolEarnings;
+	public double shaveOtherCost;
+	public double woolEarnings;
 	public Fact advice;
 	
 	public Care() {
 		
+	}
+	
+	public void calcShaveOtherCost(int totalNSheepWanted) {
+		this.shaveOtherCost = totalNSheepWanted * 3.5;
+	}
+	
+	public void calcWoolEarning(int totalNSheepWanted) {
+		this.woolEarnings = totalNSheepWanted * 1.5;
 	}
 
 	public Fact getWantsSelfShave() {
@@ -29,19 +37,19 @@ public class Care implements VariableDefinitions {
 		this.wantsSelfBirth = wantsSelfBirth;
 	}
 
-	public Fact getShaveOtherCost() {
+	public double getShaveOtherCost() {
 		return shaveOtherCost;
 	}
 
-	public void setShaveOtherCost(Fact shaveOtherCost) {
+	public void setShaveOtherCost(double shaveOtherCost) {
 		this.shaveOtherCost = shaveOtherCost;
 	}
 
-	public Fact getWoolEarnings() {
+	public double getWoolEarnings() {
 		return woolEarnings;
 	}
 
-	public void setWoolEarnings(Fact woolEarnings) {
+	public void setWoolEarnings(double woolEarnings) {
 		this.woolEarnings = woolEarnings;
 	}
 
@@ -52,7 +60,5 @@ public class Care implements VariableDefinitions {
 	public void setAdvice(Fact advice) {
 		this.advice = advice;
 	}
-	
-	
-	
+
 }

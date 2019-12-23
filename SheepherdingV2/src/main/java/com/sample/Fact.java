@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;	
 
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.rule.FactHandle;
 
 public class Fact implements VariableDefinitions {
 	public StatefulKnowledgeSession ksession;
@@ -22,6 +23,7 @@ public class Fact implements VariableDefinitions {
 	private int answer;
 	private String warning;
 	public boolean askNow;
+	public FactHandle factHandle;
 	
 	private int status = NOANSWER;
 	   
@@ -33,7 +35,7 @@ public class Fact implements VariableDefinitions {
 		this.question = question;
 		this.status = NOANSWER;
 		this.model = model;
-		ksession.insert(this);
+		this.factHandle = ksession.insert(this);
 	}
    
 	public Fact(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model) {
@@ -52,9 +54,10 @@ public class Fact implements VariableDefinitions {
 	/* These answers are used in the Rules.dlr file */
 	public void setAnswer(int numbUserIn) {
 		this.answer = numbUserIn;
-		getKSession().insert(this);
 		this.setStatus(HASANSWER);
-		getKSession().fireAllRules();
+		this.factHandle = ksession.insert(this);
+		//ksession.update(factHandle, this);
+		ksession.fireAllRules();
 	}
 
 	public void setAnswer(String userInput) {
@@ -70,9 +73,9 @@ public class Fact implements VariableDefinitions {
         	setWarning("Not a number, please try again.");
             System.out.println(getWarning());
         }
-		getKSession().insert(this);
-		this.setStatus(HASANSWER);
-		getKSession().fireAllRules();
+		//getKSession().insert(this);
+		//this.setStatus(HASANSWER);
+		//getKSession().fireAllRules();
 //		this.answer = numbUserIn;
 	}
 	

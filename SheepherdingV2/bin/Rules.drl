@@ -2,8 +2,14 @@
 package cityrules
 
 // list any import classes here.
+import com.sample.Model;
 import com.sample.Fact;
 import com.sample.Shed;
+import com.sample.Materials;
+import com.sample.Business;
+import com.sample.Land;
+import com.sample.Care;
+import com.sample.Sheep;
 import com.sample.Values;
 //import com.sample.ReadInput;
 import com.sample.Main; 
@@ -17,69 +23,15 @@ import function com.sample.Advice.*;
 global Values gvalues;
 
 dialect "java"
-      
-rule "Hobby self birthing"
-	when
-		hobprof : Fact(Fact.Name == "mcHobProf", answer == HOBBY);
-		birth : Fact(Fact.Name == "mcBirth", answer == SELF);
-	then
-		help(drools,"info");
-		advice("You want to be a hobby herder who births themselves");
-		
-end
 
-rule "Hobby other birthing"
-	when
-		hobprof : Fact(Fact.Name == "mcHobProf", answer == HOBBY);
-		birth : Fact(Fact.Name == "mcBirth", answer == OTHER);
-	then
-		help(drools,"info");
-		advice("You want to be a hobby herder who doesn't birth sheep themselves");
-end
-
-rule "Professional self birthing"
-	when
-		hobprof : Fact(Fact.Name == "mcHobProf", answer == PRO);
-		birth : Fact(Fact.Name == "mcBirth", answer == SELF);
-	then
-		help(drools,"info");	
-		advice("You want to be a professional herder who births sheep themselves");
-end
-
-rule "Professional other birthing"
-	when
-		hobprof : Fact(Fact.Name == "mcHobProf", answer == PRO);
-		birth : Fact(Fact.Name == "mcBirth", answer == OTHER);
-	then
-		help(drools,"info");
-		advice("You want to be a professional herder who doesn't want to do birthing themselves.");
-end
-
-rule "No shed"
-	when
-		shed : Shed(hasShed.answer == NO);
-		sheep : Fact(Fact.Name == "nmSheep");
-	then
-		help(drools,"info");
-		advice("You should build a shed. Since you want " + sheep.getAnswer() + 
-		" sheep your shed should be " + sheep.getAnswer() * 10 + " square meters big");
-end
- 
+// Second order questions, which need to be asked using the Fact class. 
 rule "Has shed"
 	when
-		//thisShed : Shed(hasShed.answer == YES, curShedSize.answer == 0);
 		ownsShed : Fact(Fact.Name == "ynShed", answer == YES);
-		//fertilizer : Shed(hasFertilizerPlate.status == NOANSWER);
-		nmShedSize: Fact(Fact.Name =="nmShedSize", askNow == false); // status == UNUSED
+		nmShedSize: Fact(Fact.Name =="nmShedSize", askNow == false); 
 	then
-		
 		help(drools,"he has a shed");
-		
 		modify(nmShedSize) { askQuestion(true) }
-		//nmShedSize.askQuestion(true);
-		//update(nmShedSize);
-		//Add values
-		//gvalues.addShedSize(nmShedSize.getAnswer());	
 end
 
 rule "Has land"
@@ -89,78 +41,141 @@ rule "Has land"
 		nmLandSize : Fact(Fact.Name == "nmLandSize", askNow == false);
 	then
 		help(drools,"info");
-		//nmLandSize.askQuestion(true);
 		modify(nmLandSize) { askQuestion(true) }
-		//update(nmLandSize);
-		//Add values
-		gvalues.addAvailableLand(nmLandSize.getAnswer());
-		
+		gvalues.addAvailableLand(nmLandSize.getAnswer());	
 end
+
+// Sheep needs to have more salience than land, care and shed so that the functions for that can be used
+// numberOfSheepMore needs to be calculated after inserting land (so modify)
+rule "All questions asked, sheep calculations"
+	// salience is automatically set at 0
+	salience 10
+	when
+		Model(allQuestionsAsked == true, $sheep : getSheep());
+	then 
+		$sheep.calcTotalSheep();
+		$sheep.calcPriceSheep();
+		insert( $sheep );
+end
+
+rule "All questions asked, land calculations"
+	salience 9
+	when
+		Model(allQuestionsAsked == true, $land : getLand(), $sheep : getSheep());
+	then 
+		
+		$land.calcLandSize();
+		$land.calcLandNeeded( $sheep.getTotalNSheepWanted() );
+		$land.calcPhosphateRights( $sheep.getTotalNSheepWanted() );
+		$land.calcCostLandNeeded();
+		insert( $land );
+		// I think this modify works, but it needs to be tested
+		modify( $sheep ) { calcNumberOfSheepMore($land.getTotalLandSize()) };
+end
+
+rule "All questions asked, care calculations"
+	salience 8
+	when
+		Model(allQuestionsAsked == true, $care : getCare(), $shed : getShed());
+		Sheep( $nSheep : totalNSheepWanted );
+	then 
+		$care.calcShaveOtherCost($nSheep);	
+		$care.calcWoolEarning($nSheep);
+		insert($care);
+		
+		$shed.calcGoalSize($nSheep);
+		$shed.calcGoalCurSizeDiff();
+		insert($shed);
+end
+
+
+// When all questions are asked we insert the classes that hold the answers      
+rule "All questions asked"
+	salience 1
+	when
+		model : Model(allQuestionsAsked == true);
+	then 
+		//advice(model.getSheep().getSheepCost());
+		help(drools, "all q asked, sheep, land, care, shed inserted");
+		insert( model.getBusiness() );
+		insert( model.getMaterials() );
+end 
+
+rule "No shed"
+	when
+		Shed( hasShed.answer == NO);
+		Sheep( $nSheep : totalNSheepWanted);
+	then
+		help(drools,"info");
+		advice("You should build a shed. Since you want " + $nSheep + 
+		" sheep your shed should be " + $nSheep * 10 + " square meters big");
+end
+ 
 
 // To be profitable one needs to have at least 200 sheep and 70 acres of land (SO THIS SHOULD BE A RULE FOR PROFFESIONAL SHEEP HERDERS. For 200 sheep you need 70 acres of land
 // 200/70 is 2.86 sheep/acre. 
 rule "Has land and wants n sheep"
 	when
-		sheep : Fact(Fact.Name == "nmSheep");
-		nmLandSize : Fact(Fact.Name == "nmLandSize", answer < (sheep.getAnswer() * 2.85));
+		Sheep( $nSheep : totalNSheepWanted);
+		Land( $landOwned : ownedLandSize.answer, $landNeeded : landNeeded > 0, $cost : costLandNeeded )
+		
+		
 // Only talking about buying land. How much will leasing land cost rougly?
 	then
 		help(drools,"info");
 		advice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
-		sheep.getAnswer() + " sheep, and you have " + nmLandSize.getAnswer() + " acres of land, you need " +
-		numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()) + " acres more land.\n" +
+		$nSheep + " sheep, and you have " + $landOwned + " acres of land, you need " +
+		$landNeeded + " acres more land.\n" +
 		"An acre of land costs rougly 50.000 euros. Therefore you'll need " + 
-		neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()) + "euros for buying land.\n" + 
-		"Also one needs to keep in mind that 300 euros entitlement (i.e. toeslagrechten) need to be paid per used acre of land. In your case this will\n cost you " + 
-		toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()) + "euros");
+		$cost + "euros for buying land.\n" + 
+		"Also one needs to keep in mind that 300 euros entitlement (i.e. toeslagrechten) need to be paid per used acre of land. \n" +
+		"In your case this will cost you " + toeslagrechten($nSheep,$landOwned) + " euros");
 		//Add values
-		gvalues.addSheep(sheep.getAnswer());
-		gvalues.addNeededLand(numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()));
-		gvalues.addMoneyCost(neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()));
-		gvalues.addMoneyCost(toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()));
+		//gvalues.addSheep(sheep.getAnswer());
+		//gvalues.addNeededLand(numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()));
+		//gvalues.addMoneyCost(neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()));
+		//gvalues.addMoneyCost(toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()));
 		
 end
 
-// ALL THE FORMULAS IN HERE SHOULD PROBABLY BE MOVED TO A SEPARATE CLASS CALLED e.g. Cost.java 
-
 rule "Has enough land and wants n sheep"
 	when
-		sheep : Fact(Fact.Name == "nmSheep");
-		nmLandSize : Fact(Fact.Name == "nmLandSize", answer >= (sheep.getAnswer() * 2.85));
+		Sheep( $nSheep : totalNSheepWanted, $nSheepMore : nSheepMore );
+		Land( $landOwned : ownedLandSize.answer, landNeeded < 0);
 	then
 		help(drools,"info");
-		advice("You have enough land. Per acre you can hold roughly 3 sheep. Since you have " + 
-		nmLandSize.getAnswer() + " acres, you could get " + 
-		numberOfSheepMore(nmLandSize.getAnswer(),sheep.getAnswer())  + " more sheep");
+		advice("You have enough land. Per acre you can hold roughly 3 sheep. Since you have\n" + 
+		$landOwned + " acres, you could get " + $nSheepMore  + " more sheep than the current\n" + $nSheep + " sheep you wanted");
 end
 
 // When you have more than 5 sheep you need to pay phosphate rights. Prices per sheep differ depending on slaugter, male, female, place and weight (non-slaugther lambs are free). Avg is roughly 90� per sheep. HOW OFTEN??
 rule "Phosphate rights"
 	when
-		sheep : Fact(Fact.Name == "nmSheep", answer > 5);
+		// set $nSheep variable to the total sheep wanted answer if that answer is bigger than 5
+		Sheep( $nSheep : totalNSheepWanted > 5 );
+		Land( $cost : costPhosphateRights);
 	then
 		help(drools, "phosphate");  
 		advice("When you have more than five sheep you'll need to pay (90 euros) phosphate rights per sheep. For " 
-		+ sheep.getAnswer() + " this will cost " + (sheep.getAnswer() * 90) + "euros per ??");
+		+ $nSheep + " sheep this will cost " + $cost + " euros per ??");
 end
 
 // multiplying the amount of sheep times the shed size is arbitrary. Only during birthing (some) sheep need to be inside
-rule "Has shed and wants n sheep"
+rule "Has too small shed and wants n sheep"
 	when
-		sheep : Fact(Fact.Name == "nmSheep");
-		thisShed : Shed(curShedSize.answer < sheep.getAnswer() * 2.5);
-		//shedsize : Fact(Fact.Name == "nmShedSize", status == HASANSWER, answer < sheep.getAnswer() * 10);
+		Sheep( $nSheep : totalNSheepWanted);
+		Shed(hasShed.answer == YES, shedTooSmall, $shedSize : curShedSize.answer, $goalCurDiff : goalCurSizeDiff); 
+								// shed too small works (no == true is needed)
 	then
 		help(drools,"info");
-		advice("You should build another shed or expand your shed. Since you want " + sheep.getAnswer() + 
-		" \nsheep, and your shed is " + thisShed.curShedSize.getAnswer() + " square meters, your shed should be\n" + 
-		shedSize(sheep.getAnswer(),thisShed.curShedSize.getAnswer()) + " square meters bigger");
+		advice("You should build another shed or expand your shed. Since you want " + $nSheep + " sheep, and your shed is\n" 
+		+ $shedSize + " square meters, your shed should be " + $goalCurDiff + " square meters bigger");
 end
 
 // Why should people have a tractor? What are the alternatives? How much does a tractor cost exactly (https://edepot.wur.nl/429700)? 
 rule "Has tractor"
 	when 
-		tractor : Fact(Fact.Name == "ynTractor", answer == NO);
+		tractor : Materials(hasTractor.answer == NO);
 	then
 		advice("You should probably buy a tractor");
 
@@ -169,13 +184,14 @@ end
 // In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
 rule "All good"
 	when
-		tractor : Fact(Fact.Name == "ynTractor", answer == YES);
-		sheep : Fact(Fact.Name == "nSheep", answer > 200);
-		land : Fact(Fact.Name == "nmLandSize", status == HASANSWER, answer >= (sheep.getAnswer() * 2.85));
-		nmShedSize : Fact(Fact.Name == "nmShedSize", status == HASANSWER, answer > (sheep.getAnswer() * 10));
+		tractor : Materials(hasTractor.answer == YES);
+		sheep : Sheep(totalNSheepWanted > 200);
+		Land(landIsBigEnough);
+		not Shed(shedTooSmall);
 	then
 		advice("You should be able to start a profitable sheep herding business");
 end
+
 
 
 		

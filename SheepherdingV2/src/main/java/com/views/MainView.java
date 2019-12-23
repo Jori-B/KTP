@@ -107,8 +107,13 @@ public class MainView extends JFrame implements VariableDefinitions {
 		answeredQs.addElement(previous.getName());
 		model.findNextQuestion(previous);
 		Fact current = model.getCurrentQuestion();
-		setButtons(current);
-		lblQuestion.setText(current.getQuestion());
+		if(current != previous) {
+			setButtons(current);
+			lblQuestion.setText(current.getQuestion());
+		} else { 
+			setVisibilityBtns(false, false);
+			lblQuestion.setText("ALL QUESTIONS ASKED");
+		}
 	}
 	
 	private void initComponents() {

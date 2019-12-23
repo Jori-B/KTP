@@ -1,0 +1,94 @@
+#created on: Dec 7, 2019
+package cityrules
+
+// list any import classes here.
+import com.sample.Fact;
+import com.sample.Shed;
+import com.sample.Values;
+//import com.sample.ReadInput;
+import com.sample.Main; 
+import function com.sample.Utility.help;
+import function com.sample.ValueCalculations.*;
+
+import function com.sample.Advice.*;
+
+dialect "java"
+ 	
+rule "Hobby farmer"
+	when
+		hobprof : Fact(name == "hobbyOrProf", answer == HOBBY);
+	then
+		hobprof.getModel().getShed.setHobbyOrProf(;
+		askQuestion("timeWillingToSpend");
+end
+
+rule "Professional farmer"
+	when
+		Fact(name == "hobbyOrProf", answer == PROF);
+	then
+		askQuestion("isKVKRegistered");
+end
+
+rule "KVK has answer"
+	when
+		Fact(name == "isKVKRegistered", status == HASANSWER);
+	then
+		askQuestion("timeWillingToSpend");
+end
+
+rule "Time spend has answer"
+	when
+		Fact(name == "timeWillingToSpend", status == HASANSWER);
+	then
+		askQuestion("isUBNRegistered");
+end
+
+rule "UBN has answer"
+	when
+		Fact(name == "timeWillingToSpend", status == HASANSWER);
+	then
+		askQuestion("isUBNRegistered");
+end
+
+ 	// Business
+ 	Fact("hobbyOrProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK, model));
+ 	 	// if prof
+ 		Fact("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
+ 	Fact("timeWillingToSpend", NUMB, ksession, "How many days are you willing to spend per week on sheep herding?", ASK, model));
+ 	Fact("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", model));
+	Fact("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", model));
+ 	//Sheep
+    Fact("hasSheep", YESNO, ksession, "Do you already own any sheep? No (0) Yes (1)", ASK, model));
+    	Fact("ownsNSheep", NUMB, ksession, "How many sheep do you own?", ASK, model));
+    Fact("totalNSheepWanted", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
+ 	// Land
+	Fact("hasLand", YESNO, ksession, "Do you have land? No (0) Yes (1)", ASK, model));
+		Fact("ownedLandSize", NUMB, ksession, "How big is your land (in acres)?", model));
+	Fact("hasLeasedLand", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model);    
+		Fact("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", model));
+    //Shed
+    Fact("hasShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model)); 
+    	// If hasShed
+    	Fact("nmShedSize", NUMB, ksession, "How big is your shed (in meters squared)?", model));   
+    	Fact("heightShed", NUMB, ksession, "How high is your shed (in meters)?", model));
+    	Fact("widthShed", NUMB, ksession, "How wide is the walking space of shed (in meters)?", model));
+    	Fact("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", model);   
+		Fact("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", model);
+		Fact("hasLamps", YESNO, ksession, "Does your shed have small lamps where the sheep should birth?", model);      
+		// If shedTooSmall
+		Fact("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", model));
+		Fact("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", model));
+		
+	// Materials
+	Fact("hasTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model);
+		Fact("horsePowerTractor", YESNO, ksession, "How much horsepower does your tractor have", ASK, model);
+	Fact("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", ASK, model);
+	Fact("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", ASK, model);
+	Fact("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", ASK, model);
+	Fact("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", ASK, model);
+	Fact("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", ASK, model);
+	Fact("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", ASK, model);
+	
+	// Care
+	Fact("wantsSelfBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model));
+	Fact("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model); 

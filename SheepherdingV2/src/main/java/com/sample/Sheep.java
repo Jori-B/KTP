@@ -6,14 +6,39 @@ public class Sheep implements VariableDefinitions {
 	public Fact hasSheep;
 	public Fact ownsNSheep;
 	public Fact desiresNMoreSheep;
-	public Fact totalNSheepWanted; 
-	public Fact sheepCost;
-	public Fact maxAmountSheep;
-	public Fact nSheepMore;
+	public int totalNSheepWanted; 
+	public int sheepCost;
+	public Fact maxAmountSheep; // We still need a functions for maxAmountOfSheep
+	public int nSheepMore;
 	public Fact advice;
 	
 	public Sheep() {
 		
+	}
+	
+	/* Calculations */
+	public void calcTotalSheep() {
+		if (ownsNSheep == null) {
+			System.out.println("owns sheep is null");
+			this.totalNSheepWanted = desiresNMoreSheep.getAnswer();
+		} else {
+			System.out.println("owns sheep is not empty");
+			this.totalNSheepWanted = desiresNMoreSheep.getAnswer() + ownsNSheep.getAnswer();
+		}
+	}
+	
+	public void calcPriceSheep() {
+		this.sheepCost = totalNSheepWanted * 100;
+	}
+	
+	/* Getters and setters */
+	public void calcNumberOfSheepMore(int totalLandSize) {
+		if (ownsNSheep == null) {
+			System.out.println("owns sheep is null");
+			this.nSheepMore = (int)(totalLandSize / 2.85);
+		} else {
+			this.nSheepMore = (int)((totalLandSize / 2.85) - ownsNSheep.getAnswer()) ; // I think this is correct, but haven't checked
+		}
 	}
 
 	public Fact getHasSheep() {
@@ -40,19 +65,19 @@ public class Sheep implements VariableDefinitions {
 		this.desiresNMoreSheep = desiresNMoreSheep;
 	}
 
-	public Fact getTotalNSheepWanted() {
+	public int getTotalNSheepWanted() {
 		return totalNSheepWanted;
 	}
 
-	public void setTotalNSheepWanted(Fact totalNSheepWanted) {
+	public void setTotalNSheepWanted(int totalNSheepWanted) {
 		this.totalNSheepWanted = totalNSheepWanted;
 	}
 
-	public Fact getSheepCost() {
+	public int getSheepCost() {
 		return sheepCost;
 	}
 
-	public void setSheepCost(Fact sheepCost) {
+	public void setSheepCost(int sheepCost) {
 		this.sheepCost = sheepCost;
 	}
 
@@ -64,11 +89,11 @@ public class Sheep implements VariableDefinitions {
 		this.maxAmountSheep = maxAmountSheep;
 	}
 
-	public Fact getnSheepMore() {
+	public int getnSheepMore() {
 		return nSheepMore;
 	}
 
-	public void setnSheepMore(Fact nSheepMore) {
+	public void setnSheepMore(int nSheepMore) {
 		this.nSheepMore = nSheepMore;
 	}
 
