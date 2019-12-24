@@ -62,6 +62,16 @@ public class Model implements VariableDefinitions {
     	this.ksession = ksession;
     }
     
+    public void findPrevQuestion(Fact current) {
+    	for (int i = (facts.indexOf(current) - 1); i >= 0; i--) {
+    		Fact prevFact = facts.get(i);
+    		if(prevFact.askNow == true) {
+    			setPrevQuestion(prevFact);
+    			return;
+    		}
+    	}
+    }
+    
     public void findNextQuestion(Fact previous) {
     	setPrevQuestion(previous);
     	for (int i = (facts.indexOf(previous) + 1); i < facts.size(); i++) {

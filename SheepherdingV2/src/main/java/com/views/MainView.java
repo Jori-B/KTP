@@ -89,6 +89,8 @@ public class MainView extends JFrame implements VariableDefinitions {
 				btnYes.setText("Proffesional");
 				break;
 		}
+		setAnsweredButtonColors(current);
+		
 	}
 	
 	private void preparePrevQuestion() {
@@ -96,8 +98,43 @@ public class MainView extends JFrame implements VariableDefinitions {
 		/* Remove the previous question element to the left hand side list, since it's going to be answered again */
 		answeredQs.removeElement(prev.getName());
 		model.setCurrentQuestion(prev);
+		model.findPrevQuestion(prev);
+		//model.setPrevQuestion(model.getPrevQuestion());
 		setButtons(prev);
+		if(prev.getStatus() == HASANSWER) {
+			
+		}
 		lblQuestion.setText(prev.getQuestion());
+	}
+	
+	private void setAnsweredButtonColors(Fact current) {
+		// If the fact has an answer, color that answer green
+		if(current.getStatus() == HASANSWER) {
+			// If one of these conditions holds, color the answer button green
+			if(current.getAnswer() == YES) {
+				btnYes.setBackground(Color.GREEN);
+				// When a user has changed its answer and tries previous again, only one button should be green
+			} else {
+				btnYes.setBackground(Color.WHITE);
+			} 
+			if(current.getAnswer() == NO) {
+				btnNo.setBackground(Color.GREEN); 
+			} else {
+				btnNo.setBackground(Color.WHITE);
+			}
+				/*If we're going to do MC with three answer options, then this needs to change */
+			// For number questions, assuming the user generally answers with higher than 1
+			// Might also be possible to just say else???
+			if(current.getAnswer() > 1) {
+				enterInput.setBackground(Color.GREEN);
+				textArea.setText(Integer.toString(current.getAnswer()));
+			}
+		// Unanswered questions, color buttons white
+		} else {
+			btnYes.setBackground(Color.WHITE);
+			enterInput.setBackground(Color.WHITE);
+			btnNo.setBackground(Color.WHITE);
+		}
 	}
 	
 	private void prepareNextQuestion(Fact previous) {
