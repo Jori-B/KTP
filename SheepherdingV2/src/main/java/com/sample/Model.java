@@ -105,7 +105,7 @@ public class Model implements VariableDefinitions {
     	
     	ksession.setGlobal("gvalues", new Values());
 
-        facts.add(new Fact("mcHobProf", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally?", ASK, model));
+        facts.add(new Fact("mcHobProf", MC, ksession, "<html> Do you want do farming as a (0) hobby or (1) professionally <br> lange zin lange zin lange zin lange zin lange zin? <html>", ASK, model));
         business.setHobSemiPro(facts.get(0));
         setCurrentQuestion(facts.get(0));
         
