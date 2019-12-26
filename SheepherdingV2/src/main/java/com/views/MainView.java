@@ -11,6 +11,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import java.awt.Toolkit;
 import javax.swing.UIManager;
 import javax.swing.GroupLayout;
@@ -48,6 +50,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 	private JButton enterInput;
 	private JTextArea textArea;
 	private JButton btnPrevious;
+	private JButton btnNext;
 	private JList<String> list;
 	private DefaultListModel<String> answeredQs;
 	/**
@@ -96,21 +99,24 @@ public class MainView extends JFrame implements VariableDefinitions {
 	
 	private void preparePrevQuestion() {
 		Fact prev = model.getPrevQuestion();
+		
 		/* Remove the previous question element to the left hand side list, since it's going to be answered again */
 		answeredQs.removeElement(prev.getName());
 		model.setCurrentQuestion(prev);
 		model.findPrevQuestion(prev);
 		//model.setPrevQuestion(model.getPrevQuestion());
 		setButtons(prev);
-		if(prev.getStatus() == HASANSWER) {
-			
-		}
+//		if(prev.getStatus() == HASANSWER) {
+//			
+//		}
 		lblQuestion.setText(prev.getQuestion());
 	}
 	
 	private void setAnsweredButtonColors(Fact current) {
 		// If the fact has an answer, color that answer green
 		if(current.getStatus() == HASANSWER) {
+			// If the current question has an answer, the user should be able to go to the next question
+			btnNext.setEnabled(true);
 			// If one of these conditions holds, color the answer button green
 			if(current.getAnswer() == YES) {
 				btnYes.setBackground(Color.GREEN);
@@ -129,12 +135,17 @@ public class MainView extends JFrame implements VariableDefinitions {
 			if(current.getAnswer() > 1) {
 				enterInput.setBackground(Color.GREEN);
 				textArea.setText(Integer.toString(current.getAnswer()));
+			} else {
+				// empty the text area when there isn't an answer ( this else is used when previous question order is changed )
+				textArea.setText("");
 			}
 		// Unanswered questions, color buttons white
 		} else {
 			btnYes.setBackground(Color.WHITE);
 			enterInput.setBackground(Color.WHITE);
 			btnNo.setBackground(Color.WHITE);
+			// When the next question has no answer the user shouldn't be able to press next
+			btnNext.setEnabled(false);
 		}
 	}
 	
@@ -159,7 +170,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
 		setTitle("Sheep Herder System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 970, 600);
+		setBounds(100, 100, 970, 621);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -201,6 +212,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setPrevBtn(btnPrevious);
 		
 		JButton btnNext = new JButton("Next");
+		setNextBtn(btnNext);
 		
 		setButtons(model.getCurrentQuestion());		
 		
@@ -353,6 +365,14 @@ public class MainView extends JFrame implements VariableDefinitions {
 		this.btnPrevious = btnPrevious;
 	}
 	
+	private JButton getNextBtn() {
+		return btnPrevious;
+	}
+
+	private void setNextBtn(JButton btnNext) {
+		this.btnNext = btnNext;
+	}
+	
 	private void setList(JList<String> list) {
 		this.list = list;
 	}
@@ -382,6 +402,12 @@ public class MainView extends JFrame implements VariableDefinitions {
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				preparePrevQuestion();
+			}
+		});
+		
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				prepareNextQuestion(model.getCurrentQuestion());
 			}
 		});
 		

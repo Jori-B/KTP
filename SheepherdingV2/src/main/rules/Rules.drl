@@ -34,6 +34,18 @@ rule "Has shed"
 		modify(nmShedSize) { askQuestion(true) }
 end
 
+// Sometimes the user goes back to the previous questions and changes the answer, therefore the rule model needs
+// to take into account that this shed size second order question isn't asked then!
+rule "Has shed changed"
+	when
+		ownsShed : Fact(Fact.Name == "ynShed", answer == NO);
+		nmShedSize: Fact(Fact.Name =="nmShedSize", askNow == true); 
+	then
+		help(drools,"he has changed having a shed");
+		modify(nmShedSize) { setAskNow(false) }
+		// MAYBE THE SHEDSIZE ANSWER SHOULD BE SET TO 0 AS WELL???
+end
+
 rule "Has land"
 	when
 	// status is a variable that's not yet used, but I thought it might be useful to have such a variable to prevent rules from firing twice...
@@ -43,6 +55,15 @@ rule "Has land"
 		help(drools,"info");
 		modify(nmLandSize) { askQuestion(true) }
 		gvalues.addAvailableLand(nmLandSize.getAnswer());	
+end
+
+rule "Has land has changed"
+	when
+		land : Fact(Fact.Name == "ynLand", answer == NO);
+		nmLandSize : Fact(Fact.Name == "nmLandSize", askNow == true);
+	then
+		help(drools,"info");
+		modify(nmLandSize) { setAskNow(false) }
 end
 
 // Sheep needs to have more salience than land, care and shed so that the functions for that can be used

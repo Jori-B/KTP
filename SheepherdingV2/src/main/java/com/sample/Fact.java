@@ -55,8 +55,9 @@ public class Fact implements VariableDefinitions {
 	public void setAnswer(int numbUserIn) {
 		this.answer = numbUserIn;
 		this.setStatus(HASANSWER);
+		// Updating here so that previous questions with changed answers update in the rules file
 		this.factHandle = ksession.insert(this);
-		//ksession.update(factHandle, this);
+		ksession.update(factHandle, this);
 		ksession.fireAllRules();
 	}
 
