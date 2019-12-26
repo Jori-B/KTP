@@ -40,7 +40,6 @@ rule "Has shed changed"
 	when
 		ownsShed : Fact(Fact.Name == "ynShed", answer == NO);
 		nmShedSize: Fact(Fact.Name =="nmShedSize", askNow == true);
-		model : Model(); 
 	then
 		help(drools,"he has changed having a shed");
 		modify(nmShedSize) { setAskNow(false) }
