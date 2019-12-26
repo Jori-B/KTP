@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Land;
+import com.sample.Land;	
 import com.sample.Materials;
 import com.sample.Sheep;
 import com.sample.Business;
@@ -87,6 +87,18 @@ public class Model implements VariableDefinitions {
  
 //    	return current;
     }
+    
+	public int getIndexOf(ArrayList<Fact> list, String name) {
+	    int pos = 0;
+
+	    for(Fact fact : list) {
+	        if(name.equalsIgnoreCase(fact.getName()))
+	            return pos;
+	        pos++;
+	    }
+
+	    return -1;
+	}
     
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {
 //    	Land land = new Land();

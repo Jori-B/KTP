@@ -25,6 +25,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JProgressBar;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JTable;
@@ -40,7 +42,7 @@ import java.awt.Component;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-public class MainView extends JFrame implements VariableDefinitions {
+public class MainView extends JFrame implements VariableDefinitions, ActionListener {
 
 	private JPanel contentPane;
 	private JLabel lblQuestion;
@@ -141,24 +143,38 @@ public class MainView extends JFrame implements VariableDefinitions {
 			}
 		// Unanswered questions, color buttons white
 		} else {
+			
 			btnYes.setBackground(Color.WHITE);
 			enterInput.setBackground(Color.WHITE);
 			btnNo.setBackground(Color.WHITE);
 			// When the next question has no answer the user shouldn't be able to press next
 			btnNext.setEnabled(false);
 		}
+		
+	}
+	
+	private void setCurQuestion(Fact current) {
+		setButtons(current);
+		lblQuestion.setText(current.getQuestion());
 	}
 	
 	private void prepareNextQuestion(Fact previous) {
 		/* No insert here because we're already doing it in  */
 		//previous.getKSession().insert(previous);
-		/* Add the element to the left hand side list */
-		answeredQs.addElement(previous.getName());
+		
+		/* Add the element to the left hand side list, only if the item is not in the list yet */
+		if(!answeredQs.contains(previous.getName())) {
+			/*
+			 * This works, but when questions have changed the item is not automatically removed from the
+			 * list, e.g. when has land changed to NO, the how much land do you have can still be visible
+			 */
+			answeredQs.addElement(previous.getName());
+		}
+		
 		model.findNextQuestion(previous);
 		Fact current = model.getCurrentQuestion();
 		if(current != previous) {
-			setButtons(current);
-			lblQuestion.setText(current.getQuestion());
+			setCurQuestion(current);
 		} else { 
 			setVisibilityBtns(false, false);
 			lblQuestion.setText("ALL QUESTIONS ASKED");
@@ -213,8 +229,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		
 		JButton btnNext = new JButton("Next");
 		setNextBtn(btnNext);
-		
-		setButtons(model.getCurrentQuestion());		
+			
 		
 		/* Tried to import an image here. It did not work to get the size small.
 		 * This should be a way to enter a scaled down image, however I can't get it to work */
@@ -282,6 +297,24 @@ public class MainView extends JFrame implements VariableDefinitions {
 		DefaultListModel<String> answeredQs = new DefaultListModel<String>();
 		setAnsweredQs(answeredQs);
 		JList<String> list_1 = new JList<String>(answeredQs);
+	    list_1.addMouseListener(new MouseAdapter(){
+	          @Override
+	          public void mouseClicked(MouseEvent e) {
+	              System.out.println("Mouse click.");
+	              int index = list.getSelectedIndex();
+	              System.out.println("Index Selected: " + index);
+	              String s = (String) list.getSelectedValue();
+	              System.out.println("Value Selected: " + s.toString()); 
+				/*
+				 * WE SHOULD SAVE THE INDICES AND FACT NAMES IN A HashMap<String, Fact> FOR EASY
+				 * RECOVERY OF THE ITEMS HERE
+				 */
+	              int indexSelected = model.getIndexOf(model.getFacts(),list.getSelectedValue());
+	              Fact current = model.getFacts().get(indexSelected);
+	              model.setCurrentQuestion(current);
+	              setCurQuestion(current);
+	          }
+	    });
 		setList(list_1);
 		
 		list_1.setBackground(new Color(112, 128, 144));
@@ -315,8 +348,10 @@ public class MainView extends JFrame implements VariableDefinitions {
 		gl_panel.setHonorsVisibility(false);
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
+		
+		setButtons(model.getCurrentQuestion());	
 	}
-	
+		
 	private void setModel(Model model) {
 		this.model = model;
 	}
@@ -420,5 +455,11 @@ public class MainView extends JFrame implements VariableDefinitions {
 				prepareNextQuestion(current);
 			}
 		});
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
