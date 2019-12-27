@@ -213,6 +213,20 @@ rule "All good"
 		advice("You should be able to start a profitable sheep herding business");
 end
 
+rule "Birth other"
+	when 
+		care : Care(wantsSelfBirth.answer == OTHER);
+	then
+		advice("Not birthing yourself is okay as a hobby farmer");
+end
+
+rule "Birth self"
+	when 
+		care : Care(wantsSelfBirth.answer == SELF);
+	then
+		advice("Birthing yourself is interesting as a hobby farmer");
+end
+
 
 
 		

@@ -91,6 +91,7 @@ public class Model implements VariableDefinitions {
     
 	public Fact getSelectedQuestion(String name) {
 	    int index = factListMap.get(name);
+	    System.out.println(index);
 	    return facts.get(index);
 	}
     
@@ -98,7 +99,7 @@ public class Model implements VariableDefinitions {
     	
     	ksession.setGlobal("gvalues", new Values());
 
-        facts.add(new Fact("mcHobProf", MC, ksession, "<html> Do you want do farming as a (0) hobby or (1) professionally <br> lange zin lange zin lange zin lange zin lange zin? <html>", ASK, model));
+        facts.add(new MCFact("mcHobProf", MC, ksession, "<html> Do you want do farming as a (0) hobby or (1) professionally <br> lange zin lange zin lange zin lange zin lange zin? <html>", ASK, model, "Hobby", "Professional"));
         factListMap.put("mcHobProf", 0);
         
         business.setHobSemiPro(facts.get(0));
@@ -133,7 +134,7 @@ public class Model implements VariableDefinitions {
         factListMap.put("nmSheep", 5);
         sheep.setDesiresNMoreSheep(facts.get(5));
         
-        facts.add(new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model));
+        facts.add(new MCFact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model, "Self", "Someone else"));
         factListMap.put("mcBirth", 6);
         care.setWantsSelfBirth(facts.get(6));
         

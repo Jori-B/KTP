@@ -98,9 +98,11 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 				break;
 			case MC: // THIS METHOD SHOULD INCLUDE ALL MULTIPLE CHOICE ANSWERS
 				setVisibilityBtns(false, true);
-				
-				btnNo.setText("Hobby");
-				btnYes.setText("Professional");
+				//System.out.println(current.getName());
+				/* Cast the current fact to a MCFact so the getAnswer methods can be used */
+				MCFact currentMC = (MCFact)model.getSelectedQuestion(current.getName());
+				btnNo.setText(currentMC.getAnswerZero());
+				btnYes.setText(currentMC.getAnswerOne());
 				break;
 		}
 		setAnsweredButtonColors(current);
