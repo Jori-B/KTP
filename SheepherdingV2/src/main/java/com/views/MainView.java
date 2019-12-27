@@ -1,6 +1,7 @@
 package com.views;
 
-import com.sample.Fact;		
+import com.sample.Fact;	
+import com.sample.MCFact;	
 /* This import can be used to reference the Main class, however, there should be another way to initialize the program */
 import com.sample.Model;
 import com.sample.VariableDefinitions;
@@ -25,6 +26,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JProgressBar;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -95,6 +98,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 				break;
 			case MC: // THIS METHOD SHOULD INCLUDE ALL MULTIPLE CHOICE ANSWERS
 				setVisibilityBtns(false, true);
+				
 				btnNo.setText("Hobby");
 				btnYes.setText("Professional");
 				break;
@@ -402,6 +406,14 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		this.answeredQs = answeredQs;
 	}
 	
+	private void enterTextAreaAnswer() {
+		Fact current = model.getCurrentQuestion();
+		current.setAnswer(textArea.getText());
+		/* Empty the user input text in the field after 'enter' is pressed */
+		textArea.setText("");
+		prepareNextQuestion(current);
+	}
+	
 	private void createEvents() {
 		// TODO Auto-generated method stub
 		btnYes.addActionListener(new ActionListener() {
@@ -432,13 +444,33 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 			}
 		});
 		
+		textArea.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				/* When the user presses enter while the textArea is on screen, enter the answer */
+				if(e.getKeyChar() == KeyEvent.VK_ENTER && textArea.isVisible()) {
+					enterTextAreaAnswer();
+                }    
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		enterInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Fact current = model.getCurrentQuestion();
-				current.setAnswer(textArea.getText());
-				/* Empty the user input text in the field after 'enter' is pressed */
-				textArea.setText("");
-				prepareNextQuestion(current);
+				enterTextAreaAnswer();
 			}
 		});
 		

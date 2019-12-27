@@ -146,4 +146,5 @@ public class Fact implements VariableDefinitions {
 	public String getWarning(){
 		return warning;
 	}
+
 }
