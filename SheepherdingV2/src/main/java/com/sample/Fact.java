@@ -1,6 +1,4 @@
 package com.sample;
-import java.util.ArrayList;
-import java.util.Scanner;	
 
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
@@ -8,15 +6,10 @@ import org.drools.runtime.rule.FactHandle;
 public class Fact implements VariableDefinitions {
 	public StatefulKnowledgeSession ksession;
 	public Model model;
-	
-	    
-	/* Create a scanner that can be closed in the Main.java file */ 
-	public static Scanner scanner = new Scanner( System.in );
     
 	/* Name variable is very important for referencing the questions in the Rules.dlr file */
 	private String name;
    
-	private int numbOfSheep; /* NOT USED RIGHT NOW */
 	private int questionType;
 	private String question;
 	private String openAnswer;
@@ -46,9 +39,6 @@ public class Fact implements VariableDefinitions {
 		this.model = model;
 		this.askNow = askNow;
 //		ksession.insert(this);
-//		if(askNow) {
-//			askQuestion(true);
-//		}
 	}
    
 	/* These answers are used in the Rules.dlr file */
@@ -74,10 +64,6 @@ public class Fact implements VariableDefinitions {
         	setWarning("Not a number, please try again.");
             System.out.println(getWarning());
         }
-		//getKSession().insert(this);
-		//this.setStatus(HASANSWER);
-		//getKSession().fireAllRules();
-//		this.answer = numbUserIn;
 	}
 	
 	public int getAnswer() {
@@ -85,39 +71,18 @@ public class Fact implements VariableDefinitions {
 	}
    
 	public void askQuestion(boolean askNow) {
-		//System.out.println(question);
 		model.setCurrentQuestion(this);
 		this.setAskNow(askNow);
-//		ArrayList<Fact> factsArr = model.getFacts();
-//		System.out.println(factsArr.indexOf(this));
-////		model.setNextQuestion();
-//        /* Check if user inputs a number */
-//		while (true) { 
-//			String userInput = scanner.nextLine();
-//	        try {       	 	
-//	        	if(questionType != OPEN) { 
-//	        		int numbUserIn = Integer.parseInt(userInput); 
-//		       	 	setAnswer(numbUserIn);
-//		       	 	break;
-//	       	 	} else { /* It's a YESNO, MC or NUMB question */    	 	
-//	       	 		setOpenAnswer(userInput);
-//	       	 		break;
-//	       	 	}
-//	       	 	
-//	        } catch (NumberFormatException e) {
-//	        	setWarning("Not a number, please try again.");
-//	            System.out.println(getWarning());
-//	        }
-//		}
-//        setStatus(HASANSWER);
-//
-//        if(doInsert) {
-//        	ksession.insert(this);
-//        } 
 	}
    
 	public void setAskNow(boolean askNow) {
 		this.askNow = askNow;
+		/* If the user changed his answer, askNow will be set to false. The frame needs to know which question is
+		 * no no longer to be asked
+		 */
+		if(!askNow) {
+			model.setRemoveFromList(this.getName());
+		}
 	}
 	
 	public boolean getAskNow() {
@@ -173,11 +138,6 @@ public class Fact implements VariableDefinitions {
 	public String setOpenAnswer() {
 		return openAnswer;
 	}  
-   
-	/* We don't know yet how big a shed should be for xx sheep but for now we just multiply by 10. However we don't use this right now */
-	public int shedSize() { /* NOT USED RIGHT NOW */
-		return numbOfSheep * 10; 
-	}
   
 	public void setWarning(String warning){
 		this.warning = warning;

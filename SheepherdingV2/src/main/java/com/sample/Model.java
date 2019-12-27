@@ -9,6 +9,7 @@ import com.sample.Care;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.UIManager;
 
@@ -27,8 +28,6 @@ import com.views.MainView;
 public class Model implements VariableDefinitions {
    
     public boolean allQuestionsAsked;    
-    /* Maybe make this into an arraylist */
-    //public Fact facts[] = new Fact [100];
     public ArrayList<Fact> facts = new ArrayList<Fact>();
     public MainView frame;  
     public Fact currentQuestion;
@@ -41,9 +40,13 @@ public class Model implements VariableDefinitions {
 	public Business business = new Business();
 	public Shed shed = new Shed();
 	public Care care = new Care();
+	
+	HashMap<String, Integer> factListMap = new HashMap<String, Integer>();
+	
+	public ArrayList<String> itemsToRemove = new ArrayList<String>();
     
     public Model() {
-    	//this.allQuestionsAsked = false;
+
     } 
     
     public void createKnowledgeBase(Model model) {
@@ -81,82 +84,68 @@ public class Model implements VariableDefinitions {
     			return;
     		}
     	}
-    	/* If no fact is found then return the current fact and infrom the model all questions are asked */
+    	/* If no fact is found then return the current fact and inform the model all questions are asked */
     	System.out.println("all asked");
     	setAllQuestionsAsked(true);
- 
-//    	return current;
     }
     
-	public int getIndexOf(ArrayList<Fact> list, String name) {
-	    int pos = 0;
-
-	    for(Fact fact : list) {
-	        if(name.equalsIgnoreCase(fact.getName()))
-	            return pos;
-	        pos++;
-	    }
-
-	    return -1;
+	public Fact getSelectedQuestion(String name) {
+	    int index = factListMap.get(name);
+	    return facts.get(index);
 	}
     
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {
-//    	Land land = new Land();
-//    	Materials materials = new Materials();
-//    	Sheep sheep = new Sheep();
-//    	Business business = new Business();
-//    	Shed shed = new Shed();
-//    	Care care = new Care();
-    	
-//    	ksession.insert(land);
-//    	ksession.insert(materials);
-//    	ksession.insert(sheep);
-//    	ksession.insert(business);
-//    	ksession.insert(shed);
-//    	ksession.insert(care);
     	
     	ksession.setGlobal("gvalues", new Values());
 
         facts.add(new Fact("mcHobProf", MC, ksession, "<html> Do you want do farming as a (0) hobby or (1) professionally <br> lange zin lange zin lange zin lange zin lange zin? <html>", ASK, model));
+        factListMap.put("mcHobProf", 0);
+        
         business.setHobSemiPro(facts.get(0));
         setCurrentQuestion(facts.get(0));
         
         facts.add(new Fact("ynShed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
-        //facts.get(1).askQuestion(true);
-        shed.setHasShed(facts.get(1));
-        //shed.getHasShed().setAnswer(-1);
+        factListMap.put("ynShed", 1);
+        
+        /* This should work as well as the below one */
+        shed.setHasShed(getSelectedQuestion("ynShed"));
+        //shed.setHasShed(facts.get(1));
         setNextQuestion(facts.get(1));
-//        System.out.println(facts.get(facts.indexOf(shed.hasShed)).getQuestion());
         
 
 //        facts[3] = new Fact("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate", model);
-//        
-//        shed.setHasFertilizerPlate(facts[3]);
-//        shed.getHasFertilizerPlate().setAnswer(YES);
         
         facts.add(new Fact("nmShedSize", NUMB, ksession, "How big is your shed (in meters squared)?", model));
+        factListMap.put("nmShedSize", 2);
+        
         shed.setCurShedSize(facts.get(2));
         facts.add(new Fact("ynLand", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK, model));
+        factListMap.put("ynLand", 3);
+        
         land.setHasLand(facts.get(3));
         
         facts.add(new Fact("nmLandSize", NUMB, ksession, "How big is your land (in acres)?", model));
+        factListMap.put("nmLandSize", 4);
+        
         land.setOwnedLandSize(facts.get(4));
         
         facts.add(new Fact("nmSheep", NUMB, ksession, "How many sheep would you like to have?", ASK, model));
+        factListMap.put("nmSheep", 5);
         sheep.setDesiresNMoreSheep(facts.get(5));
         
         facts.add(new Fact("mcBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model));
+        factListMap.put("mcBirth", 6);
         care.setWantsSelfBirth(facts.get(6));
         
-        //ksession.insert(shed);
         
-        setWindow(model);
 //        facts[6] = new Fact("ynNeigbourLease", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model);    
 //        land.setHasLeasedLand(facts[6]);
         
         facts.add(new Fact("ynTractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model));
+        factListMap.put("ynTractor", 7);
         materials.setHasTractor(facts.get(7));
         
+        createWindow(model);
         /* Probably should add a class that saves all the needed money, so we can subtract this from the capitol */       
 //        facts[9] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend on the sheep business?", ASK, model);
 //        business.setMoneyToSpend(facts[9]);
@@ -176,10 +165,10 @@ public class Model implements VariableDefinitions {
         ksession.fireAllRules();
         System.out.println("The Result is ");
         ((Values) ksession.getGlobal("gvalues")).test();
-        Fact.scanner.close();
+        //Fact.scanner.close();
     }
 
-	private static void setWindow(Model model) {
+	private static void createWindow(Model model) {
 		try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			} catch (Throwable e) {
@@ -220,6 +209,20 @@ public class Model implements VariableDefinitions {
     public ArrayList<Fact> getFacts() {
     	return facts;
     }
+    
+	public void setRemoveFromList(String itemToRemove) {
+		this.itemsToRemove.add(itemToRemove);
+	}
+	
+	public ArrayList<String> getRemoveFromList() {
+		return itemsToRemove;
+	}
+	
+	public void clearRemoveFromList() {
+		if(!itemsToRemove.isEmpty()) {
+			itemsToRemove.clear();
+		}
+	}
     
     public void setCurrentQuestion(Fact fact) {
     	this.currentQuestion = fact;

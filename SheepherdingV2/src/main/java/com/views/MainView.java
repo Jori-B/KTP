@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JTable;
@@ -72,9 +73,12 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	}
 	
 	private void setButtons(Fact current) {
+		removeRedundantItemsFromList();
 		/* If it's the first fact, there is no previous question, so button disabled */
 		if (model.getFacts().indexOf(current) == 0) {
 			btnPrevious.setEnabled(false);
+			/* First list element is added when the first question is asked. The rest of them are added in setCurrentQuestion() */
+			addToList(current);
 		/* Else enable the button */
 		} else {
 			btnPrevious.setEnabled(true);
@@ -101,16 +105,9 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	
 	private void preparePrevQuestion() {
 		Fact prev = model.getPrevQuestion();
-		
-		/* Remove the previous question element to the left hand side list, since it's going to be answered again */
-		answeredQs.removeElement(prev.getName());
 		model.setCurrentQuestion(prev);
 		model.findPrevQuestion(prev);
-		//model.setPrevQuestion(model.getPrevQuestion());
 		setButtons(prev);
-//		if(prev.getStatus() == HASANSWER) {
-//			
-//		}
 		lblQuestion.setText(prev.getQuestion());
 	}
 	
@@ -131,7 +128,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 			} else {
 				btnNo.setBackground(Color.WHITE);
 			}
-			/*If we're going to do MC with three answer options, then this needs to change */
+			/* If we're going to do MC with three answer options, then this needs to change */
 			// For number questions, assuming the user generally answers with higher than 1
 			// Might also be possible to just say else???
 			if(current.getAnswer() > 1) {
@@ -141,7 +138,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 				// empty the text area when there isn't an answer ( this else is used when previous question order is changed )
 				textArea.setText("");
 			}
-		// Unanswered questions, color buttons white
+		// For unanswered questions, color buttons white
 		} else {
 			
 			btnYes.setBackground(Color.WHITE);
@@ -156,21 +153,31 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	private void setCurQuestion(Fact current) {
 		setButtons(current);
 		lblQuestion.setText(current.getQuestion());
+		addToList(current);
 	}
 	
-	private void prepareNextQuestion(Fact previous) {
-		/* No insert here because we're already doing it in  */
-		//previous.getKSession().insert(previous);
-		
-		/* Add the element to the left hand side list, only if the item is not in the list yet */
-		if(!answeredQs.contains(previous.getName())) {
-			/*
-			 * This works, but when questions have changed the item is not automatically removed from the
-			 * list, e.g. when has land changed to NO, the how much land do you have can still be visible
-			 */
-			answeredQs.addElement(previous.getName());
+	/* Add the element to the left hand side list, only if the item is not in the list yet */
+	private void addToList(Fact current) {
+		if(!answeredQs.contains(current.getName())) {
+			answeredQs.addElement(current.getName());
 		}
-		
+	}
+	
+	private void removeRedundantItemsFromList() {
+		/* Sometimes the user changes answers, making a question item in the list redundant. These need to be removed from the list */
+		ArrayList<String> removeFromList = model.getRemoveFromList();
+		if(!removeFromList.isEmpty()) {
+			for (String item : removeFromList) {
+				if(answeredQs.contains(item)) {
+					answeredQs.removeElement(item);
+				}
+			}
+			model.clearRemoveFromList();
+		}
+	}
+
+	
+	private void prepareNextQuestion(Fact previous) {
 		model.findNextQuestion(previous);
 		Fact current = model.getCurrentQuestion();
 		if(current != previous) {
@@ -197,7 +204,6 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		lblQuestion = new JLabel(model.getCurrentQuestion().getQuestion()); // THIS IS NOT THE BEST WAY TO DO IT BUT IT WORKS
 		lblQuestion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblQuestion.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		lblQuestion.setAlignmentY(Component.CENTER_ALIGNMENT); // Does not align the question in the middle sadly :( 
 		lblQuestion.setBackground(new Color(47, 79, 79));
 		lblQuestion.setForeground(SystemColor.controlLtHighlight);
 		lblQuestion.setFont(new Font("Verdana", Font.PLAIN, 20));		
@@ -229,7 +235,6 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		
 		JButton btnNext = new JButton("Next");
 		setNextBtn(btnNext);
-			
 		
 		/* Tried to import an image here. It did not work to get the size small.
 		 * This should be a way to enter a scaled down image, however I can't get it to work */
@@ -292,29 +297,10 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		JLabel lblAnsweredQuestions = new JLabel("Answered Questions:");
 		lblAnsweredQuestions.setForeground(new Color(255, 255, 255));
 		lblAnsweredQuestions.setFont(new Font("Verdana", Font.PLAIN, 15));
-		
-//		JList list_1 = new JList();
+
 		DefaultListModel<String> answeredQs = new DefaultListModel<String>();
 		setAnsweredQs(answeredQs);
 		JList<String> list_1 = new JList<String>(answeredQs);
-	    list_1.addMouseListener(new MouseAdapter(){
-	          @Override
-	          public void mouseClicked(MouseEvent e) {
-	              System.out.println("Mouse click.");
-	              int index = list.getSelectedIndex();
-	              System.out.println("Index Selected: " + index);
-	              String s = (String) list.getSelectedValue();
-	              System.out.println("Value Selected: " + s.toString()); 
-				/*
-				 * WE SHOULD SAVE THE INDICES AND FACT NAMES IN A HashMap<String, Fact> FOR EASY
-				 * RECOVERY OF THE ITEMS HERE
-				 */
-	              int indexSelected = model.getIndexOf(model.getFacts(),list.getSelectedValue());
-	              Fact current = model.getFacts().get(indexSelected);
-	              model.setCurrentQuestion(current);
-	              setCurQuestion(current);
-	          }
-	    });
 		setList(list_1);
 		
 		list_1.setBackground(new Color(112, 128, 144));
@@ -455,6 +441,26 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 				prepareNextQuestion(current);
 			}
 		});
+		
+		list.addMouseListener(new MouseAdapter(){
+	          @Override
+	          public void mouseClicked(MouseEvent e) {
+	              System.out.println("Mouse click.");
+	              /* MouseListener is added to list_1, so now list can be used as variable */
+	              int index = list.getSelectedIndex();
+	              System.out.println("Index Selected: " + index);
+	              String s = (String) list.getSelectedValue();
+	              System.out.println("Value Selected: " + s.toString()); 
+				/*
+				 * WE SHOULD SAVE THE INDICES AND FACT NAMES IN A HashMap<String, Fact> FOR EASY
+				 * RECOVERY OF THE ITEMS HERE
+				 */
+	              Fact current = model.getSelectedQuestion(list.getSelectedValue());
+	               //= model.getFacts().get(indexSelected);
+	              model.setCurrentQuestion(current);
+	              setCurQuestion(current);
+	          }
+	    });
 	}
 
 	@Override
