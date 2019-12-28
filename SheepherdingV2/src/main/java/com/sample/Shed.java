@@ -3,21 +3,21 @@ package com.sample;
 import com.sample.Fact;
 
 public class Shed implements VariableDefinitions {
-	public Fact hasShed;
-	public Fact curShedSize;
-	public Fact roomForShed; 
-	public Fact isAllowedToBuild;
-	public Fact isTallerThan3;
-	public Fact isPathWiderThan12;
-	public Fact hasCementFloor;
-	public Fact hasFertilizerPlate;
-	public Fact hasAdjustableFences;
-	public Fact hasLamps;
+	public int hasShed;
+	public int curShedSize;
+	public int roomForShed; 
+	public int isAllowedToBuild;
+	public int isTallerThan3;
+	public int isPathWiderThan12;
+	public int hasCementFloor;
+	public int hasFertilizerPlate;
+	public int hasAdjustableFences;
+	public int hasLamps;
 	public double goalSize; 
 	public double goalCurSizeDiff;
 	public boolean shedTooSmall;
-	public Fact problem;
-	public Fact advice;
+	public int problem;
+	public int advice;
 	
 	public Shed() {
 		
@@ -29,7 +29,7 @@ public class Shed implements VariableDefinitions {
 	}
 	
 	public void calcGoalCurSizeDiff() { 
-		this.goalCurSizeDiff = goalSize - curShedSize.getAnswer();
+		this.goalCurSizeDiff = goalSize - curShedSize;
 		if(goalCurSizeDiff > 0) {
 			this.shedTooSmall = true;
 		} else {
@@ -37,88 +37,90 @@ public class Shed implements VariableDefinitions {
 		}
 	}
 	
-	
+	public boolean getShedTooSmall() {
+		return shedTooSmall;
+	}
 	
 	/* Getters and setters */
-	public Fact getHasShed() {
+	public int getHasShed() {
 		return hasShed;
 	}
 
 	public void setHasShed(Fact hasShed) {
-		this.hasShed = hasShed;
+		this.hasShed = hasShed.getAnswer();
 	}
 
-	public Fact getCurShedSize() {
+	public int getCurShedSize() {
 		return curShedSize;
 	}
 
 	public void setCurShedSize(Fact curShedSize) {
-		this.curShedSize = curShedSize;
+		this.curShedSize = curShedSize.getAnswer();
 		
 	}
 
-	public Fact getRoomForShed() {
+	public int getRoomForShed() {
 		return roomForShed;
 	}
 
 	public void setRoomForShed(Fact roomForShed) {
-		this.roomForShed = roomForShed;
+		this.roomForShed = roomForShed.getAnswer();
 	}
 
-	public Fact getIsAllowedToBuild() {
+	public int getIsAllowedToBuild() {
 		return isAllowedToBuild;
 	}
 
 	public void setIsAllowedToBuild(Fact isAllowedToBuild) {
-		this.isAllowedToBuild = isAllowedToBuild;
+		this.isAllowedToBuild = isAllowedToBuild.getAnswer();
 	}
 
-	public Fact getIsTallerThan3() {
+	public int getIsTallerThan3() {
 		return isTallerThan3;
 	}
 
 	public void setIsTallerThan3(Fact isTallerThan3) {
-		this.isTallerThan3 = isTallerThan3;
+		this.isTallerThan3 = isTallerThan3.getAnswer();
 	}
 
-	public Fact getIsPathWiderThan12() {
+	public int getIsPathWiderThan12() {
 		return isPathWiderThan12;
 	}
 
 	public void setIsPathWiderThan12(Fact isPathWiderThan12) {
-		this.isPathWiderThan12 = isPathWiderThan12;
+		this.isPathWiderThan12 = isPathWiderThan12.getAnswer();
 	}
 
-	public Fact getHasCementFloor() {
+	public int getHasCementFloor() {
 		return hasCementFloor;
 	}
 
 	public void setHasCementFloor(Fact hasCementFloor) {
-		this.hasCementFloor = hasCementFloor;
+		this.hasCementFloor = hasCementFloor.getAnswer();
 	}
 
-	public Fact getHasFertilizerPlate() {
+	public int getHasFertilizerPlate() {
 		return hasFertilizerPlate;
 	}
 
 	public void setHasFertilizerPlate(Fact hasFertilizerPlate) {
-		this.hasFertilizerPlate = hasFertilizerPlate;
+		this.hasFertilizerPlate = hasFertilizerPlate.getAnswer();
 	}
 
-	public Fact getHasAdjustableFences() {
+	public int getHasAdjustableFences() {
 		return hasAdjustableFences;
 	}
 
 	public void setHasAdjustableFences(Fact hasAdjustableFences) {
-		this.hasAdjustableFences = hasAdjustableFences;
+		this.hasAdjustableFences = hasAdjustableFences.getAnswer();
 	}
 
-	public Fact getHasLamps() {
+	public int getHasLamps() {
 		return hasLamps;
 	}
 
 	public void setHasLamps(Fact hasLamps) {
-		this.hasLamps = hasLamps;
+		this.hasLamps = hasLamps.getAnswer();
 	}
 
 	public double getGoalSize() {
@@ -137,20 +139,20 @@ public class Shed implements VariableDefinitions {
 		this.goalCurSizeDiff = goalCurSizeDiff;
 	}
 
-	public Fact getProblem() {
+	public int getProblem() {
 		return problem;
 	}
 
 	public void setProblem(Fact problem) {
-		this.problem = problem;
+		this.problem = problem.getAnswer();
 	}
 
-	public Fact getAdvice() {
+	public int getAdvice() {
 		return advice;
 	}
 
 	public void setAdvice(Fact advice) {
-		this.advice = advice;
+		this.advice = advice.getAnswer();
 	}
 	
 }

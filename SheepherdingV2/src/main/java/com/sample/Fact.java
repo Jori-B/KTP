@@ -20,7 +20,16 @@ public class Fact implements VariableDefinitions {
 	
 	private int status = NOANSWER;
 	   
-	   
+	/* This instantiation of a Fact is only used for shedTooSmall, MAYBE CONVERTING TO AN INT IS NOT THE CORRECT WAY */   
+	public Fact(String name, double answer) {
+		this.name = name;
+		this.answer = (int)answer;
+	}
+	
+	/*
+	 * This instantiation is used for second order questions that need to be asked
+	 * only when certain questions have certain answers
+	 */
 	public Fact(String name, int questionType, StatefulKnowledgeSession ksession, String question, Model model) {
 		this.name = name;
 		this.questionType = questionType;
@@ -31,6 +40,7 @@ public class Fact implements VariableDefinitions {
 		this.factHandle = ksession.insert(this);
 	}
    
+	/* This instantiation is used for questions that always need to be asked */
 	public Fact(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model) {
 		this.name = name;
 		this.questionType = questionType;
@@ -38,6 +48,7 @@ public class Fact implements VariableDefinitions {
 		this.question = question;
 		this.model = model;
 		this.askNow = askNow;
+		this.status = NOANSWER;
 //		ksession.insert(this);
 	}
    
@@ -61,6 +72,8 @@ public class Fact implements VariableDefinitions {
        	 	}
        	 	
         } catch (NumberFormatException e) {
+        	System.out.println(userInput);
+        	e.printStackTrace();
         	setWarning("Not a number, please try again.");
             System.out.println(getWarning());
         }

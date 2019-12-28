@@ -204,7 +204,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		
-		setResizable(false);
+		setResizable(true);
 		
 		//QUESTION PART OF VIEW
 		lblQuestion = new JLabel(model.getCurrentQuestion().getQuestion()); // THIS IS NOT THE BEST WAY TO DO IT BUT IT WORKS
@@ -410,7 +410,8 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	
 	private void enterTextAreaAnswer() {
 		Fact current = model.getCurrentQuestion();
-		current.setAnswer(textArea.getText());
+		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
+		current.setAnswer(textArea.getText().replace("\n", ""));
 		/* Empty the user input text in the field after 'enter' is pressed */
 		textArea.setText("");
 		prepareNextQuestion(current);
@@ -480,17 +481,17 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	          @Override
 	          public void mouseClicked(MouseEvent e) {
 	              System.out.println("Mouse click.");
-	              /* MouseListener is added to list_1, so now list can be used as variable */
 	              int index = list.getSelectedIndex();
 	              System.out.println("Index Selected: " + index);
 	              String s = (String) list.getSelectedValue();
 	              System.out.println("Value Selected: " + s.toString()); 
 				/*
-				 * WE SHOULD SAVE THE INDICES AND FACT NAMES IN A HashMap<String, Fact> FOR EASY
-				 * RECOVERY OF THE ITEMS HERE
+				 * Empty text area here, because you might go to the current questions, which
+				 * has no answer
 				 */
+	              textArea.setText("");
 	              Fact current = model.getSelectedQuestion(list.getSelectedValue());
-	               //= model.getFacts().get(indexSelected);
+
 	              model.setCurrentQuestion(current);
 	              setCurQuestion(current);
 	          }

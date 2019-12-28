@@ -3,14 +3,14 @@ package com.sample;
 import com.sample.Fact;
 
 public class Sheep implements VariableDefinitions {
-	public Fact hasSheep;
-	public Fact ownsNSheep;
-	public Fact desiresNMoreSheep;
+	public int hasSheep;
+	public int ownsNSheep;
+	public int desiresNMoreSheep;
 	public int totalNSheepWanted; 
 	public int sheepCost;
-	public Fact maxAmountSheep; // We still need a functions for maxAmountOfSheep
+	public int maxAmountSheep; // We still need a functions for maxAmountOfSheep
 	public int nSheepMore;
-	public Fact advice;
+	public int advice;
 	
 	public Sheep() {
 		
@@ -18,12 +18,12 @@ public class Sheep implements VariableDefinitions {
 	
 	/* Calculations */
 	public void calcTotalSheep() {
-		if (ownsNSheep == null) {
+		if (ownsNSheep == 0) {
 			System.out.println("owns sheep is null");
-			this.totalNSheepWanted = desiresNMoreSheep.getAnswer();
+			this.totalNSheepWanted = desiresNMoreSheep;
 		} else {
 			System.out.println("owns sheep is not empty");
-			this.totalNSheepWanted = desiresNMoreSheep.getAnswer() + ownsNSheep.getAnswer();
+			this.totalNSheepWanted = desiresNMoreSheep + ownsNSheep;
 		}
 	}
 	
@@ -33,36 +33,36 @@ public class Sheep implements VariableDefinitions {
 	
 	/* Getters and setters */
 	public void calcNumberOfSheepMore(int totalLandSize) {
-		if (ownsNSheep == null) {
+		if (ownsNSheep == 0) {
 			System.out.println("owns sheep is null");
 			this.nSheepMore = (int)(totalLandSize / 2.85);
 		} else {
-			this.nSheepMore = (int)((totalLandSize / 2.85) - ownsNSheep.getAnswer()) ; // I think this is correct, but haven't checked
+			this.nSheepMore = (int)((totalLandSize / 2.85) - ownsNSheep) ; // I think this is correct, but haven't checked
 		}
 	}
 
-	public Fact getHasSheep() {
+	public int getHasSheep() {
 		return hasSheep;
 	}
 
 	public void setHasSheep(Fact hasSheep) {
-		this.hasSheep = hasSheep;
+		this.hasSheep = hasSheep.getAnswer();
 	}
 
-	public Fact getOwnsNSheep() {
+	public int getOwnsNSheep() {
 		return ownsNSheep;
 	}
 
 	public void setOwnsNSheep(Fact ownsNSheep) {
-		this.ownsNSheep = ownsNSheep;
+		this.ownsNSheep = ownsNSheep.getAnswer();
 	}
 
-	public Fact getDesiresNMoreSheep() {
+	public int getDesiresNMoreSheep() {
 		return desiresNMoreSheep;
 	}
 
 	public void setDesiresNMoreSheep(Fact desiresNMoreSheep) {
-		this.desiresNMoreSheep = desiresNMoreSheep;
+		this.desiresNMoreSheep = desiresNMoreSheep.getAnswer();
 	}
 
 	public int getTotalNSheepWanted() {
@@ -81,12 +81,12 @@ public class Sheep implements VariableDefinitions {
 		this.sheepCost = sheepCost;
 	}
 
-	public Fact getMaxAmountSheep() {
+	public int getMaxAmountSheep() {
 		return maxAmountSheep;
 	}
 
 	public void setMaxAmountSheep(Fact maxAmountSheep) {
-		this.maxAmountSheep = maxAmountSheep;
+		this.maxAmountSheep = maxAmountSheep.getAnswer();
 	}
 
 	public int getnSheepMore() {
@@ -97,12 +97,12 @@ public class Sheep implements VariableDefinitions {
 		this.nSheepMore = nSheepMore;
 	}
 
-	public Fact getAdvice() {
+	public int getAdvice() {
 		return advice;
 	}
 
 	public void setAdvice(Fact advice) {
-		this.advice = advice;
+		this.advice = advice.getAnswer();
 	}
 	
 	

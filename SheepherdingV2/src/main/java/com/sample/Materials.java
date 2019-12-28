@@ -3,90 +3,90 @@ package com.sample;
 import com.sample.Fact;
 
 public class Materials implements VariableDefinitions {
-	public Fact hasTractor;
-	public Fact horsePowerTractor;
-	public Fact hasMower;
-	public Fact hasShaker;
-	public Fact hasRaker;
-	public Fact hasHayPacker;
-	public Fact hasFertilizerSpreader;
-	public Fact hasMestGatherer;
-	public Fact advice;
+	public int hasTractor;
+	public int horsePowerTractor;
+	public int hasMower;
+	public int hasShaker;
+	public int hasRaker;
+	public int hasHayPacker;
+	public int hasFertilizerSpreader;
+	public int hasMestGatherer;
+	public int advice;
 	
 	public Materials() {
 		
 	}
 
-	public Fact getHasTractor() {
+	public int getHasTractor() {
 		return hasTractor;
 	}
 
 	public void setHasTractor(Fact hasTractor) {
-		this.hasTractor = hasTractor;
+		this.hasTractor = hasTractor.getAnswer();
 	}
 
-	public Fact getHorsePowerTractor() {
+	public int getHorsePowerTractor() {
 		return horsePowerTractor;
 	}
 
 	public void setHorsePowerTractor(Fact horsePowerTractor) {
-		this.horsePowerTractor = horsePowerTractor;
+		this.horsePowerTractor = horsePowerTractor.getAnswer();
 	}
 
-	public Fact getHasMower() {
+	public int getHasMower() {
 		return hasMower;
 	}
 
 	public void setHasMower(Fact hasMower) {
-		this.hasMower = hasMower;
+		this.hasMower = hasMower.getAnswer();
 	}
 
-	public Fact getHasShaker() {
+	public int getHasShaker() {
 		return hasShaker;
 	}
 
 	public void setHasShaker(Fact hasShaker) {
-		this.hasShaker = hasShaker;
+		this.hasShaker = hasShaker.getAnswer();
 	}
 
-	public Fact getHasRaker() {
+	public int getHasRaker() {
 		return hasRaker;
 	}
 
 	public void setHasRaker(Fact hasRaker) {
-		this.hasRaker = hasRaker;
+		this.hasRaker = hasRaker.getAnswer();
 	}
 
-	public Fact getHasHayPacker() {
+	public int getHasHayPacker() {
 		return hasHayPacker;
 	}
 
 	public void setHasHayPacker(Fact hasHayPacker) {
-		this.hasHayPacker = hasHayPacker;
+		this.hasHayPacker = hasHayPacker.getAnswer();
 	}
 
-	public Fact getHasFertilizerSpreader() {
+	public int getHasFertilizerSpreader() {
 		return hasFertilizerSpreader;
 	}
 
 	public void setHasFertilizerSpreader(Fact hasFertilizerSpreader) {
-		this.hasFertilizerSpreader = hasFertilizerSpreader;
+		this.hasFertilizerSpreader = hasFertilizerSpreader.getAnswer();
 	}
 
-	public Fact getHasMestGatherer() {
+	public int getHasMestGatherer() {
 		return hasMestGatherer;
 	}
 
 	public void setHasMestGatherer(Fact hasMestGatherer) {
-		this.hasMestGatherer = hasMestGatherer;
+		this.hasMestGatherer = hasMestGatherer.getAnswer();
 	}
 
-	public Fact getAdvice() {
+	public int getAdvice() {
 		return advice;
 	}
 
 	public void setAdvice(Fact advice) {
-		this.advice = advice;
+		this.advice = advice.getAnswer();
 	}
 	
 	

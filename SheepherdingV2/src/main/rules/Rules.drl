@@ -25,45 +25,188 @@ global Values gvalues;
 dialect "java"
 
 // Second order questions, which need to be asked using the Fact class. 
-rule "Has shed"
+rule "Wants professional"
 	when
-		ownsShed : Fact(Fact.Name == "ynShed", answer == YES);
-		nmShedSize: Fact(Fact.Name =="nmShedSize", askNow == false); 
+		prof : Fact(Fact.Name == "Hobby or Pro", answer == PRO);
+		kvk : Fact(Fact.Name =="isKVKRegistered", askNow == false); 
 	then
-		help(drools,"he has a shed");
-		modify(nmShedSize) { askQuestion(true) }
+		help(drools,"he wants to be a pro");
+		modify(kvk) { askQuestion(true) }
 end
 
 // Sometimes the user goes back to the previous questions and changes the answer, therefore the rule model needs
-// to take into account that this shed size second order question isn't asked then!
-rule "Has shed changed"
+// to take into account that this second order questions aren't asked then!
+rule "Hobby or pro changed"
 	when
-		ownsShed : Fact(Fact.Name == "ynShed", answer == NO);
-		nmShedSize: Fact(Fact.Name =="nmShedSize", askNow == true);
+		prof : Fact(Fact.Name == "Hobby or Pro", answer == HOBBY);
+		kvk : Fact(Fact.Name =="isKVKRegistered", askNow == true); 
 	then
-		help(drools,"he has changed having a shed");
-		modify(nmShedSize) { setAskNow(false) }
-		// MAYBE THE SHEDSIZE ANSWER SHOULD BE SET TO 0 AS WELL???
+		help(drools,"he has changed wanting to be a pro");
+		modify(kvk) { setAskNow(false) }
 end
 
 rule "Has land"
 	when
 	// status is a variable that's not yet used, but I thought it might be useful to have such a variable to prevent rules from firing twice...
-		land : Fact(Fact.Name == "ynLand", answer == YES);
-		nmLandSize : Fact(Fact.Name == "nmLandSize", askNow == false);
+		land : Fact(Fact.Name == "Has Land", answer == YES);
+		nmLandSize : Fact(Fact.Name == "Land Size", askNow == false);
 	then
 		help(drools,"info");
 		modify(nmLandSize) { askQuestion(true) }
-		gvalues.addAvailableLand(nmLandSize.getAnswer());	
+		//gvalues.addAvailableLand(nmLandSize.getAnswer());	
 end
 
 rule "Has land has changed"
 	when
-		land : Fact(Fact.Name == "ynLand", answer == NO);
-		nmLandSize : Fact(Fact.Name == "nmLandSize", askNow == true);
+		land : Fact(Fact.Name == "Has Land", answer == NO);
+		nmLandSize : Fact(Fact.Name == "Land Size", askNow == true);
 	then
 		help(drools,"info");
 		modify(nmLandSize) { setAskNow(false) }
+end
+
+rule "Has leased land"
+	when
+		land : Fact(Fact.Name == "hasLeasedLand", answer == YES);
+		nmLandSize : Fact(Fact.Name == "leasedLandSize", askNow == false);
+	then
+		help(drools,"info");
+		modify(nmLandSize) { askQuestion(true) }
+end
+
+rule "Has leased land has changed"
+	when
+		land : Fact(Fact.Name == "hasLeasedLand", answer == NO);
+		nmLandSize : Fact(Fact.Name == "leasedLandSize", askNow == true);
+	then
+		help(drools,"info");
+		modify(nmLandSize) { setAskNow(false) }
+end
+
+rule "Has sheep"
+	when
+		ownsSheep : Fact(Fact.Name == "hasSheep", answer == YES);
+		nSheepOwned : Fact(Fact.Name =="ownsNSheep", askNow == false); 
+	then
+		help(drools,"he has sheep");
+		modify(nSheepOwned) { askQuestion(true) }
+end
+
+rule "Has sheep changed"
+	when
+		ownsSheep : Fact(Fact.Name == "hasSheep", answer == NO);
+		nSheepOwned : Fact(Fact.Name =="ownsNSheep", askNow == true); 
+	then
+		help(drools,"he has changed having a sheep");
+		modify(nSheepOwned) { setAskNow(false) }
+end
+
+rule "Has shed"
+	when
+		ownsShed : Fact(Fact.Name == "Has Shed", answer == YES);
+		nmShedSize: Fact(Fact.Name =="Shed Size", askNow == false); 
+
+        heightShed: Fact(Fact.Name == "heightShed"); 
+        widthShed: Fact(Fact.Name == "widthShed");
+        hasFertilizer: Fact(Fact.Name == "hasFertilizer"); 
+    	hasFlatFloor: Fact(Fact.Name == "hasFlatFloor");
+    	hasLamps: Fact(Fact.Name == "hasLamps");
+	then
+		help(drools,"he has a shed");
+		modify(nmShedSize) { askQuestion(true) }
+		modify(heightShed) { askQuestion(true) } 
+        modify(widthShed) { askQuestion(true) }
+        modify(hasFertilizer) { askQuestion(true) }
+    	modify(hasFlatFloor) { askQuestion(true) }
+    	modify(hasLamps) { askQuestion(true) }
+end
+
+rule "Has shed changed"
+	when
+		ownsShed : Fact(Fact.Name == "Has Shed", answer == NO);
+		nmShedSize: Fact(Fact.Name =="Shed Size", askNow == true);
+		
+		heightShed: Fact(Fact.Name == "heightShed"); 
+        widthShed: Fact(Fact.Name == "widthShed");
+        hasFertilizer: Fact(Fact.Name == "hasFertilizer"); 
+    	hasFlatFloor: Fact(Fact.Name == "hasFlatFloor");
+    	hasLamps: Fact(Fact.Name == "hasLamps");
+	then
+		help(drools,"he has changed having a shed");
+		modify(nmShedSize) { setAskNow(false) }
+		modify(heightShed) { setAskNow(false) } 
+        modify(widthShed) { setAskNow(false) }
+        modify(hasFertilizer) { setAskNow(false) }
+    	modify(hasFlatFloor) { setAskNow(false) }
+    	modify(hasLamps) { setAskNow(false) }
+		// MAYBE THE SHEDSIZE ANSWER SHOULD BE SET TO 0 AS WELL???
+end
+
+rule "Calc goal current shed size difference"
+	when
+		Fact(Fact.Name == "Number of Sheep", $nSheep : answer > 0);
+		$nmShedSize: Fact(Fact.Name =="Shed Size", answer > 0);
+
+	then 
+		insert (new Fact("goalSize", $nSheep * 2.5));
+		help(drools,"calculating shed goal size");
+		
+end
+
+rule "Shed too small" 
+	when
+		Fact(Fact.Name == "Shed Size", $curSize : answer > 0);
+		Fact(Fact.Name == "goalSize", answer > $curSize);
+		isAllowedToBuild : Fact(Fact.Name == "isAllowedToBuild", askNow == false);
+		roomForShed : Fact(Fact.Name == "roomForShed", askNow == false);
+	then
+		help(drools,"it recognizes shed too small");
+		modify(isAllowedToBuild) { askQuestion(true) }
+		
+end // THERE SHOULD ALSO BE A RULE FOR WHEN THE USER CHANGES HIS ANSWERS, i.e. when goalSize changed
+
+// The only third order question so far
+rule "Is allowed to build, ask how much room there is to build"
+	when
+		Fact(Fact.Name == "isAllowedToBuild", answer == YES);
+		roomForShed : Fact(Fact.Name == "roomForShed", askNow == false);
+	then	
+		modify(roomForShed) { askQuestion(true) }
+end
+
+rule "Is allowed to build changed"
+	when
+		Fact(Fact.Name == "isAllowedToBuild", answer == NO);
+		roomForShed : Fact(Fact.Name == "roomForShed", askNow == true);
+	then	
+		modify(roomForShed) { setAskNow(false) }
+end
+
+rule "Has tractor, ask horsepower"
+	when
+		hasTractor : Fact(Fact.Name == "Has Tractor", answer == YES);
+		horsePowerTractor : Fact(Fact.Name =="horsePowerTractor", askNow == false); 
+	then
+		help(drools,"he has tractor");
+		modify(horsePowerTractor) { askQuestion(true) }
+end
+
+rule "Has tractor changed"
+	when
+		hasTractor : Fact(Fact.Name == "Has Tractor", answer == NO);
+		horsePowerTractor : Fact(Fact.Name =="horsePowerTractor", askNow == true); 
+	then
+		help(drools,"he has changed having a tractor");
+		modify(horsePowerTractor) { setAskNow(false) }
+end
+
+rule "All questions asked, enter all answers"
+	// salience is automatically set at 0
+	salience 20
+	when
+		$model : Model(allQuestionsAsked == true);
+	then 
+		$model.setAllAnswers();
 end
 
 // Sheep needs to have more salience than land, care and shed so that the functions for that can be used
@@ -124,7 +267,7 @@ end
 
 rule "No shed"
 	when
-		Shed( hasShed.answer == NO);
+		Shed( hasShed == NO);
 		Sheep( $nSheep : totalNSheepWanted);
 	then
 		help(drools,"info");
@@ -138,19 +281,19 @@ end
 rule "Has land and wants n sheep"
 	when
 		Sheep( $nSheep : totalNSheepWanted);
-		Land( $landOwned : ownedLandSize.answer, $landNeeded : landNeeded > 0, $cost : costLandNeeded )
+		Land( $landSize : totalLandSize, $landNeeded : landNeeded > 0, $cost : costLandNeeded )
 		
 		
 // Only talking about buying land. How much will leasing land cost rougly?
 	then
 		help(drools,"info");
 		advice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
-		$nSheep + " sheep, and you have " + $landOwned + " acres of land, you need " +
-		$landNeeded + " acres more land.\n" +
+		$nSheep + " sheep, and you have " + $landSize + " acres of land (incl. lease)\n" +
+		"you need " + $landNeeded + " acres more land.\n" +
 		"An acre of land costs rougly 50.000 euros. Therefore you'll need " + 
 		$cost + "euros for buying land.\n" + 
 		"Also one needs to keep in mind that 300 euros entitlement (i.e. toeslagrechten) need to be paid per used acre of land. \n" +
-		"In your case this will cost you " + toeslagrechten($nSheep,$landOwned) + " euros");
+		"In your case this will cost you " + toeslagrechten($nSheep,$landSize) + " euros");
 		//Add values
 		//gvalues.addSheep(sheep.getAnswer());
 		//gvalues.addNeededLand(numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()));
@@ -162,7 +305,7 @@ end
 rule "Has enough land and wants n sheep"
 	when
 		Sheep( $nSheep : totalNSheepWanted, $nSheepMore : nSheepMore );
-		Land( $landOwned : ownedLandSize.answer, landNeeded < 0);
+		Land( $landOwned : ownedLandSize, landNeeded < 0);
 	then
 		help(drools,"info");
 		advice("You have enough land. Per acre you can hold roughly 3 sheep. Since you have\n" + 
@@ -185,7 +328,7 @@ end
 rule "Has too small shed and wants n sheep"
 	when
 		Sheep( $nSheep : totalNSheepWanted);
-		Shed(hasShed.answer == YES, shedTooSmall, $shedSize : curShedSize.answer, $goalCurDiff : goalCurSizeDiff); 
+		Shed(hasShed == YES, shedTooSmall, $shedSize : curShedSize, $goalCurDiff : goalCurSizeDiff); 
 								// shed too small works (no == true is needed)
 	then
 		help(drools,"info");
@@ -196,7 +339,7 @@ end
 // Why should people have a tractor? What are the alternatives? How much does a tractor cost exactly (https://edepot.wur.nl/429700)? 
 rule "Has tractor"
 	when 
-		tractor : Materials(hasTractor.answer == NO);
+		tractor : Materials(hasTractor == NO);
 	then
 		advice("You should probably buy a tractor");
 
@@ -205,7 +348,7 @@ end
 // In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
 rule "All good"
 	when
-		tractor : Materials(hasTractor.answer == YES);
+		tractor : Materials(hasTractor == YES);
 		sheep : Sheep(totalNSheepWanted > 200);
 		Land(landIsBigEnough);
 		not Shed(shedTooSmall);
@@ -215,14 +358,14 @@ end
 
 rule "Birth other"
 	when 
-		care : Care(wantsSelfBirth.answer == OTHER);
+		care : Care(wantsSelfBirth == OTHER);
 	then
 		advice("Not birthing yourself is okay as a hobby farmer");
 end
 
 rule "Birth self"
 	when 
-		care : Care(wantsSelfBirth.answer == SELF);
+		care : Care(wantsSelfBirth == SELF);
 	then
 		advice("Birthing yourself is interesting as a hobby farmer");
 end

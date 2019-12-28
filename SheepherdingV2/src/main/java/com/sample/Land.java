@@ -3,10 +3,10 @@ package com.sample;
 import com.sample.Fact;
 
 public class Land implements VariableDefinitions {
-	public Fact hasLand;
-	public Fact ownedLandSize;
-	public Fact hasLeasedLand;
-	public Fact leasedLandSize;
+	public int hasLand;
+	public int ownedLandSize;
+	public int hasLeasedLand;
+	public int leasedLandSize;
 	public int totalLandSize;
 	public double landNeeded;
 	public int costPhosphateRights;
@@ -22,14 +22,13 @@ public class Land implements VariableDefinitions {
 	public void calcLandSize() { 
 		
 		this.totalLandSize = 0;
-		if(hasLand.getAnswer() == YES) {
-			this.totalLandSize += ownedLandSize.getAnswer();
+		if(hasLand == YES) {
+			this.totalLandSize += ownedLandSize;
 		} 
 		/* When these questions are in the system uncomment this ! */
-//		if (hasLeasedLand.getAnswer() == YES) {
-//			this.totalLandSize += leasedLandSize.getAnswer();
-//		}
-		System.out.println("I'm here");
+		if (hasLeasedLand == YES) {
+			this.totalLandSize += leasedLandSize;
+		}
 	}
 	
 	public void calcLandNeeded(int totalNSheepWanted) { 
@@ -55,36 +54,36 @@ public class Land implements VariableDefinitions {
 //	}
 
 	/* Getters and setters */
-	public Fact getHasLand() {
+	public int getHasLand() {
 		return hasLand;
 	}
 
 	public void setHasLand(Fact hasLand) {
-		this.hasLand = hasLand;
+		this.hasLand = hasLand.getAnswer();
 	}
 
-	public Fact getOwnedLandSize() {
+	public int getOwnedLandSize() {
 		return ownedLandSize;
 	}
 
 	public void setOwnedLandSize(Fact ownedLandSize) {
-		this.ownedLandSize = ownedLandSize;
+		this.ownedLandSize = ownedLandSize.getAnswer();
 	}
 
-	public Fact getHasLeasedLand() {
+	public int getHasLeasedLand() {
 		return hasLeasedLand;
 	}
 
 	public void setHasLeasedLand(Fact hasLeasedLand) {
-		this.hasLeasedLand = hasLeasedLand;
+		this.hasLeasedLand = hasLeasedLand.getAnswer();
 	}
 
-	public Fact getLeasedLandSize() {
+	public int getLeasedLandSize() {
 		return leasedLandSize;
 	}
 
 	public void setLeasedLandSize(Fact leasedLandSize) {
-		this.leasedLandSize = leasedLandSize;
+		this.leasedLandSize = leasedLandSize.getAnswer();
 	}
 
 	public int getTotalLandSize() {

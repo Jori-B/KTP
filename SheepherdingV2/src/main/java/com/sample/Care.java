@@ -3,8 +3,8 @@ package com.sample;
 import com.sample.Fact;
 
 public class Care implements VariableDefinitions {
-	public Fact wantsSelfShave;
-	public Fact wantsSelfBirth;
+	public int wantsSelfShave;
+	public int wantsSelfBirth;
 	public double shaveOtherCost;
 	public double woolEarnings;
 	public Fact advice;
@@ -21,20 +21,20 @@ public class Care implements VariableDefinitions {
 		this.woolEarnings = totalNSheepWanted * 1.5;
 	}
 
-	public Fact getWantsSelfShave() {
+	public int getWantsSelfShave() {
 		return wantsSelfShave;
 	}
 
 	public void setWantsSelfShave(Fact wantsSelfShave) {
-		this.wantsSelfShave = wantsSelfShave;
+		this.wantsSelfShave = wantsSelfShave.getAnswer();
 	}
 
-	public Fact getWantsSelfBirth() {
+	public int getWantsSelfBirth() {
 		return wantsSelfBirth;
 	}
 
 	public void setWantsSelfBirth(Fact wantsSelfBirth) {
-		this.wantsSelfBirth = wantsSelfBirth;
+		this.wantsSelfBirth = wantsSelfBirth.getAnswer();
 	}
 
 	public double getShaveOtherCost() {

@@ -3,72 +3,72 @@ package com.sample;
 import com.sample.Fact;
 
 public class Business {
-	public Fact hobSemiPro;
-	public Fact level;
-	public Fact isUBNRegistered;
-	public Fact isKvKRegistered;
-	public Fact moneyToSpend; // We still need a total calculation for if money to spend is smaller than money needed
-	public Fact timeWillingToSpend;
-	public Fact advice;
+	public int hobSemiPro;
+	public int level;
+	public int isUBNRegistered;
+	public int isKvKRegistered;
+	public int moneyToSpend; // We still need a total calculation for if money to spend is smaller than money needed
+	public int timeWillingToSpend;
+	public int advice;
 	
 	public Business() {
 		
 	}
 
-	public Fact getHobSemiPro() {
+	public int getHobSemiPro() {
 		return hobSemiPro;
 	}
 
 	public void setHobSemiPro(Fact hobSemiPro) {
-		this.hobSemiPro = hobSemiPro;
+		this.hobSemiPro = hobSemiPro.getAnswer();
 	}
 
-	public Fact getLevel() {
+	public int getLevel() {
 		return level;
 	}
 
 	public void setLevel(Fact level) {
-		this.level = level;
+		this.level = level.getAnswer();
 	}
 
-	public Fact getIsUBNRegistered() {
+	public int getIsUBNRegistered() {
 		return isUBNRegistered;
 	}
 
 	public void setIsUBNRegistered(Fact isUBNRegistered) {
-		this.isUBNRegistered = isUBNRegistered;
+		this.isUBNRegistered = isUBNRegistered.getAnswer();
 	}
 
-	public Fact getIsKvKRegistered() {
+	public int getIsKvKRegistered() {
 		return isKvKRegistered;
 	}
 
 	public void setIsKvKRegistered(Fact isKvKRegistered) {
-		this.isKvKRegistered = isKvKRegistered;
+		this.isKvKRegistered = isKvKRegistered.getAnswer();
 	}
 
-	public Fact getMoneyToSpend() {
+	public int getMoneyToSpend() {
 		return moneyToSpend;
 	}
 
 	public void setMoneyToSpend(Fact moneyToSpend) {
-		this.moneyToSpend = moneyToSpend;
+		this.moneyToSpend = moneyToSpend.getAnswer();
 	}
 
-	public Fact getTimeWillingToSpend() {
+	public int getTimeWillingToSpend() {
 		return timeWillingToSpend;
 	}
 
 	public void setTimeWillingToSpend(Fact timeWillingToSpend) {
-		this.timeWillingToSpend = timeWillingToSpend;
+		this.timeWillingToSpend = timeWillingToSpend.getAnswer();
 	}
 
-	public Fact getAdvice() {
+	public int getAdvice() {
 		return advice;
 	}
 
 	public void setAdvice(Fact advice) {
-		this.advice = advice;
+		this.advice = advice.getAnswer();
 	}
 	
 	
