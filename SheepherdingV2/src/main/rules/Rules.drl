@@ -155,8 +155,7 @@ end
 
 rule "Shed too small" 
 	when
-		Fact(Fact.Name == "Shed Size", $curSize : answer > 0);
-		Fact(Fact.Name == "goalSize", answer > $curSize);
+		(Fact(Fact.Name == "Shed Size", $curSize : answer > 0) and Fact(Fact.Name == "goalSize", answer > $curSize)) or Fact(Fact.Name == "Has Shed", answer == NO);
 		isAllowedToBuild : Fact(Fact.Name == "isAllowedToBuild", askNow == false);
 		roomForShed : Fact(Fact.Name == "roomForShed", askNow == false);
 	then
@@ -198,6 +197,49 @@ rule "Has tractor changed"
 	then
 		help(drools,"he has changed having a tractor");
 		modify(horsePowerTractor) { setAskNow(false) }
+end
+
+// Probably needs to be adjusted to include the amount of owned sheep
+rule "Amount of sheep changed bigger than 10, ask machine questions"
+	when
+		nSheep : Fact(Fact.Name =="Number of Sheep", answer > 10); 
+		
+		hasShaker : Fact(Fact.Name == "hasShaker", askNow == false);
+		hasRaker : Fact(Fact.Name == "hasRaker", askNow == false);
+		hasMower : Fact(Fact.Name == "hasMower", askNow == false);
+		hasMestGatherer : Fact(Fact.Name == "hasMestGatherer", askNow == false);
+		hasHayPacker : Fact(Fact.Name == "hasHayPacker", askNow == false);
+		hasFertilizerSpreader : Fact(Fact.Name == "hasFertilizerSpreader", askNow == false);
+	then
+		help(drools,"don't ask machine q's");
+		modify(hasShaker) { askQuestion(true) }
+		modify(hasRaker) { askQuestion(true) }
+		modify(hasMower) { askQuestion(true) }
+		modify(hasMestGatherer) { askQuestion(true) }
+		modify(hasHayPacker) { askQuestion(true) }
+		modify(hasFertilizerSpreader) { askQuestion(true) }
+		
+end
+
+rule "Amount of sheep changed, don't ask machine questions"
+	when
+		nSheep : Fact(Fact.Name =="Number of Sheep", answer < 10); 
+		
+		hasShaker : Fact(Fact.Name == "hasShaker", askNow == true);
+		hasRaker : Fact(Fact.Name == "hasRaker", askNow == true);
+		hasMower : Fact(Fact.Name == "hasMower", askNow == true);
+		hasMestGatherer : Fact(Fact.Name == "hasMestGatherer", askNow == true);
+		hasHayPacker : Fact(Fact.Name == "hasHayPacker", askNow == true);
+		hasFertilizerSpreader : Fact(Fact.Name == "hasFertilizerSpreader", askNow == true);
+	then
+		help(drools,"don't ask machine q's");
+		modify(hasShaker) { setAskNow(false) }
+		modify(hasRaker) { setAskNow(false) }
+		modify(hasMower) { setAskNow(false) }
+		modify(hasMestGatherer) { setAskNow(false) }
+		modify(hasHayPacker) { setAskNow(false) }
+		modify(hasFertilizerSpreader) { setAskNow(false) }
+		
 end
 
 rule "Wants lambs"

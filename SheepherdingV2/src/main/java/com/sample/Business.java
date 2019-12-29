@@ -4,11 +4,13 @@ import com.sample.Fact;
 
 public class Business {
 	public int hobSemiPro;
-	public int level;
 	public int isUBNRegistered;
 	public int isKvKRegistered;
 	public int moneyToSpend; // We still need a total calculation for if money to spend is smaller than money needed
 	public int timeWillingToSpend;
+	//public int slaugBreedBoth
+	//public int moneyNeeded;
+	//public int hasEnoughMoney;
 	public int advice;
 	
 	public Business() {
@@ -21,14 +23,6 @@ public class Business {
 
 	public void setHobSemiPro(Fact hobSemiPro) {
 		this.hobSemiPro = hobSemiPro.getAnswer();
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(Fact level) {
-		this.level = level.getAnswer();
 	}
 
 	public int getIsUBNRegistered() {

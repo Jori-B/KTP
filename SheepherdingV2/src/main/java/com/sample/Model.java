@@ -157,7 +157,7 @@ public class Model implements VariableDefinitions {
         	factListMap.put("ownsNSheep", 6);
         facts.add(new Fact("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
         factListMap.put("Number of Sheep", 7);
-        
+        // Purely for slaughter, breeding or both
         /*Land questions*/
         facts.add(new Fact("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
         factListMap.put("Has Land", 8);
@@ -198,18 +198,19 @@ public class Model implements VariableDefinitions {
     		// If yes
         	facts.add(new Fact("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", model));
         	factListMap.put("horsePowerTractor", 22);
-    	facts.add(new Fact("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", ASK, model));
-    	factListMap.put("hasMower", 23);
-    	facts.add(new Fact("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", ASK, model));
-    	factListMap.put("hasShaker", 24);
-    	facts.add(new Fact("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", ASK, model));
-    	factListMap.put("hasRaker", 25);
-    	facts.add(new Fact("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", ASK, model));
-    	factListMap.put("hasHayPacker", 26);
-    	facts.add(new Fact("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", ASK, model));
-    	factListMap.put("hasFertilizerSpreader", 27);
-    	facts.add(new Fact("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", ASK, model));
-    	factListMap.put("hasMestGatherer", 28);
+        	// If more than 10 sheep
+        	facts.add(new Fact("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", model));
+        	factListMap.put("hasMower", 23);
+        	facts.add(new Fact("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", model));
+        	factListMap.put("hasShaker", 24);
+        	facts.add(new Fact("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", model));
+        	factListMap.put("hasRaker", 25);
+        	facts.add(new Fact("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", model));
+        	factListMap.put("hasHayPacker", 26);
+        	facts.add(new Fact("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", model));
+        	factListMap.put("hasFertilizerSpreader", 27);
+        	facts.add(new Fact("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", model));
+        	factListMap.put("hasMestGatherer", 28);
         
 		/* Care questions */
         // Do you even want to let the sheep birth

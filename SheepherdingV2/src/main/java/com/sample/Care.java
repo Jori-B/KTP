@@ -8,6 +8,8 @@ public class Care implements VariableDefinitions {
 	public int wantsSelfBirth;
 	public double shaveOtherCost;
 	public double woolEarnings;
+	// public int sheepBorn;
+	// public int sheepSoldEarnings;
 	public Fact advice;
 	
 	public Care() {
