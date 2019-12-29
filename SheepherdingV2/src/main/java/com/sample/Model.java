@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Land;	
+import com.sample.Land;		
 import com.sample.Materials;
 import com.sample.Sheep;
 import com.sample.Business;
@@ -23,6 +23,7 @@ import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
+import com.views.AdviceWindow;
 import com.views.MainView;
 
 public class Model implements VariableDefinitions {
@@ -129,6 +130,16 @@ public class Model implements VariableDefinitions {
 		care.setWantsLambs(getSelectedQuestion("wantsLambs"));
 		care.setWantsSelfBirth(getSelectedQuestion("Self Birth"));
 		care.setWantsSelfShave(getSelectedQuestion("wantsSelfShave"));
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AdviceWindow frame = new AdviceWindow(business.getAdvice(), sheep.getAdvice(), land.getAdvice(), shed.getAdvice(), materials.getAdvice(), care.getAdvice());
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
     
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {

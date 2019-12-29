@@ -11,7 +11,7 @@ public class Materials implements VariableDefinitions {
 	public int hasHayPacker;
 	public int hasFertilizerSpreader;
 	public int hasMestGatherer;
-	public int advice;
+	public String advice = "<html>";
 	
 	public Materials() {
 		
@@ -81,12 +81,16 @@ public class Materials implements VariableDefinitions {
 		this.hasMestGatherer = hasMestGatherer.getAnswer();
 	}
 
-	public int getAdvice() {
+	public String getAdvice() {
 		return advice;
 	}
 
-	public void setAdvice(Fact advice) {
-		this.advice = advice.getAnswer();
+	public void setAdvice(String advice) {
+		if(this.advice.equals("<html>")) {
+			this.advice = this.advice + advice;
+		} else {
+			this.advice = this.advice + "<br>" + advice;
+		}
 	}
 	
 	

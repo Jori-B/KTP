@@ -17,7 +17,7 @@ public class Shed implements VariableDefinitions {
 	public double goalCurSizeDiff;
 	public boolean shedTooSmall;
 	public int problem;
-	public int advice;
+	public String advice = "<html>";
 	
 	public Shed() {
 		
@@ -147,12 +147,16 @@ public class Shed implements VariableDefinitions {
 		this.problem = problem.getAnswer();
 	}
 
-	public int getAdvice() {
+	public String getAdvice() {
 		return advice;
 	}
 
-	public void setAdvice(Fact advice) {
-		this.advice = advice.getAnswer();
+	public void setAdvice(String advice) {
+		if(this.advice.equals("<html>")) {
+			this.advice = this.advice + advice;
+		} else {
+			this.advice = this.advice + "<br>" + advice;
+		}
 	}
 	
 }

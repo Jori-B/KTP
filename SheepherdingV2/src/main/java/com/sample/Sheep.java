@@ -10,7 +10,7 @@ public class Sheep implements VariableDefinitions {
 	public int sheepCost;
 	public int maxAmountSheep; // We still need a functions for maxAmountOfSheep
 	public int nSheepMore;
-	public int advice;
+	public String advice = "<html>";
 	
 	public Sheep() {
 		
@@ -97,12 +97,16 @@ public class Sheep implements VariableDefinitions {
 		this.nSheepMore = nSheepMore;
 	}
 
-	public int getAdvice() {
+	public String getAdvice() {
 		return advice;
 	}
 
-	public void setAdvice(Fact advice) {
-		this.advice = advice.getAnswer();
+	public void setAdvice(String advice) {
+		if(this.advice.equals("<html>")) {
+			this.advice = this.advice + advice;
+		} else {
+			this.advice = this.advice + "<br>" + advice;
+		}
 	}
 	
 	

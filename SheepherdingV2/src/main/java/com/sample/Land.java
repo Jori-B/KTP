@@ -12,7 +12,7 @@ public class Land implements VariableDefinitions {
 	public int costPhosphateRights;
 	public double costLandNeeded;
 	public boolean landIsBigEnough;
-	public Fact advice;
+	public String advice = "<html>";
 	
 	public Land() {
 		
@@ -118,12 +118,16 @@ public class Land implements VariableDefinitions {
 		this.costLandNeeded = costLandNeeded;
 	}
 
-	public Fact getAdvice() {
+	public String getAdvice() {
 		return advice;
 	}
 
-	public void setAdvice(Fact advice) {
-		this.advice = advice;
+	public void setAdvice(String advice) {
+		if(this.advice.equals("<html>")) {
+			this.advice = this.advice + advice;
+		} else {
+			this.advice = this.advice + "<br>" + advice;
+		}
 	}
 	
 	

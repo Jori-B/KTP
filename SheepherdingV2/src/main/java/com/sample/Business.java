@@ -11,7 +11,7 @@ public class Business {
 	//public int slaugBreedBoth
 	//public int moneyNeeded;
 	//public int hasEnoughMoney;
-	public int advice;
+	public String advice = "<html>";
 	
 	public Business() {
 		
@@ -57,12 +57,16 @@ public class Business {
 		this.timeWillingToSpend = timeWillingToSpend.getAnswer();
 	}
 
-	public int getAdvice() {
+	public String getAdvice() {
 		return advice;
 	}
 
-	public void setAdvice(Fact advice) {
-		this.advice = advice.getAnswer();
+	public void setAdvice(String advice) {
+		if(this.advice.equals("<html>")) {
+			this.advice = this.advice + advice;
+		} else {
+			this.advice = this.advice + "<br>" +  advice;
+		}
 	}
 	
 	
