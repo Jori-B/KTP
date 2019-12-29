@@ -3,6 +3,7 @@ package com.sample;
 import com.sample.Fact;
 
 public class Care implements VariableDefinitions {
+	public int wantsLambs;
 	public int wantsSelfShave;
 	public int wantsSelfBirth;
 	public double shaveOtherCost;
@@ -20,7 +21,15 @@ public class Care implements VariableDefinitions {
 	public void calcWoolEarning(int totalNSheepWanted) {
 		this.woolEarnings = totalNSheepWanted * 1.5;
 	}
+	
+	public int getWantsLambs() {
+		return wantsLambs;
+	}
 
+	public void setWantsLambs(Fact wantsLambs) {
+		this.wantsSelfShave = wantsLambs.getAnswer();
+	}
+	
 	public int getWantsSelfShave() {
 		return wantsSelfShave;
 	}

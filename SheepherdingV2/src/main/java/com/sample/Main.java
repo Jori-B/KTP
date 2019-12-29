@@ -10,8 +10,8 @@ import com.sample.Model;
 public class Main {
     
 	public static final void main(String[] args) {
-		Model model = new Model();
-		model.createKnowledgeBase(model);
+		new Model();
+		//model.createKnowledgeBase(model);
 	}
 }
 

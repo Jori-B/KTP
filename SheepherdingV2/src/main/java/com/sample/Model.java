@@ -46,19 +46,20 @@ public class Model implements VariableDefinitions {
 	public ArrayList<String> itemsToRemove = new ArrayList<String>();
     
     public Model() {
-
+    	createKnowledgeBase();
     } 
     
-    public void createKnowledgeBase(Model model) {
+	public void createKnowledgeBase(/* Model model */) {
 	    try {
 			// Load up the knowledge base
 			KnowledgeBase kbase = readKnowledgeBase();
 			StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 			setKSession(ksession);
-			createQuestions(ksession, model);
+			createQuestions(ksession, this);
 		} catch (Throwable t) {
 			t.printStackTrace();
-	  	}	
+	  	}
+	    createWindow(this);
     }
     
     public void setKSession(StatefulKnowledgeSession ksession) {
@@ -125,6 +126,7 @@ public class Model implements VariableDefinitions {
 		materials.setHasMestGatherer(getSelectedQuestion("hasMestGatherer"));
 		materials.setHasHayPacker(getSelectedQuestion("hasHayPacker"));
 		materials.setHasFertilizerSpreader(getSelectedQuestion("hasFertilizerSpreader"));
+		care.setWantsLambs(getSelectedQuestion("wantsLambs"));
 		care.setWantsSelfBirth(getSelectedQuestion("Self Birth"));
 		care.setWantsSelfShave(getSelectedQuestion("wantsSelfShave"));
 	}
@@ -157,7 +159,7 @@ public class Model implements VariableDefinitions {
         factListMap.put("Number of Sheep", 7);
         
         /*Land questions*/
-        facts.add(new Fact("Has Land", YESNO, ksession, "Do you have land (including the land you lease)? No (0) Yes (1)", ASK, model));
+        facts.add(new Fact("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
         factListMap.put("Has Land", 8);
         	// If yes
         	facts.add(new Fact("Land Size", NUMB, ksession, "How big is your land (in acres)?", model));
@@ -210,42 +212,14 @@ public class Model implements VariableDefinitions {
     	factListMap.put("hasMestGatherer", 28);
         
 		/* Care questions */
-        facts.add(new MCFact("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model, "Self", "Someone else"));
-        factListMap.put("Self Birth", 29);
+        // Do you even want to let the sheep birth
+    	facts.add(new Fact("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", ASK, model));
+    	factListMap.put("wantsLambs", 29);
+    		facts.add(new MCFact("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", model, "Self", "Someone else"));
+    		factListMap.put("Self Birth", 30);
+        	/* How much time does it cost to shave yourself? */
         facts.add(new Fact("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model)); 
-        factListMap.put("wantsSelfShave", 30);
-//        care.setWantsSelfBirth(*/facts.get(6));
-        
-        
-//        facts[6] = new Fact("ynNeigbourLease", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model);    
-//        land.setHasLeasedLand(facts[6]);
-        
-
-//        materials.setHasTractor(facts.get(7));
-        
-        createWindow(model);
-        
-
-    
-        
-        
-        /* Probably should add a class that saves all the needed money, so we can subtract this from the capitol */       
-//        facts[9] = new Fact("nmCapitol", NUMB, ksession, "How much capitol do you have to spend on the sheep business?", ASK, model);
-//        business.setMoneyToSpend(facts[9]);
-        
-        /* How much time does it cost to shave yourself? */
-//        facts[10] = new Fact("ynShaveYourself", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model);     
-//        care.setWantsSelfShave(facts[10]);        
-        
-        /* Simple rules like if you don't have one of these two "get them" could be added */
-//        facts[11] = new Fact("ynRegisteredUBN", YESNO, ksession, "Does your farm already have a unique business number (UBN)? No (0) Yes (1)", ASK, model);
-//        business.setIsUBNRegistered(facts[11]);
-        
-//        facts[12] = new Fact("ynRegisteredKvK", MC, ksession, "Is your farm already registered at the Kamer van Koophandel (KvK)? No (0) Yes (1)", ASK, model);
-//        business.setIsKvKRegistered(facts[12]);
-        
-        
-//        ksession.fireAllRules();
+        factListMap.put("wantsSelfShave", 31);
 //        System.out.println("The Result is ");
 //        ((Values) ksession.getGlobal("gvalues")).test();
     }

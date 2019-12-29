@@ -12,6 +12,12 @@ public class MCFact extends Fact {
 		super(name, questionType, ksession, question, askNow, model);
 	}
 	
+	public MCFact(String name, int questionType, StatefulKnowledgeSession ksession, String question, Model model, String answerZero, String answerOne) {
+		super(name, questionType, ksession, question, model);
+		this.answerZero = answerZero;
+		this.answerOne = answerOne;
+	}
+	
 	public MCFact(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model, String answerZero, String answerOne) {
 		super(name, questionType, ksession, question, askNow, model);
 		this.answerZero = answerZero;

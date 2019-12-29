@@ -11,7 +11,7 @@ import com.sample.Land;
 import com.sample.Care;
 import com.sample.Sheep;
 import com.sample.Values;
-//import com.sample.ReadInput;
+
 import com.sample.Main; 
 import function com.sample.Utility.help;
 import function com.sample.ValueCalculations.*;
@@ -198,6 +198,24 @@ rule "Has tractor changed"
 	then
 		help(drools,"he has changed having a tractor");
 		modify(horsePowerTractor) { setAskNow(false) }
+end
+
+rule "Wants lambs"
+	when
+		wantsLambs : Fact(Fact.Name == "wantsLambs", answer == YES);
+		selfBirth : Fact(Fact.Name =="Self Birth", askNow == false); 
+	then
+		help(drools,"He wants lambs");
+		modify(selfBirth) { askQuestion(true) }
+end
+
+rule "Wants lambs changed"
+	when
+		wantsLambs : Fact(Fact.Name == "wantsLambs", answer == NO);
+		selfBirth : Fact(Fact.Name =="Self Birth", askNow == true); 
+	then
+		help(drools,"he has changed wanting lambs");
+		modify(selfBirth) { setAskNow(false) }
 end
 
 rule "All questions asked, enter all answers"
