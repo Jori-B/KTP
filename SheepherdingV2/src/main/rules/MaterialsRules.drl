@@ -1,0 +1,148 @@
+#created on: Dec 30, 2019
+package cityrules
+
+// list any import classes here.
+import com.sample.Model;
+import com.sample.Fact;
+import com.sample.Shed;
+import com.sample.Materials;
+import com.sample.Business;
+import com.sample.Land;
+import com.sample.Care;
+import com.sample.Sheep;
+import com.sample.Values;
+
+import com.sample.Main; 
+import function com.sample.Utility.help;
+import function com.sample.ValueCalculations.*;
+
+import function com.sample.Advice.*;
+
+dialect "java"
+
+rule "Enough horsepower tractor"
+	when
+		$materials : Materials(hasTractor == YES, horsePowerTractor >= 50);
+	then
+		$materials.setAdvice("Your tractor has enough horsepower to use professionally for any amount of sheep.");
+end
+
+rule "Not enough horsepower tractor"
+	when
+		$materials : Materials(hasTractor == YES, horsePowerTractor < 50);
+		Sheep(totalNSheepWanted >= 100);
+	then
+		$materials.setAdvice("It is recommended to have a tractor with more than 50 horsepower for working the land. " +
+		"So you are adviced to buy a tractor with more horsepower. Secondhand it will cost you roughly €20.000.");
+end
+
+rule "Enough horsepower 100 sheep"
+	when
+		$materials : Materials(hasTractor == YES, horsePowerTractor < 50);
+		Sheep(totalNSheepWanted < 100);
+		Business(hobSemiPro == PRO);
+	then
+		$materials.setAdvice("When you're a professional, it is recommended to have a tractor with more than 50 horsepower " + 
+		"for working the land. Since you want to start with fewer than 100 sheep it's okay to have a smaller tractor for now. " +
+		"However, above 100 sheep it is recommended to buy a tractor with more horsepower. Secondhand it will cost you roughly €20.000.");
+end
+
+rule "No tractor less 10 sheep"
+	when
+		$materials : Materials(hasTractor == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted < 10);
+		Business(hobSemiPro == HOBBY);
+	then
+		$materials.setAdvice("It should be possible to herd " + $totalNSheepWanted + " without owning a tractor, " + 
+		"instead a wheelbarrow can be used for almost all tasks.");
+end
+
+rule "No tractor between 10and100 sheep"
+	when
+		$materials : Materials(hasTractor == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10, totalNSheepWanted <= 100);
+	then
+		$materials.setAdvice("You should buy a tractor. Since you want to start herding with " + $totalNSheepWanted + 
+		" you can get a tractor with less than 50 horsepower. However, when you decide to get more than " +
+ 		"100 sheep it is recommended to get one with 50 to 70 horsepower.");
+end
+
+rule "No tractor, more than 100 sheep"
+	when
+		$materials : Materials(hasTractor == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 100);
+	then
+		$materials.setAdvice("You should buy a tractor. Since you want to start herding with " + $totalNSheepWanted + 
+		" it is recommended to get one with 50 to 70 horsepower.");
+end
+
+rule "All grass materials"
+	when
+		$materials : Materials(hasMower == YES, hasRaker == YES, hasShaker == YES);
+	then
+		$materials.setAdvice("You have all the most essential materials for working the grass. Namely, a mower, raker and shaker.");
+end
+
+rule "Grass material missing"
+	// Higher salience so that this sentence is printed before the sentences about which one is missing
+	salience 2
+	when
+		$materials : Materials(hasMower == NO || hasRaker == NO || hasShaker == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("There are three essential tools for working the grass when you have a lot of sheep; a mower, shaker " + 
+		"and raker. For every professional it is recommended to buy them. You don't have all of these.");
+end
+
+rule "Mower missing"
+	// Lower salience so that this sentence is printed after the sentences about which one is missing
+	salience 1
+	when
+		$materials : Materials(hasMower == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("You should get a mower.");
+end
+
+rule "Shaker missing"
+	// Lower salience so that this sentence is printed after the sentences about which one is missing
+	salience 1
+	when
+		$materials : Materials(hasShaker == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("You should get a shaker.");
+end
+
+rule "Raker missing"
+	// Lower salience so that this sentence is printed after the sentences about which one is missing
+	salience 1
+	when
+		$materials : Materials(hasRaker == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("You should get a raker.");
+end
+
+rule "Haypacker missing"
+	when
+		$materials : Materials(hasHayPacker == NO);
+	then
+		$materials.setAdvice("A haypacker is expensive, so it's alright to not have one. These are better rented or someone " +
+		"can be hired to do the haypacking.");
+end
+
+rule "Fertilizer spreader missing"
+	when
+		$materials : Materials(hasFertilizerSpreader == NO);
+	then
+		$materials.setAdvice("A fertilizer spreader can be useful. However, when money is sparse one can get by without one.");
+end
+
+rule "Mest Gatherer missing"
+	when
+		$materials : Materials(hasMestGatherer == NO);
+	then
+		$materials.setAdvice("It is nice to have a mest gatherer. The mest from the sheep in the shed can be used as fertilizer " + 
+		"on the land. When you don't have a lot of money, you can get by without one.");
+end

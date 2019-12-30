@@ -10,6 +10,7 @@ public class Care implements VariableDefinitions {
 	public double woolEarnings;
 	// public int sheepBorn;
 	// public int sheepSoldEarnings;
+	// public int costSelfBirth;
 	public String advice = "<html>";
 	
 	public Care() {

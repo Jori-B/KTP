@@ -1,0 +1,92 @@
+#created on: Dec 30, 2019
+package cityrules
+
+// list any import classes here.
+import com.sample.Model;
+import com.sample.Fact;
+import com.sample.Shed;
+import com.sample.Materials;
+import com.sample.Business;
+import com.sample.Land;
+import com.sample.Care;
+import com.sample.Sheep;
+import com.sample.Values;
+
+import com.sample.Main; 
+import function com.sample.Utility.help;
+import function com.sample.ValueCalculations.*;
+
+import function com.sample.Advice.*;
+
+dialect "java"
+
+rule "Hobby, wants more than 10 sheep"
+	when
+		$business : Business(hobSemiPro == HOBBY); 
+		Sheep(totalNSheepWanted > 10);
+	then
+		$business.setAdvice("If you want to hold more than 10 sheep you should consider doing this (semi)professionally.");
+end
+
+rule "Not KvK registered"
+	when
+		$business : Business(isKvKRegistered == NO); 
+		Sheep(totalNSheepWanted > 10);
+	then
+		$business.setAdvice("To herd sheep more than ten sheep you need to be registered at the KVK. For more information about " +
+		"registering at the KVK you can follow <this link>.");
+end
+
+rule "Not UBN registered"
+	when
+		$business : Business(isUBNRegistered == NO); 
+	then
+		$business.setAdvice("You do not have a unique business number (UBN) yet, which you do need if you want to herd sheep. " +
+		"Namely, every sheep needs to be registered to your UBN. You can find more information about getting an UBN <here>.");
+end
+
+rule "Not enough money"
+	when
+		$business : Business(moneyToSpend < moneyNeeded);
+	then
+		$business.setAdvice("You currently do not have enough funds to start the sheepfarm that you would prefer. Attend the " + 
+		"table below to see what expenses you currently have, try to economize on some of the expendetures or increment your starting capital.");
+end
+
+rule "Enough money"
+	when
+		$business : Business(moneyToSpend >= moneyNeeded);
+	then
+		$business.setAdvice("You have a large enough starting capital to cover all the costs of starting your prefered sheepfarm." + 
+		"See the table below for information about this.");
+end
+
+rule "Does't have enough time"
+	when
+		$business : Business(timeWillingToSpend < timeRequired);
+		Sheep($totalNSheepWanted : totalNSheepWanted);
+	then
+		$business.setAdvice("You declared that you would like to spend +timeWillingToSpend+ hours per week on your sheep. " +
+		"However this might not be enough time to tend to all " + $totalNSheepWanted + " sheep.");
+		$business.setAdvice("Therefore, delibirate whether you would be okay with having less sheep and/or spending more time.");
+end
+
+// In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
+rule "All good"
+	when
+		$business : Business();
+		tractor : Materials(hasTractor == YES, horsePowerTractor >= 50, hasRaker == YES, hasShaker == YES, hasMower == YES);
+		sheep : Sheep(totalNSheepWanted > 200);
+		Land(landIsBigEnough);
+		not Shed(shedTooSmall);
+	then
+		$business.setAdvice("You should be able to start a profitable sheep herding business");
+end
+
+
+
+
+
+		
+		
+		

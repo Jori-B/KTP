@@ -2,14 +2,15 @@ package com.sample;
 
 import com.sample.Fact;
 
-public class Business {
+public class Business implements VariableDefinitions {
 	public int hobSemiPro;
 	public int isUBNRegistered;
 	public int isKvKRegistered;
 	public int moneyToSpend; // We still need a total calculation for if money to spend is smaller than money needed
 	public int timeWillingToSpend;
-	//public int slaugBreedBoth
-	//public int moneyNeeded;
+	public int timeRequired; // This is not calculated yet
+	//public int slaugBreedBoth;
+	public int moneyNeeded; // This is not calculated yet
 	//public int hasEnoughMoney;
 	public String advice = "<html>";
 	

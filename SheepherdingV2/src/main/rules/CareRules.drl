@@ -1,0 +1,90 @@
+#created on: Dec 30, 2019
+package cityrules
+
+// list any import classes here.
+import com.sample.Model;
+import com.sample.Fact;
+import com.sample.Shed;
+import com.sample.Materials;
+import com.sample.Business;
+import com.sample.Land;
+import com.sample.Care;
+import com.sample.Sheep;
+import com.sample.Values;
+
+import com.sample.Main; 
+import function com.sample.Utility.help;
+import function com.sample.ValueCalculations.*;
+
+import function com.sample.Advice.*;
+
+dialect "java"
+
+rule "Wants self birth"
+	when 
+		$care : Care(wantsSelfBirth == SELF);
+	then
+		$care.setAdvice("Birthing yourself saves you + costBirthing + euros. You can expect to gain + sheepSoldEarnings");
+end
+
+rule "Hobby, wants other birth"
+	when 
+		$care : Care(wantsSelfBirth == OTHER);
+		Business(hobSemiPro == HOBBY);
+	then
+		$care.setAdvice("Letting birthing be done costs you + costBirthing + euros. Races like the Soay lamb unassisted, " + 
+		"so herding those could be considered as well.");
+end
+
+rule "Pro, wants other birth"
+	when 
+		$care : Care(wantsSelfBirth == OTHER);
+		Business(hobSemiPro == PRO);
+	then
+		$care.setAdvice("As a professional it is recommended that you birth yourself. Birthing by someone else costs you + costBirthing + euros");
+end
+
+rule "Pro doesn't want lambs"
+	when
+		$care : Care(wantsLambs == NO);
+		Business(hobSemiPro == PRO);
+	then
+		$care.setAdvice("As a professional it is recommended that you breed sheep. It is your main earning. You would gain + sheepSoldEarnings");
+end
+
+rule "Shave self"
+	when 
+		$care : Care(wantsSelfShave == YES, $woolEarnings : woolEarnings, $shaveOtherCost : shaveOtherCost);
+		Sheep($totalNSheepWanted : totalNSheepWanted); 
+	then
+		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50€. In your case you want " + 
+		$totalNSheepWanted + "Therefore, this will earn you about " + $woolEarnings + " euros.");
+		$care.setAdvice("One can also hire someone to do it for them. Per sheep it costs roughly 3.50 euros. Therefore this would cost you around " +
+		$shaveOtherCost + " euros.");
+end
+
+rule "Shave other"
+	when 
+		$care : Care(wantsSelfShave == NO, $shaveOtherCost : shaveOtherCost);
+		Sheep($totalNSheepWanted : totalNSheepWanted); 
+	then
+		$care.setAdvice("Shaving is not profitable. However, shaving your sheep needs to happen roughly one time per year." +
+		"One can hire someone to do it for them. In your case you want " + $totalNSheepWanted + ", per sheep shaving costs" + 
+		"roughly 3.50 euros. Therefore this will cost you around " + $shaveOtherCost + " euros.");
+end
+
+rule "Hobby, shave other"
+	when 
+		$care : Care(wantsSelfShave == NO);
+		Business(hobSemiPro == HOBBY);
+	then
+		$care.setAdvice("As a hobby herder you could choose a race of sheep that doesn't need shaving, like the Soay.");
+end
+
+
+
+
+
+		
+		
+		

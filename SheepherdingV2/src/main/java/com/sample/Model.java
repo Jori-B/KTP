@@ -150,24 +150,24 @@ public class Model implements VariableDefinitions {
     	facts.add(new MCFact("Hobby or Pro", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally", ASK, model, "Hobby", "Professional"));
         factListMap.put("Hobby or Pro", 0);
         setCurrentQuestion(facts.get(0));
-        	// if professional
-        	facts.add(new Fact("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
-        	factListMap.put("isKVKRegistered", 1);
         facts.add(new Fact("timeWillingToSpend", NUMB, ksession, "<html> How many days are you willing to spend per week <br> on sheep herding? <html>", ASK, model));
-        factListMap.put("timeWillingToSpend", 2);
+        factListMap.put("timeWillingToSpend", 1);
         facts.add(new Fact("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", ASK, model));
-        factListMap.put("moneyToSpend", 3);
+        factListMap.put("moneyToSpend", 2);
         facts.add(new Fact("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", ASK, model));
-        factListMap.put("isUBNRegistered", 4);
+        factListMap.put("isUBNRegistered", 3);
         
         /*Sheep questions*/
         facts.add(new Fact("hasSheep", YESNO, ksession, "Do you already own any sheep? No (0) Yes (1)", ASK, model));
-        factListMap.put("hasSheep", 5);
+        factListMap.put("hasSheep", 4);
     		// If yes
         	facts.add(new Fact("ownsNSheep", NUMB, ksession, "How many sheep do you own?", model));
-        	factListMap.put("ownsNSheep", 6);
+        	factListMap.put("ownsNSheep", 5);
         facts.add(new Fact("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
-        factListMap.put("Number of Sheep", 7);
+        factListMap.put("Number of Sheep", 6);
+    		// if professional OR if hobby and Number of Sheep wanted > 10
+    		facts.add(new Fact("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
+    		factListMap.put("isKVKRegistered", 7);
         // Purely for slaughter, breeding or both
         /*Land questions*/
         facts.add(new Fact("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
@@ -257,6 +257,12 @@ public class Model implements VariableDefinitions {
 	private static KnowledgeBase readKnowledgeBase() throws Exception {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		kbuilder.add(ResourceFactory.newClassPathResource("Rules.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("ShedRules.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("SheepRules.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("BusinessRules.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("CareRules.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("LandRules.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("MaterialsRules.drl"), ResourceType.DRL);
 		KnowledgeBuilderErrors errors = kbuilder.getErrors();
 	  
 		if (errors.size() > 0) {

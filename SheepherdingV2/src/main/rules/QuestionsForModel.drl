@@ -92,3 +92,111 @@ end
 	// Care
 	Fact("wantsSelfBirth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", ASK, model));
 	Fact("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model); 
+
+////////////////////////////////////////	
+	//ALL OLD RULES
+////////////////////////////////////////
+
+rule "No shed"
+	when
+		$shed : Shed( hasShed == NO);
+		Sheep( $nSheep : totalNSheepWanted);
+	then
+		help(drools,"info");
+		$shed.setAdvice("You should build a shed. Since you want " + $nSheep + 
+		" sheep your shed should be " + $nSheep * 10 + " square meters big");
+end
+	
+// To be profitable one needs to have at least 200 sheep and 70 acres of land (SO THIS SHOULD BE A RULE FOR PROFFESIONAL SHEEP HERDERS. For 200 sheep you need 70 acres of land
+// 200/70 is 2.86 sheep/acre. 
+rule "Has land and wants n sheep"
+	when
+		Sheep( $nSheep : totalNSheepWanted);
+		$land : Land( $landSize : totalLandSize, $landNeeded : landNeeded > 0, $cost : costLandNeeded )
+		
+		
+// Only talking about buying land. How much will leasing land cost rougly?
+	then
+		help(drools,"info");
+		$land.setAdvice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
+		$nSheep + " sheep, and you have " + $landSize + " acres of land (incl. lease)");
+		$land.setAdvice("you need " + $landNeeded + " acres more land." +
+		"An acre of land costs rougly 50.000 euros. Therefore you'll need " + $cost + "euros for buying land.");
+		$land.setAdvice("Also one needs to keep in mind that 300 euros entitlement (i.e. toeslagrechten) need to be paid per used acre of land. " +
+		"In your case this will cost you " + toeslagrechten($nSheep,$landSize) + " euros");
+		//Add values
+		//gvalues.addSheep(sheep.getAnswer());
+		//gvalues.addNeededLand(numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()));
+		//gvalues.addMoneyCost(neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()));
+		//gvalues.addMoneyCost(toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()));
+		
+end
+
+rule "Has enough land and wants n sheep"
+	when
+		Sheep( $nSheep : totalNSheepWanted, $nSheepMore : nSheepMore );
+		$land : Land( $landOwned : ownedLandSize, landNeeded < 0);
+	then
+		help(drools,"info");
+		$land.setAdvice("You have enough land. Per acre you can hold roughly 3 sheep. Since you have" + 
+		$landOwned + " acres, you could get " + $nSheepMore  + " more sheep than the current" + $nSheep + " sheep you wanted");
+end
+
+// When you have more than 5 sheep you need to pay phosphate rights. Prices per sheep differ depending on slaugter, male, female, place and weight (non-slaugther lambs are free). Avg is roughly 90� per sheep. HOW OFTEN??
+rule "Phosphate rights"
+	when
+		// set $nSheep variable to the total sheep wanted answer if that answer is bigger than 5
+		$sheep : Sheep( $nSheep : totalNSheepWanted > 5 );
+		//Land( $cost : costPhosphateRights);
+	then
+		help(drools, "phosphate");  
+		//$sheep.setAdvice("When you have more than five sheep you'll need to pay (90 euros) phosphate rights per sheep. For " 
+		//+ $nSheep + " sheep this will cost " + $cost + " euros per ??");
+end
+
+// multiplying the amount of sheep times the shed size is arbitrary. Only during birthing (some) sheep need to be inside
+rule "Has too small shed and wants n sheep"
+	when
+		Sheep( $nSheep : totalNSheepWanted);
+		$shed : Shed(hasShed == YES, shedTooSmall, $shedSize : curShedSize, $goalCurDiff : goalCurSizeDiff); 
+								// shed too small works (no == true is needed)
+	then
+		help(drools,"info");
+		$shed.setAdvice("You should build another shed or expand your shed. Since you want " + $nSheep + " sheep, and your shed is" 
+		+ $shedSize + " square meters, your shed should be " + $goalCurDiff + " square meters bigger");
+end
+
+// Why should people have a tractor? What are the alternatives? How much does a tractor cost exactly (https://edepot.wur.nl/429700)? 
+rule "Has tractor"
+	when 
+		$materials : Materials(hasTractor == NO);
+	then
+		$materials.setAdvice("You should probably buy a tractor");
+
+end
+
+// In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
+rule "All good"
+	when
+		$business : Business();
+		tractor : Materials(hasTractor == YES);
+		sheep : Sheep(totalNSheepWanted > 200);
+		Land(landIsBigEnough);
+		not Shed(shedTooSmall);
+	then
+		$business.setAdvice("You should be able to start a profitable sheep herding business");
+end
+
+rule "Birth other"
+	when 
+		$care : Care(wantsSelfBirth == OTHER);
+	then
+		$care.setAdvice("Not birthing yourself is okay as a hobby farmer");
+end
+
+rule "Birth self"
+	when 
+		$care : Care(wantsSelfBirth == SELF);
+	then
+		$care.setAdvice("Birthing yourself is interesting as a hobby farmer");
+end

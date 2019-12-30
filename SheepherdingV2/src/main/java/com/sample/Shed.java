@@ -5,7 +5,7 @@ import com.sample.Fact;
 public class Shed implements VariableDefinitions {
 	public int hasShed;
 	public int curShedSize;
-	public int roomForShed; 
+	public double roomForShed; 
 	public int isAllowedToBuild;
 	public int isTallerThan3;
 	public int isPathWiderThan12;
@@ -59,12 +59,12 @@ public class Shed implements VariableDefinitions {
 		
 	}
 
-	public int getRoomForShed() {
+	public double getRoomForShed() {
 		return roomForShed;
 	}
 
 	public void setRoomForShed(Fact roomForShed) {
-		this.roomForShed = roomForShed.getAnswer();
+		this.roomForShed = (double)roomForShed.getAnswer();
 	}
 
 	public int getIsAllowedToBuild() {
@@ -79,16 +79,25 @@ public class Shed implements VariableDefinitions {
 		return isTallerThan3;
 	}
 
-	public void setIsTallerThan3(Fact isTallerThan3) {
-		this.isTallerThan3 = isTallerThan3.getAnswer();
+	public void setIsTallerThan3(Fact height) {
+		if(height.getAnswer() >= 3) {
+			this.isTallerThan3 = YES;
+		} else {
+			this.isTallerThan3 = NO;
+		}
 	}
 
 	public int getIsPathWiderThan12() {
 		return isPathWiderThan12;
 	}
 
-	public void setIsPathWiderThan12(Fact isPathWiderThan12) {
-		this.isPathWiderThan12 = isPathWiderThan12.getAnswer();
+	public void setIsPathWiderThan12(Fact width) {
+		if(width.getAnswer() >= 12) {
+			this.isPathWiderThan12 = YES;
+		} else {
+			this.isPathWiderThan12 = NO;
+		}
+		
 	}
 
 	public int getHasCementFloor() {

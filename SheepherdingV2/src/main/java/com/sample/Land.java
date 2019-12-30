@@ -8,8 +8,8 @@ public class Land implements VariableDefinitions {
 	public int hasLeasedLand;
 	public int leasedLandSize;
 	public int totalLandSize;
+	public int toeslagrecht;
 	public double landNeeded;
-	public int costPhosphateRights;
 	public double costLandNeeded;
 	public boolean landIsBigEnough;
 	public String advice = "<html>";
@@ -41,17 +41,18 @@ public class Land implements VariableDefinitions {
 		/* 2.5 times the amount of sheep is arbitrary*/
 	}
 	
-	public void calcPhosphateRights(int totalNSheepWanted) { 
-		this.costPhosphateRights = 90 * totalNSheepWanted; 
-	} 
-	
 	public void calcCostLandNeeded() { 
 		this.costLandNeeded = 50000 * landNeeded; 
 	} 
 	
-//	public void calcToeslagRecht() {
-//		
-//	}
+	public void calcToeslagRecht() {
+		/*
+		 * This doesn't reflect the fact that people might already have certain pieces
+		 * of land with toeslagrechten
+		 */
+		this.toeslagrecht = (int)landNeeded * 300;
+		
+	}
 
 	/* Getters and setters */
 	public int getHasLand() {
@@ -102,14 +103,6 @@ public class Land implements VariableDefinitions {
 		this.landNeeded = landNeeded;
 	}
 
-	public int getCostPhosphateRights() {
-		return costPhosphateRights;
-	}
-
-	public void setCostPhosphateRights(int costPhosphateRights) {
-		this.costPhosphateRights = costPhosphateRights;
-	}
-
 	public double getCostLandNeeded() {
 		return costLandNeeded;
 	}
@@ -117,6 +110,15 @@ public class Land implements VariableDefinitions {
 	public void setCostLandNeeded(double costLandNeeded) {
 		this.costLandNeeded = costLandNeeded;
 	}
+	
+	public int getToeslagrecht() {
+		return toeslagrecht;
+	}
+
+	public void setToeslagrecht(int toeslagrecht) {
+		this.toeslagrecht = toeslagrecht;
+	}
+
 
 	public String getAdvice() {
 		return advice;
