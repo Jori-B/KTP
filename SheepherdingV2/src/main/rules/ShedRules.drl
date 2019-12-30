@@ -44,7 +44,7 @@ rule "Correct dimensions shed"
 		$shed.setAdvice("Your shed has the correct dimensions for holding the amount of sheep you want.");
 end
 
-rule "Shed big enough, but dimensions off"
+rule "Shed is big enough, but dimensions off"
 	salience 3
 	when
 		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0);
@@ -53,26 +53,35 @@ rule "Shed big enough, but dimensions off"
 		$shed.setAdvice("Your shed is big enough, but ");
 end
 
-rule "Shed big enough, but not tall"
+rule "Shed not big enough and dimensions off"
+	salience 3
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff >= 0);
+		Shed(isTallerThan3 == NO || isPathWiderThan12 == NO);
+	then
+		$shed.setAdvice("Your shed is not big enough, and ");
+end
+
+rule "Shed not tall"
 	salience 2
 	when
-		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isTallerThan3 == NO);
+		$shed : Shed( hasShed == YES, isTallerThan3 == NO);
 	then
 		$shed.setAdvice("your shed is not high enough for a tractor to go through.");
 end
 
-rule "Shed big enough, but not wide"
+rule "Shed not wide"
 	salience 2
 	when
-		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isPathWiderThan12 == NO);
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO);
 	then
 		$shed.setAdvice("your shed in not wide enough for a tractor to go through. Also, space is needed to store food (and materials).");
 end
 
-rule "Shed big enough, but not wide and tall"
+rule "Shed not wide and tall"
 	salience 2
 	when
-		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isPathWiderThan12 == NO, isTallerThan3 == NO);
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO, isTallerThan3 == NO);
 	then
 		$shed.setAdvice("your shed is not wide and high enough for a tractor to go through. Also, space in needed to store food (and materials).");
 end
@@ -80,7 +89,7 @@ end
 rule "Shed not wide, but room"
 	salience 1
 	when
-		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isPathWiderThan12 == NO, isAllowedToBuild == YES, roomForShed > 0);
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO, isAllowedToBuild == YES, roomForShed > 0);
 	then
 		$shed.setAdvice("You could consider widening your shed or expanding your shed, since you are allowed to build.");
 end

@@ -82,8 +82,10 @@ public class Shed implements VariableDefinitions {
 	public void setIsTallerThan3(Fact height) {
 		if(height.getAnswer() >= 3) {
 			this.isTallerThan3 = YES;
+			System.out.println("this.tall = YES;");
 		} else {
 			this.isTallerThan3 = NO;
+			System.out.println("this.tall = NO;");
 		}
 	}
 
@@ -93,9 +95,11 @@ public class Shed implements VariableDefinitions {
 
 	public void setIsPathWiderThan12(Fact width) {
 		if(width.getAnswer() >= 12) {
+			System.out.println("this.isPathWiderThan12 = YES;");
 			this.isPathWiderThan12 = YES;
 		} else {
 			this.isPathWiderThan12 = NO;
+			System.out.println("this.isPathWiderThan12 = NO;");
 		}
 		
 	}
