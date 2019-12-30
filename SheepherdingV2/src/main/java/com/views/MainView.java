@@ -43,7 +43,7 @@ import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class MainView extends JFrame implements VariableDefinitions, ActionListener {
@@ -54,7 +54,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	private JButton btnYes;
 	private JButton btnNo;
 	private JButton enterInput;
-	private JTextArea textArea;
+	private JTextField textArea;
 	private JButton btnPrevious;
 	private JButton btnNext;
 	private JList<String> list;
@@ -95,6 +95,8 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 				break;
 			case NUMB:
 				setVisibilityBtns(true, false);
+				/* Request focus to the textarea so the user can start typing straight away */
+				textArea.requestFocus();
 				break;
 			case MC: // THIS METHOD SHOULD INCLUDE ALL MULTIPLE CHOICE ANSWERS
 				setVisibilityBtns(false, true);
@@ -227,7 +229,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		panel.setBorder(null);
 		panel.setBackground(new Color(47, 79, 79));
 		
-		JTextArea textArea = new JTextArea();
+		JTextField textArea = new JTextField();
 		setTextArea(textArea);
 		textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		textArea.setText("");
@@ -376,11 +378,11 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		this.enterInput = enterInput;
 	}
 
-	private JTextArea getTextArea() {
+	private JTextField getTextArea() {
 		return textArea;
 	}
 
-	private void setTextArea(JTextArea textArea) {
+	private void setTextArea(JTextField textArea) {
 		this.textArea = textArea;
 	}
 
