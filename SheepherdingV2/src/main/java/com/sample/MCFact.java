@@ -2,8 +2,7 @@ package com.sample;
 
 import org.drools.runtime.StatefulKnowledgeSession;
 
-/* THIS DOESN'T WORK YET!!! */
-
+/* Multiple choice facts need different text in their buttons. Therefore this class saves these. */
 public class MCFact extends Fact {
 	public String answerZero;
 	public String answerOne;

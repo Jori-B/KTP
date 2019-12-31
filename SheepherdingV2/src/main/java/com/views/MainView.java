@@ -1,6 +1,6 @@
 package com.views;
 
-import com.sample.Fact;	
+import com.sample.Fact;		
 import com.sample.MCFact;	
 /* This import can be used to reference the Main class, however, there should be another way to initialize the program */
 import com.sample.Model;

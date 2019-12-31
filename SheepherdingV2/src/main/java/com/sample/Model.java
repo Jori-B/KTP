@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Land;		
+import com.sample.Land;			
 import com.sample.Materials;
 import com.sample.Sheep;
 import com.sample.Business;
@@ -28,31 +28,36 @@ import com.views.MainView;
 
 public class Model implements VariableDefinitions {
    
-    public boolean allQuestionsAsked;    
+	/* This isn't used, because we didn't figure out how to access the frame outside of it using WindowBuilder */
+	public MainView frame; 
+	 
     public ArrayList<Fact> facts = new ArrayList<Fact>();
-    public MainView frame;  
+    HashMap<String, Integer> factListMap = new HashMap<String, Integer>();
+    /* When a user changes an answer, making its second order question(s) inapplicable, those questions are entered in this list */
+    public ArrayList<String> itemsToRemove = new ArrayList<String>();
+    
     public Fact currentQuestion;
     public Fact nextQuestion;
     public Fact prevQuestion;
+    public boolean allQuestionsAsked;   
+    
     public StatefulKnowledgeSession ksession;
-	public Land land = new Land();
+    
+    public Land land = new Land();
 	public Materials materials = new Materials();
 	public Sheep sheep = new Sheep();
 	public Business business = new Business();
 	public Shed shed = new Shed();
 	public Care care = new Care();
-	
-	HashMap<String, Integer> factListMap = new HashMap<String, Integer>();
-	
-	public ArrayList<String> itemsToRemove = new ArrayList<String>();
     
     public Model() {
     	createKnowledgeBase();
+    	createWindow(this);
     } 
     
-	public void createKnowledgeBase(/* Model model */) {
+	public void createKnowledgeBase() {
 	    try {
-			// Load up the knowledge base
+			/* Load up the knowledge base */
 			KnowledgeBase kbase = readKnowledgeBase();
 			StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 			setKSession(ksession);
@@ -60,11 +65,6 @@ public class Model implements VariableDefinitions {
 		} catch (Throwable t) {
 			t.printStackTrace();
 	  	}
-	    createWindow(this);
-    }
-    
-    public void setKSession(StatefulKnowledgeSession ksession) {
-    	this.ksession = ksession;
     }
     
     public void findPrevQuestion(Fact current) {
@@ -77,6 +77,10 @@ public class Model implements VariableDefinitions {
     	}
     }
     
+	/*
+	 * Questions are generally ordered. Sometimes questions are inapplicable (when
+	 * askNow == false), so these need to be skipped
+	 */
     public void findNextQuestion(Fact previous) {
     	setPrevQuestion(previous);
     	for (int i = (facts.indexOf(previous) + 1); i < facts.size(); i++) {
@@ -91,13 +95,97 @@ public class Model implements VariableDefinitions {
     	setAllQuestionsAsked(true);
     }
     
+	/*
+	 * Entering all the facts in a HashMap, so they can be accessed easily with
+	 * their name with the getSelectedQuestion(name) method
+	 */
+	public void enterFactsInHash() {
+		for (int i = 0; i < facts.size(); i++) {
+		    factListMap.put(facts.get(i).getName(), i);
+		}
+	}
+	
 	public Fact getSelectedQuestion(String name) {
 	    int index = factListMap.get(name);
 	    System.out.println(index);
 	    return facts.get(index);
 	}
 	
-	public void setAllAnswers() {
+	/*
+	 * In this method all the questions are created. All questions have a name, a
+	 * type (multiple choice, yes/no or number), and a question When ASK is set the
+	 * question is asked independent of the users answers, while if ASK is not set,
+	 * it is a second order question, which is only asked when certain answers are
+	 * given by the users. After setting all the questions, they are entered in a
+	 * HashMap, for easy access based on their identifying name.
+	 */
+    public void createQuestions(StatefulKnowledgeSession ksession, Model model) {		
+    	/*Business Questions*/
+    	facts.add(new MCFact("Hobby or Pro", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally", ASK, model, "Hobby", "Professional"));
+        setCurrentQuestion(facts.get(0));
+        facts.add(new Fact("timeWillingToSpend", NUMB, ksession, "<html> How many days are you willing to spend per week <br> on sheep herding? <html>", ASK, model));
+        facts.add(new Fact("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", ASK, model));
+        facts.add(new Fact("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", ASK, model));
+        
+        /*Sheep questions*/
+        facts.add(new Fact("hasSheep", YESNO, ksession, "Do you already own any sheep? No (0) Yes (1)", ASK, model));
+    		// If yes
+        	facts.add(new Fact("ownsNSheep", NUMB, ksession, "How many sheep do you own?", model));
+        facts.add(new Fact("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
+    		// if professional OR if hobby and Number of Sheep wanted > 10
+    		facts.add(new Fact("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
+        // Purely for slaughter, breeding or both
+        
+    	/*Land questions*/
+        facts.add(new Fact("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
+        	// If yes
+        	facts.add(new Fact("Land Size", NUMB, ksession, "How big is your land (in acres)?", model));
+        facts.add(new Fact("hasLeasedLand", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model));  
+    		// If yes
+        	facts.add(new Fact("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", model));
+        
+        /*Shed questions*/	
+        facts.add(new Fact("Has Shed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
+        	// If yes
+        	facts.add(new Fact("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", model));
+        	facts.add(new Fact("heightShed", NUMB, ksession, "How high is your shed (in meters)?", model));
+        	facts.add(new Fact("widthShed", NUMB, ksession, "How wide is the walking space of shed (in meters)?", model));
+        	facts.add(new Fact("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", model));
+    		facts.add(new Fact("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", model));
+    		facts.add(new Fact("hasLamps", YESNO, ksession, "Does your shed have small lamps where the sheep should birth?", model));
+    		// If shedTooSmall
+    		facts.add(new Fact("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", model));
+    		facts.add(new Fact("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", model));
+        
+        /*Materials questions*/
+        facts.add(new Fact("Has Tractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model));
+    		// If yes
+        	facts.add(new Fact("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", model));
+        	// If more than 10 sheep
+        	facts.add(new Fact("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", model));
+        	facts.add(new Fact("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", model));
+        	facts.add(new Fact("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", model));
+        	facts.add(new Fact("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", model));
+        	facts.add(new Fact("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", model));
+        	facts.add(new Fact("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", model));
+       
+		/* Care questions */
+    	facts.add(new Fact("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", ASK, model));
+    	//factListMap.put("wantsLambs", 29);
+    		facts.add(new MCFact("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", model, "Self", "Someone else"));
+        	/* How much time does it cost to shave yourself? */
+        facts.add(new Fact("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model)); 
+        
+        enterFactsInHash();
+    }
+    
+    
+	/*
+	 * When all the questions are asked, the user cannot change their answers
+	 * anymore, so then the answers can be put in the knowledge base. The classes are filled up and 
+	 * in the Rules.dlr file these classes are entered.
+	 */
+    public void setAllAnswers() {
 		business.setHobSemiPro(getSelectedQuestion("Hobby or Pro"));
 		business.setIsKvKRegistered(getSelectedQuestion("isKVKRegistered"));
 		business.setTimeWillingToSpend(getSelectedQuestion("timeWillingToSpend"));
@@ -130,6 +218,11 @@ public class Model implements VariableDefinitions {
 		care.setWantsLambs(getSelectedQuestion("wantsLambs"));
 		care.setWantsSelfBirth(getSelectedQuestion("Self Birth"));
 		care.setWantsSelfShave(getSelectedQuestion("wantsSelfShave"));
+		
+		createAdviceWindow();
+	}
+    
+    private void createAdviceWindow() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -140,100 +233,6 @@ public class Model implements VariableDefinitions {
 				}
 			}
 		});
-	}
-    
-    public void createQuestions(StatefulKnowledgeSession ksession, Model model) {
-    	
-//    	ksession.setGlobal("gvalues", new Values());
-		
-    	/*Business Questions*/
-    	facts.add(new MCFact("Hobby or Pro", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally", ASK, model, "Hobby", "Professional"));
-        factListMap.put("Hobby or Pro", 0);
-        setCurrentQuestion(facts.get(0));
-        facts.add(new Fact("timeWillingToSpend", NUMB, ksession, "<html> How many days are you willing to spend per week <br> on sheep herding? <html>", ASK, model));
-        factListMap.put("timeWillingToSpend", 1);
-        facts.add(new Fact("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", ASK, model));
-        factListMap.put("moneyToSpend", 2);
-        facts.add(new Fact("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", ASK, model));
-        factListMap.put("isUBNRegistered", 3);
-        
-        /*Sheep questions*/
-        facts.add(new Fact("hasSheep", YESNO, ksession, "Do you already own any sheep? No (0) Yes (1)", ASK, model));
-        factListMap.put("hasSheep", 4);
-    		// If yes
-        	facts.add(new Fact("ownsNSheep", NUMB, ksession, "How many sheep do you own?", model));
-        	factListMap.put("ownsNSheep", 5);
-        facts.add(new Fact("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
-        factListMap.put("Number of Sheep", 6);
-    		// if professional OR if hobby and Number of Sheep wanted > 10
-    		facts.add(new Fact("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
-    		factListMap.put("isKVKRegistered", 7);
-        // Purely for slaughter, breeding or both
-        /*Land questions*/
-        facts.add(new Fact("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
-        factListMap.put("Has Land", 8);
-        	// If yes
-        	facts.add(new Fact("Land Size", NUMB, ksession, "How big is your land (in acres)?", model));
-        	factListMap.put("Land Size", 9);
-        facts.add(new Fact("hasLeasedLand", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model));  
-        factListMap.put("hasLeasedLand", 10);
-    		// If yes
-        	facts.add(new Fact("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", model));
-        	factListMap.put("leasedLandSize", 11);
-        
-        /*Shed questions*/	
-        facts.add(new Fact("Has Shed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
-        factListMap.put("Has Shed", 12);
-        	// If yes
-        	facts.add(new Fact("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", model));
-        	factListMap.put("Shed Size", 13);
-        	facts.add(new Fact("heightShed", NUMB, ksession, "How high is your shed (in meters)?", model));
-        	factListMap.put("heightShed", 14);
-        	facts.add(new Fact("widthShed", NUMB, ksession, "How wide is the walking space of shed (in meters)?", model));
-        	factListMap.put("widthShed", 15);
-        	facts.add(new Fact("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", model));
-        	factListMap.put("hasFertilizer", 16);
-    		facts.add(new Fact("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", model));
-    		factListMap.put("hasFlatFloor", 17);
-    		facts.add(new Fact("hasLamps", YESNO, ksession, "Does your shed have small lamps where the sheep should birth?", model));
-    		factListMap.put("hasLamps", 18);
-    		// If shedTooSmall
-    		facts.add(new Fact("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", model));
-    		factListMap.put("isAllowedToBuild", 19);
-    		facts.add(new Fact("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", model));
-    		factListMap.put("roomForShed", 20);
-        
-        /*Materials questions*/
-        facts.add(new Fact("Has Tractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model));
-        factListMap.put("Has Tractor", 21);
-    		// If yes
-        	facts.add(new Fact("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", model));
-        	factListMap.put("horsePowerTractor", 22);
-        	// If more than 10 sheep
-        	facts.add(new Fact("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", model));
-        	factListMap.put("hasMower", 23);
-        	facts.add(new Fact("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", model));
-        	factListMap.put("hasShaker", 24);
-        	facts.add(new Fact("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", model));
-        	factListMap.put("hasRaker", 25);
-        	facts.add(new Fact("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", model));
-        	factListMap.put("hasHayPacker", 26);
-        	facts.add(new Fact("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", model));
-        	factListMap.put("hasFertilizerSpreader", 27);
-        	facts.add(new Fact("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", model));
-        	factListMap.put("hasMestGatherer", 28);
-        
-		/* Care questions */
-        // Do you even want to let the sheep birth
-    	facts.add(new Fact("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", ASK, model));
-    	factListMap.put("wantsLambs", 29);
-    		facts.add(new MCFact("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", model, "Self", "Someone else"));
-    		factListMap.put("Self Birth", 30);
-        	/* How much time does it cost to shave yourself? */
-        facts.add(new Fact("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model)); 
-        factListMap.put("wantsSelfShave", 31);
-//        System.out.println("The Result is ");
-//        ((Values) ksession.getGlobal("gvalues")).test();
     }
 
 	private static void createWindow(Model model) {
@@ -275,6 +274,10 @@ public class Model implements VariableDefinitions {
 		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 		return kbase;
 	}
+	
+    public void setKSession(StatefulKnowledgeSession ksession) {
+    	this.ksession = ksession;
+    }
 	
     public void setFacts(ArrayList<Fact> facts) {
     	this.facts = facts;
@@ -328,6 +331,7 @@ public class Model implements VariableDefinitions {
     
     public void setAllQuestionsAsked(boolean allAsked) {
     	this.allQuestionsAsked = allAsked;
+		/* Needs to be inserted in the knowledge base, so the Rules.dlr file knows about it */
     	ksession.insert(this);
     	ksession.fireAllRules();
     }

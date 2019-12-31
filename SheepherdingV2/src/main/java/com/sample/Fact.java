@@ -12,6 +12,7 @@ public class Fact implements VariableDefinitions {
    
 	private int questionType;
 	private String question;
+	/* We don't use open answer, since it is hard to create rules for that */
 	private String openAnswer;
 	private int answer;
 	private String warning;
@@ -56,18 +57,19 @@ public class Fact implements VariableDefinitions {
 	public void setAnswer(int numbUserIn) {
 		this.answer = numbUserIn;
 		this.setStatus(HASANSWER);
-		// Updating here so that previous questions with changed answers update in the rules file
+		/* Updating here so that previous questions with changed answers update in the rules file */
 		this.factHandle = ksession.insert(this);
 		ksession.update(factHandle, this);
 		ksession.fireAllRules();
 	}
 
 	public void setAnswer(String userInput) {
-		try {       	 	
+		try {       
+			/* It's a YESNO, MC or NUMB question */
         	if(questionType != OPEN) { 
         		int numbUserIn = Integer.parseInt(userInput); 
 	       	 	setAnswer(numbUserIn);
-       	 	} else { /* It's a YESNO, MC or NUMB question */    	 	
+       	 	} else {     	 	
        	 		setOpenAnswer(userInput);
        	 	}
        	 	
@@ -90,7 +92,8 @@ public class Fact implements VariableDefinitions {
    
 	public void setAskNow(boolean askNow) {
 		this.askNow = askNow;
-		/* If the user changed his answer, askNow will be set to false. The frame needs to know which question is
+		/* 
+		 * If the user changed his answer, askNow will be set to false. The frame needs to know which question is
 		 * no no longer to be asked
 		 */
 		if(!askNow) {

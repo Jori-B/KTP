@@ -1,4 +1,4 @@
-package com.sample;
+package com.other;
 
 public class Advice {
 	

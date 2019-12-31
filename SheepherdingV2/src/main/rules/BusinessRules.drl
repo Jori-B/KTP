@@ -1,5 +1,5 @@
 #created on: Dec 30, 2019
-package cityrules
+package sheeprules
 
 // list any import classes here.
 import com.sample.Model;
@@ -10,13 +10,9 @@ import com.sample.Business;
 import com.sample.Land;
 import com.sample.Care;
 import com.sample.Sheep;
-import com.sample.Values;
 
 import com.sample.Main; 
 import function com.sample.Utility.help;
-import function com.sample.ValueCalculations.*;
-
-import function com.sample.Advice.*;
 
 dialect "java"
 
