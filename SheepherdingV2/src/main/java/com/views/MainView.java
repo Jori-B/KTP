@@ -5,6 +5,7 @@ import com.sample.MCFact;
 /* This import can be used to reference the Main class, however, there should be another way to initialize the program */
 import com.sample.Model;
 import com.sample.VariableDefinitions;
+import com.sun.org.apache.xpath.internal.operations.Number;
 
 import java.awt.BorderLayout;		
 import java.awt.EventQueue;
@@ -20,6 +21,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -43,6 +45,8 @@ import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -412,11 +416,18 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	
 	private void enterTextAreaAnswer() {
 		Fact current = model.getCurrentQuestion();
+		String input = textArea.getText().replace("\n", "");
 		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
-		current.setAnswer(textArea.getText().replace("\n", ""));
-		/* Empty the user input text in the field after 'enter' is pressed */
-		textArea.setText("");
-		prepareNextQuestion(current);
+		try {       
+        	int numbUserIn = Integer.parseInt(input); 
+        	current.setAnswer(numbUserIn);
+    		/* Empty the user input text in the field after 'enter' is pressed */
+    		textArea.setText("");
+    		prepareNextQuestion(current);
+        } catch (NumberFormatException e) {
+        	JOptionPane.showMessageDialog(new JFrame(), "\'" + input + "\' is not a number.\nPlease try again", "Incorrect input", JOptionPane.PLAIN_MESSAGE);
+        	textArea.setText("");
+        }
 	}
 	
 	private void createEvents() {

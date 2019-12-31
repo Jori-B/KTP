@@ -62,24 +62,6 @@ public class Fact implements VariableDefinitions {
 		ksession.update(factHandle, this);
 		ksession.fireAllRules();
 	}
-
-	public void setAnswer(String userInput) {
-		try {       
-			/* It's a YESNO, MC or NUMB question */
-        	if(questionType != OPEN) { 
-        		int numbUserIn = Integer.parseInt(userInput); 
-	       	 	setAnswer(numbUserIn);
-       	 	} else {     	 	
-       	 		setOpenAnswer(userInput);
-       	 	}
-       	 	
-        } catch (NumberFormatException e) {
-        	System.out.println(userInput);
-        	e.printStackTrace();
-        	setWarning("Not a number, please try again.");
-            System.out.println(getWarning());
-        }
-	}
 	
 	public int getAnswer() {
 		return answer;
