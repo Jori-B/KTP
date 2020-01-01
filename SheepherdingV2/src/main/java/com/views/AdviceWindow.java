@@ -19,24 +19,7 @@ import java.awt.Toolkit;
 public class AdviceWindow extends JFrame {
 
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					AdviceWindow frame = new AdviceWindow();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-
+	
 	/**
 	 * Create the frame.
 	 */
@@ -53,7 +36,8 @@ public class AdviceWindow extends JFrame {
 		JLayeredPane layeredPane = new JLayeredPane();
 		contentPane.add(layeredPane);
 		
-		centreWindow(this);
+		// Centre the window
+		this.setLocationRelativeTo(null);
 		
 		JLabel lblBusiness = new JLabel("Business");
 		lblBusiness.setHorizontalAlignment(SwingConstants.LEFT);
@@ -150,14 +134,7 @@ public class AdviceWindow extends JFrame {
 		lblCareAdvice.setOpaque(true);
 		lblCareAdvice.setBackground(Color.WHITE);
 		lblCareAdvice.setText(careAdvice);
+		
 		layeredPane.add(lblCareAdvice);
-	}
-	
-	/* Center the frame in the center of the screen */
-	public static void centreWindow(AdviceWindow frame) {
-	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-	    frame.setLocation(x, y);
 	}
 }

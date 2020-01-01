@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Fact;
+import com.sample.Question;
 
 public class Materials implements VariableDefinitions {
 	public int hasTractor;
@@ -21,7 +21,7 @@ public class Materials implements VariableDefinitions {
 		return hasTractor;
 	}
 
-	public void setHasTractor(Fact hasTractor) {
+	public void setHasTractor(Question hasTractor) {
 		this.hasTractor = hasTractor.getAnswer();
 	}
 
@@ -29,7 +29,7 @@ public class Materials implements VariableDefinitions {
 		return horsePowerTractor;
 	}
 
-	public void setHorsePowerTractor(Fact horsePowerTractor) {
+	public void setHorsePowerTractor(Question horsePowerTractor) {
 		this.horsePowerTractor = horsePowerTractor.getAnswer();
 	}
 
@@ -37,7 +37,7 @@ public class Materials implements VariableDefinitions {
 		return hasMower;
 	}
 
-	public void setHasMower(Fact hasMower) {
+	public void setHasMower(Question hasMower) {
 		this.hasMower = hasMower.getAnswer();
 	}
 
@@ -45,7 +45,7 @@ public class Materials implements VariableDefinitions {
 		return hasShaker;
 	}
 
-	public void setHasShaker(Fact hasShaker) {
+	public void setHasShaker(Question hasShaker) {
 		this.hasShaker = hasShaker.getAnswer();
 	}
 
@@ -53,7 +53,7 @@ public class Materials implements VariableDefinitions {
 		return hasRaker;
 	}
 
-	public void setHasRaker(Fact hasRaker) {
+	public void setHasRaker(Question hasRaker) {
 		this.hasRaker = hasRaker.getAnswer();
 	}
 
@@ -61,7 +61,7 @@ public class Materials implements VariableDefinitions {
 		return hasHayPacker;
 	}
 
-	public void setHasHayPacker(Fact hasHayPacker) {
+	public void setHasHayPacker(Question hasHayPacker) {
 		this.hasHayPacker = hasHayPacker.getAnswer();
 	}
 
@@ -69,7 +69,7 @@ public class Materials implements VariableDefinitions {
 		return hasFertilizerSpreader;
 	}
 
-	public void setHasFertilizerSpreader(Fact hasFertilizerSpreader) {
+	public void setHasFertilizerSpreader(Question hasFertilizerSpreader) {
 		this.hasFertilizerSpreader = hasFertilizerSpreader.getAnswer();
 	}
 
@@ -77,7 +77,7 @@ public class Materials implements VariableDefinitions {
 		return hasMestGatherer;
 	}
 
-	public void setHasMestGatherer(Fact hasMestGatherer) {
+	public void setHasMestGatherer(Question hasMestGatherer) {
 		this.hasMestGatherer = hasMestGatherer.getAnswer();
 	}
 

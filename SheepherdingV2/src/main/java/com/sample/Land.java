@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Fact;
+import com.sample.Question;
 
 public class Land implements VariableDefinitions {
 	public int hasLand;
@@ -59,7 +59,7 @@ public class Land implements VariableDefinitions {
 		return hasLand;
 	}
 
-	public void setHasLand(Fact hasLand) {
+	public void setHasLand(Question hasLand) {
 		this.hasLand = hasLand.getAnswer();
 	}
 
@@ -67,7 +67,7 @@ public class Land implements VariableDefinitions {
 		return ownedLandSize;
 	}
 
-	public void setOwnedLandSize(Fact ownedLandSize) {
+	public void setOwnedLandSize(Question ownedLandSize) {
 		this.ownedLandSize = ownedLandSize.getAnswer();
 	}
 
@@ -75,7 +75,7 @@ public class Land implements VariableDefinitions {
 		return hasLeasedLand;
 	}
 
-	public void setHasLeasedLand(Fact hasLeasedLand) {
+	public void setHasLeasedLand(Question hasLeasedLand) {
 		this.hasLeasedLand = hasLeasedLand.getAnswer();
 	}
 
@@ -83,7 +83,7 @@ public class Land implements VariableDefinitions {
 		return leasedLandSize;
 	}
 
-	public void setLeasedLandSize(Fact leasedLandSize) {
+	public void setLeasedLandSize(Question leasedLandSize) {
 		this.leasedLandSize = leasedLandSize.getAnswer();
 	}
 

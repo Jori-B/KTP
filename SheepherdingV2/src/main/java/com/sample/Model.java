@@ -31,14 +31,14 @@ public class Model implements VariableDefinitions {
 	/* This isn't used, because we didn't figure out how to access the frame outside of it using WindowBuilder */
 	public MainView frame; 
 	 
-    public ArrayList<Fact> facts = new ArrayList<Fact>();
+    public ArrayList<Question> questions = new ArrayList<Question>();
     HashMap<String, Integer> factListMap = new HashMap<String, Integer>();
     /* When a user changes an answer, making its second order question(s) inapplicable, those questions are entered in this list */
     public ArrayList<String> itemsToRemove = new ArrayList<String>();
     
-    public Fact currentQuestion;
-    public Fact nextQuestion;
-    public Fact prevQuestion;
+    public Question currentQuestion;
+    public Question nextQuestion;
+    public Question prevQuestion;
     public boolean allQuestionsAsked;   
     
     public StatefulKnowledgeSession ksession;
@@ -67,9 +67,9 @@ public class Model implements VariableDefinitions {
 	  	}
     }
     
-    public void findPrevQuestion(Fact current) {
-    	for (int i = (facts.indexOf(current) - 1); i >= 0; i--) {
-    		Fact prevFact = facts.get(i);
+    public void findPrevQuestion(Question current) {
+    	for (int i = (questions.indexOf(current) - 1); i >= 0; i--) {
+    		Question prevFact = questions.get(i);
     		if(prevFact.askNow == true) {
     			setPrevQuestion(prevFact);
     			return;
@@ -81,10 +81,10 @@ public class Model implements VariableDefinitions {
 	 * Questions are generally ordered. Sometimes questions are inapplicable (when
 	 * askNow == false), so these need to be skipped
 	 */
-    public void findNextQuestion(Fact previous) {
+    public void findNextQuestion(Question previous) {
     	setPrevQuestion(previous);
-    	for (int i = (facts.indexOf(previous) + 1); i < facts.size(); i++) {
-    		Fact nextFact = facts.get(i);
+    	for (int i = (questions.indexOf(previous) + 1); i < questions.size(); i++) {
+    		Question nextFact = questions.get(i);
     		if(nextFact.askNow == true) {
     			setCurrentQuestion(nextFact);
     			return;
@@ -100,15 +100,15 @@ public class Model implements VariableDefinitions {
 	 * their name with the getSelectedQuestion(name) method
 	 */
 	public void enterFactsInHash() {
-		for (int i = 0; i < facts.size(); i++) {
-		    factListMap.put(facts.get(i).getName(), i);
+		for (int i = 0; i < questions.size(); i++) {
+		    factListMap.put(questions.get(i).getName(), i);
 		}
 	}
 	
-	public Fact getSelectedQuestion(String name) {
+	public Question getSelectedQuestion(String name) {
 	    int index = factListMap.get(name);
 	    System.out.println(index);
-	    return facts.get(index);
+	    return questions.get(index);
 	}
 	
 	/*
@@ -121,60 +121,60 @@ public class Model implements VariableDefinitions {
 	 */
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {		
     	/*Business Questions*/
-    	facts.add(new MCFact("Hobby or Pro", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally", ASK, model, "Hobby", "Professional"));
-        setCurrentQuestion(facts.get(0));
-        facts.add(new Fact("timeWillingToSpend", NUMB, ksession, "<html> How many days are you willing to spend per week <br> on sheep herding? <html>", ASK, model));
-        facts.add(new Fact("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", ASK, model));
-        facts.add(new Fact("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", ASK, model));
+    	questions.add(new MCQuestion("Hobby or Pro", MC, ksession, "Do you want do farming as a (0) hobby or (1) professionally", ASK, model, "Hobby", "Professional"));
+        setCurrentQuestion(questions.get(0));
+        questions.add(new Question("timeWillingToSpend", NUMB, ksession, "<html> How many days are you willing to spend per week <br> on sheep herding? <html>", ASK, model));
+        questions.add(new Question("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", ASK, model));
+        questions.add(new Question("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", ASK, model));
         
         /*Sheep questions*/
-        facts.add(new Fact("hasSheep", YESNO, ksession, "Do you already own any sheep? No (0) Yes (1)", ASK, model));
+        questions.add(new Question("hasSheep", YESNO, ksession, "Do you already own any sheep? No (0) Yes (1)", ASK, model));
     		// If yes
-        	facts.add(new Fact("ownsNSheep", NUMB, ksession, "How many sheep do you own?", model));
-        facts.add(new Fact("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
+        	questions.add(new Question("ownsNSheep", NUMB, ksession, "How many sheep do you own?", model));
+        questions.add(new Question("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
     		// if professional OR if hobby and Number of Sheep wanted > 10
-    		facts.add(new Fact("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
+    		questions.add(new Question("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
         // Purely for slaughter, breeding or both
         
     	/*Land questions*/
-        facts.add(new Fact("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
+        questions.add(new Question("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
         	// If yes
-        	facts.add(new Fact("Land Size", NUMB, ksession, "How big is your land (in acres)?", model));
-        facts.add(new Fact("hasLeasedLand", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model));  
+        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in acres)?", model));
+        questions.add(new Question("hasLeasedLand", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model));  
     		// If yes
-        	facts.add(new Fact("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", model));
+        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", model));
         
         /*Shed questions*/	
-        facts.add(new Fact("Has Shed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
+        questions.add(new Question("Has Shed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
         	// If yes
-        	facts.add(new Fact("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", model));
-        	facts.add(new Fact("heightShed", NUMB, ksession, "How high is your shed (in meters)?", model));
-        	facts.add(new Fact("widthShed", NUMB, ksession, "How wide is the walking space of shed (in meters)?", model));
-        	facts.add(new Fact("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", model));
-    		facts.add(new Fact("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", model));
-    		facts.add(new Fact("hasLamps", YESNO, ksession, "Does your shed have small lamps where the sheep should birth?", model));
+        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", model));
+        	questions.add(new Question("heightShed", NUMB, ksession, "How high is your shed (in meters)?", model));
+        	questions.add(new Question("widthShed", NUMB, ksession, "How wide is the walking space of shed (in meters)?", model));
+        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", model));
+    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", model));
+    		questions.add(new Question("hasLamps", YESNO, ksession, "Does your shed have small lamps where the sheep should birth?", model));
     		// If shedTooSmall
-    		facts.add(new Fact("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", model));
-    		facts.add(new Fact("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", model));
+    		questions.add(new Question("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", model));
+    		questions.add(new Question("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", model));
         
         /*Materials questions*/
-        facts.add(new Fact("Has Tractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model));
+        questions.add(new Question("Has Tractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model));
     		// If yes
-        	facts.add(new Fact("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", model));
+        	questions.add(new Question("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", model));
         	// If more than 10 sheep
-        	facts.add(new Fact("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", model));
-        	facts.add(new Fact("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", model));
-        	facts.add(new Fact("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", model));
-        	facts.add(new Fact("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", model));
-        	facts.add(new Fact("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", model));
-        	facts.add(new Fact("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", model));
+        	questions.add(new Question("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", model));
+        	questions.add(new Question("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", model));
+        	questions.add(new Question("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", model));
+        	questions.add(new Question("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", model));
+        	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", model));
+        	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", model));
        
 		/* Care questions */
-    	facts.add(new Fact("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", ASK, model));
+    	questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", ASK, model));
     	//factListMap.put("wantsLambs", 29);
-    		facts.add(new MCFact("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", model, "Self", "Someone else"));
+    		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", model, "Self", "Someone else"));
         	/* How much time does it cost to shave yourself? */
-        facts.add(new Fact("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model)); 
+        questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model)); 
         
         enterFactsInHash();
     }
@@ -279,12 +279,12 @@ public class Model implements VariableDefinitions {
     	this.ksession = ksession;
     }
 	
-    public void setFacts(ArrayList<Fact> facts) {
-    	this.facts = facts;
+    public void setFacts(ArrayList<Question> questions) {
+    	this.questions = questions;
     }
     
-    public ArrayList<Fact> getFacts() {
-    	return facts;
+    public ArrayList<Question> getFacts() {
+    	return questions;
     }
     
 	public void setRemoveFromList(String itemToRemove) {
@@ -301,27 +301,27 @@ public class Model implements VariableDefinitions {
 		}
 	}
     
-    public void setCurrentQuestion(Fact fact) {
-    	this.currentQuestion = fact;
+    public void setCurrentQuestion(Question question) {
+    	this.currentQuestion = question;
     }
     
-    public Fact getCurrentQuestion() {
+    public Question getCurrentQuestion() {
     	return currentQuestion;
     }
     
-    public void setPrevQuestion(Fact fact) {
-    	this.prevQuestion = fact;
+    public void setPrevQuestion(Question question) {
+    	this.prevQuestion = question;
     }
     
-    public Fact getPrevQuestion() {
+    public Question getPrevQuestion() {
     	return prevQuestion;
     }
     
-    public void setNextQuestion(Fact fact) {
-    	this.nextQuestion = fact;
+    public void setNextQuestion(Question question) {
+    	this.nextQuestion = question;
     }
     
-    public Fact getNextQuestion() {
+    public Question getNextQuestion() {
     	return nextQuestion;
     }
     

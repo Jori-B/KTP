@@ -3,7 +3,7 @@ package com.sample;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
 
-public class Fact implements VariableDefinitions {
+public class Question implements VariableDefinitions {
 	public StatefulKnowledgeSession ksession;
 	public Model model;
     
@@ -22,7 +22,7 @@ public class Fact implements VariableDefinitions {
 	private int status = NOANSWER;
 	   
 	/* This instantiation of a Fact is only used for shedTooSmall, MAYBE CONVERTING TO AN INT IS NOT THE CORRECT WAY */   
-	public Fact(String name, double answer) {
+	public Question(String name, double answer) {
 		this.name = name;
 		this.answer = (int)answer;
 	}
@@ -31,7 +31,7 @@ public class Fact implements VariableDefinitions {
 	 * This instantiation is used for second order questions that need to be asked
 	 * only when certain questions have certain answers
 	 */
-	public Fact(String name, int questionType, StatefulKnowledgeSession ksession, String question, Model model) {
+	public Question(String name, int questionType, StatefulKnowledgeSession ksession, String question, Model model) {
 		this.name = name;
 		this.questionType = questionType;
 		this.ksession = ksession;
@@ -42,7 +42,7 @@ public class Fact implements VariableDefinitions {
 	}
    
 	/* This instantiation is used for questions that always need to be asked */
-	public Fact(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model) {
+	public Question(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model) {
 		this.name = name;
 		this.questionType = questionType;
 		this.ksession = ksession;

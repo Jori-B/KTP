@@ -3,7 +3,7 @@ package sheeprules
 
 // list any import classes here.
 import com.sample.Model;
-import com.sample.Fact;
+import com.sample.Question;
 import com.sample.Shed;
 import com.sample.Materials;
 import com.sample.Business;
@@ -16,11 +16,11 @@ import function com.sample.Utility.help;
 
 dialect "java"
 
-// Second order questions, which need to be asked using the Fact class. 
+// Second order questions, which need to be asked using the Question class. 
 rule "Wants more than 10 sheep"
 	when
-		Fact(Fact.Name == "Number of Sheep", answer > 10);
-		kvk : Fact(Fact.Name =="isKVKRegistered", askNow == false); 
+		Question(Question.Name == "Number of Sheep", answer > 10);
+		kvk : Question(Question.Name =="isKVKRegistered", askNow == false); 
 	then
 		help(drools,"he wants to be a pro");
 		modify(kvk) { askQuestion(true) }
@@ -30,8 +30,8 @@ end
 // to take into account that this second order questions aren't asked then!
 rule "Wants more than 10 sheep changed"
 	when
-		Fact(Fact.Name == "Number of Sheep", answer < 10);
-		kvk : Fact(Fact.Name =="isKVKRegistered", askNow == true); 
+		Question(Question.Name == "Number of Sheep", answer < 10);
+		kvk : Question(Question.Name =="isKVKRegistered", askNow == true); 
 	then
 		help(drools,"he has changed wanting more than 10 sheep");
 		modify(kvk) { setAskNow(false) }
@@ -40,8 +40,8 @@ end
 rule "Has land"
 	when
 	// status is a variable that's not yet used, but I thought it might be useful to have such a variable to prevent rules from firing twice...
-		land : Fact(Fact.Name == "Has Land", answer == YES);
-		nmLandSize : Fact(Fact.Name == "Land Size", askNow == false);
+		land : Question(Question.Name == "Has Land", answer == YES);
+		nmLandSize : Question(Question.Name == "Land Size", askNow == false);
 	then
 		help(drools,"info");
 		modify(nmLandSize) { askQuestion(true) }
@@ -50,8 +50,8 @@ end
 
 rule "Has land has changed"
 	when
-		land : Fact(Fact.Name == "Has Land", answer == NO);
-		nmLandSize : Fact(Fact.Name == "Land Size", askNow == true);
+		land : Question(Question.Name == "Has Land", answer == NO);
+		nmLandSize : Question(Question.Name == "Land Size", askNow == true);
 	then
 		help(drools,"info");
 		modify(nmLandSize) { setAskNow(false) }
@@ -59,8 +59,8 @@ end
 
 rule "Has leased land"
 	when
-		land : Fact(Fact.Name == "hasLeasedLand", answer == YES);
-		nmLandSize : Fact(Fact.Name == "leasedLandSize", askNow == false);
+		land : Question(Question.Name == "hasLeasedLand", answer == YES);
+		nmLandSize : Question(Question.Name == "leasedLandSize", askNow == false);
 	then
 		help(drools,"info");
 		modify(nmLandSize) { askQuestion(true) }
@@ -68,8 +68,8 @@ end
 
 rule "Has leased land has changed"
 	when
-		land : Fact(Fact.Name == "hasLeasedLand", answer == NO);
-		nmLandSize : Fact(Fact.Name == "leasedLandSize", askNow == true);
+		land : Question(Question.Name == "hasLeasedLand", answer == NO);
+		nmLandSize : Question(Question.Name == "leasedLandSize", askNow == true);
 	then
 		help(drools,"info");
 		modify(nmLandSize) { setAskNow(false) }
@@ -77,8 +77,8 @@ end
 
 rule "Has sheep"
 	when
-		ownsSheep : Fact(Fact.Name == "hasSheep", answer == YES);
-		nSheepOwned : Fact(Fact.Name =="ownsNSheep", askNow == false); 
+		ownsSheep : Question(Question.Name == "hasSheep", answer == YES);
+		nSheepOwned : Question(Question.Name =="ownsNSheep", askNow == false); 
 	then
 		help(drools,"he has sheep");
 		modify(nSheepOwned) { askQuestion(true) }
@@ -86,8 +86,8 @@ end
 
 rule "Has sheep changed"
 	when
-		ownsSheep : Fact(Fact.Name == "hasSheep", answer == NO);
-		nSheepOwned : Fact(Fact.Name =="ownsNSheep", askNow == true); 
+		ownsSheep : Question(Question.Name == "hasSheep", answer == NO);
+		nSheepOwned : Question(Question.Name =="ownsNSheep", askNow == true); 
 	then
 		help(drools,"he has changed having a sheep");
 		modify(nSheepOwned) { setAskNow(false) }
@@ -95,14 +95,14 @@ end
 
 rule "Has shed"
 	when
-		ownsShed : Fact(Fact.Name == "Has Shed", answer == YES);
-		nmShedSize: Fact(Fact.Name =="Shed Size", askNow == false); 
+		ownsShed : Question(Question.Name == "Has Shed", answer == YES);
+		nmShedSize: Question(Question.Name =="Shed Size", askNow == false); 
 
-        heightShed: Fact(Fact.Name == "heightShed"); 
-        widthShed: Fact(Fact.Name == "widthShed");
-        hasFertilizer: Fact(Fact.Name == "hasFertilizer"); 
-    	hasFlatFloor: Fact(Fact.Name == "hasFlatFloor");
-    	hasLamps: Fact(Fact.Name == "hasLamps");
+        heightShed: Question(Question.Name == "heightShed"); 
+        widthShed: Question(Question.Name == "widthShed");
+        hasFertilizer: Question(Question.Name == "hasFertilizer"); 
+    	hasFlatFloor: Question(Question.Name == "hasFlatFloor");
+    	hasLamps: Question(Question.Name == "hasLamps");
 	then
 		help(drools,"he has a shed");
 		modify(nmShedSize) { askQuestion(true) }
@@ -115,14 +115,14 @@ end
 
 rule "Has shed changed"
 	when
-		ownsShed : Fact(Fact.Name == "Has Shed", answer == NO);
-		nmShedSize: Fact(Fact.Name =="Shed Size", askNow == true);
+		ownsShed : Question(Question.Name == "Has Shed", answer == NO);
+		nmShedSize: Question(Question.Name =="Shed Size", askNow == true);
 		
-		heightShed: Fact(Fact.Name == "heightShed"); 
-        widthShed: Fact(Fact.Name == "widthShed");
-        hasFertilizer: Fact(Fact.Name == "hasFertilizer"); 
-    	hasFlatFloor: Fact(Fact.Name == "hasFlatFloor");
-    	hasLamps: Fact(Fact.Name == "hasLamps");
+		heightShed: Question(Question.Name == "heightShed"); 
+        widthShed: Question(Question.Name == "widthShed");
+        hasFertilizer: Question(Question.Name == "hasFertilizer"); 
+    	hasFlatFloor: Question(Question.Name == "hasFlatFloor");
+    	hasLamps: Question(Question.Name == "hasLamps");
 	then
 		help(drools,"he has changed having a shed");
 		modify(nmShedSize) { setAskNow(false) }
@@ -136,20 +136,20 @@ end
 
 rule "Calc goal current shed size difference"
 	when
-		Fact(Fact.Name == "Number of Sheep", $nSheep : answer > 0);
-		$nmShedSize: Fact(Fact.Name =="Shed Size", answer > 0);
+		Question(Question.Name == "Number of Sheep", $nSheep : answer > 0);
+		$nmShedSize: Question(Question.Name =="Shed Size", answer > 0);
 
 	then 
-		insert (new Fact("goalSize", $nSheep * 2.5));
+		insert (new Question("goalSize", $nSheep * 2.5));
 		help(drools,"calculating shed goal size");
 		
 end
 
 rule "Shed too small" 
 	when
-		(Fact(Fact.Name == "Shed Size", $curSize : answer > 0) and Fact(Fact.Name == "goalSize", answer > $curSize)) or Fact(Fact.Name == "Has Shed", answer == NO);
-		isAllowedToBuild : Fact(Fact.Name == "isAllowedToBuild", askNow == false);
-		roomForShed : Fact(Fact.Name == "roomForShed", askNow == false);
+		(Question(Question.Name == "Shed Size", $curSize : answer > 0) and Question(Question.Name == "goalSize", answer > $curSize)) or Question(Question.Name == "Has Shed", answer == NO);
+		isAllowedToBuild : Question(Question.Name == "isAllowedToBuild", askNow == false);
+		roomForShed : Question(Question.Name == "roomForShed", askNow == false);
 	then
 		help(drools,"it recognizes shed too small");
 		modify(isAllowedToBuild) { askQuestion(true) }
@@ -159,24 +159,24 @@ end // THERE SHOULD ALSO BE A RULE FOR WHEN THE USER CHANGES HIS ANSWERS, i.e. w
 // The only third order question so far
 rule "Is allowed to build, ask how much room there is to build"
 	when
-		Fact(Fact.Name == "isAllowedToBuild", answer == YES);
-		roomForShed : Fact(Fact.Name == "roomForShed", askNow == false);
+		Question(Question.Name == "isAllowedToBuild", answer == YES);
+		roomForShed : Question(Question.Name == "roomForShed", askNow == false);
 	then	
 		modify(roomForShed) { askQuestion(true) }
 end
 
 rule "Is allowed to build changed"
 	when
-		Fact(Fact.Name == "isAllowedToBuild", answer == NO);
-		roomForShed : Fact(Fact.Name == "roomForShed", askNow == true);
+		Question(Question.Name == "isAllowedToBuild", answer == NO);
+		roomForShed : Question(Question.Name == "roomForShed", askNow == true);
 	then	
 		modify(roomForShed) { setAskNow(false) }
 end
 
 rule "Has tractor, ask horsepower"
 	when
-		hasTractor : Fact(Fact.Name == "Has Tractor", answer == YES);
-		horsePowerTractor : Fact(Fact.Name =="horsePowerTractor", askNow == false); 
+		hasTractor : Question(Question.Name == "Has Tractor", answer == YES);
+		horsePowerTractor : Question(Question.Name =="horsePowerTractor", askNow == false); 
 	then
 		help(drools,"he has tractor");
 		modify(horsePowerTractor) { askQuestion(true) }
@@ -184,8 +184,8 @@ end
 
 rule "Has tractor changed"
 	when
-		hasTractor : Fact(Fact.Name == "Has Tractor", answer == NO);
-		horsePowerTractor : Fact(Fact.Name =="horsePowerTractor", askNow == true); 
+		hasTractor : Question(Question.Name == "Has Tractor", answer == NO);
+		horsePowerTractor : Question(Question.Name =="horsePowerTractor", askNow == true); 
 	then
 		help(drools,"he has changed having a tractor");
 		modify(horsePowerTractor) { setAskNow(false) }
@@ -194,14 +194,14 @@ end
 // Probably needs to be adjusted to include the amount of owned sheep
 rule "Amount of sheep changed bigger than 10, ask machine questions"
 	when
-		nSheep : Fact(Fact.Name =="Number of Sheep", answer > 10); 
+		nSheep : Question(Question.Name =="Number of Sheep", answer > 10); 
 		
-		hasShaker : Fact(Fact.Name == "hasShaker", askNow == false);
-		hasRaker : Fact(Fact.Name == "hasRaker", askNow == false);
-		hasMower : Fact(Fact.Name == "hasMower", askNow == false);
-		hasMestGatherer : Fact(Fact.Name == "hasMestGatherer", askNow == false);
-		hasHayPacker : Fact(Fact.Name == "hasHayPacker", askNow == false);
-		hasFertilizerSpreader : Fact(Fact.Name == "hasFertilizerSpreader", askNow == false);
+		hasShaker : Question(Question.Name == "hasShaker", askNow == false);
+		hasRaker : Question(Question.Name == "hasRaker", askNow == false);
+		hasMower : Question(Question.Name == "hasMower", askNow == false);
+		hasMestGatherer : Question(Question.Name == "hasMestGatherer", askNow == false);
+		hasHayPacker : Question(Question.Name == "hasHayPacker", askNow == false);
+		hasFertilizerSpreader : Question(Question.Name == "hasFertilizerSpreader", askNow == false);
 	then
 		help(drools,"don't ask machine q's");
 		modify(hasShaker) { askQuestion(true) }
@@ -215,14 +215,14 @@ end
 
 rule "Amount of sheep changed, don't ask machine questions"
 	when
-		nSheep : Fact(Fact.Name =="Number of Sheep", answer < 10); 
+		nSheep : Question(Question.Name =="Number of Sheep", answer < 10); 
 		
-		hasShaker : Fact(Fact.Name == "hasShaker", askNow == true);
-		hasRaker : Fact(Fact.Name == "hasRaker", askNow == true);
-		hasMower : Fact(Fact.Name == "hasMower", askNow == true);
-		hasMestGatherer : Fact(Fact.Name == "hasMestGatherer", askNow == true);
-		hasHayPacker : Fact(Fact.Name == "hasHayPacker", askNow == true);
-		hasFertilizerSpreader : Fact(Fact.Name == "hasFertilizerSpreader", askNow == true);
+		hasShaker : Question(Question.Name == "hasShaker", askNow == true);
+		hasRaker : Question(Question.Name == "hasRaker", askNow == true);
+		hasMower : Question(Question.Name == "hasMower", askNow == true);
+		hasMestGatherer : Question(Question.Name == "hasMestGatherer", askNow == true);
+		hasHayPacker : Question(Question.Name == "hasHayPacker", askNow == true);
+		hasFertilizerSpreader : Question(Question.Name == "hasFertilizerSpreader", askNow == true);
 	then
 		help(drools,"don't ask machine q's");
 		modify(hasShaker) { setAskNow(false) }
@@ -236,8 +236,8 @@ end
 
 rule "Wants lambs"
 	when
-		wantsLambs : Fact(Fact.Name == "wantsLambs", answer == YES);
-		selfBirth : Fact(Fact.Name =="Self Birth", askNow == false); 
+		wantsLambs : Question(Question.Name == "wantsLambs", answer == YES);
+		selfBirth : Question(Question.Name =="Self Birth", askNow == false); 
 	then
 		help(drools,"He wants lambs");
 		modify(selfBirth) { askQuestion(true) }
@@ -245,8 +245,8 @@ end
 
 rule "Wants lambs changed"
 	when
-		wantsLambs : Fact(Fact.Name == "wantsLambs", answer == NO);
-		selfBirth : Fact(Fact.Name =="Self Birth", askNow == true); 
+		wantsLambs : Question(Question.Name == "wantsLambs", answer == NO);
+		selfBirth : Question(Question.Name =="Self Birth", askNow == true); 
 	then
 		help(drools,"he has changed wanting lambs");
 		modify(selfBirth) { setAskNow(false) }

@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Fact;
+import com.sample.Question;
 
 public class Sheep implements VariableDefinitions {
 	public int hasSheep;
@@ -50,7 +50,7 @@ public class Sheep implements VariableDefinitions {
 		return hasSheep;
 	}
 
-	public void setHasSheep(Fact hasSheep) {
+	public void setHasSheep(Question hasSheep) {
 		this.hasSheep = hasSheep.getAnswer();
 	}
 
@@ -58,7 +58,7 @@ public class Sheep implements VariableDefinitions {
 		return ownsNSheep;
 	}
 
-	public void setOwnsNSheep(Fact ownsNSheep) {
+	public void setOwnsNSheep(Question ownsNSheep) {
 		this.ownsNSheep = ownsNSheep.getAnswer();
 	}
 
@@ -66,7 +66,7 @@ public class Sheep implements VariableDefinitions {
 		return desiresNMoreSheep;
 	}
 
-	public void setDesiresNMoreSheep(Fact desiresNMoreSheep) {
+	public void setDesiresNMoreSheep(Question desiresNMoreSheep) {
 		this.desiresNMoreSheep = desiresNMoreSheep.getAnswer();
 	}
 
@@ -90,7 +90,7 @@ public class Sheep implements VariableDefinitions {
 		return maxAmountSheep;
 	}
 
-	public void setMaxAmountSheep(Fact maxAmountSheep) {
+	public void setMaxAmountSheep(Question maxAmountSheep) {
 		this.maxAmountSheep = maxAmountSheep.getAnswer();
 	}
 

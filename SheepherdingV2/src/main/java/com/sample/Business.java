@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Fact;
+import com.sample.Question;
 
 public class Business implements VariableDefinitions {
 	public int hobSemiPro;
@@ -22,7 +22,7 @@ public class Business implements VariableDefinitions {
 		return hobSemiPro;
 	}
 
-	public void setHobSemiPro(Fact hobSemiPro) {
+	public void setHobSemiPro(Question hobSemiPro) {
 		this.hobSemiPro = hobSemiPro.getAnswer();
 	}
 
@@ -30,7 +30,7 @@ public class Business implements VariableDefinitions {
 		return isUBNRegistered;
 	}
 
-	public void setIsUBNRegistered(Fact isUBNRegistered) {
+	public void setIsUBNRegistered(Question isUBNRegistered) {
 		this.isUBNRegistered = isUBNRegistered.getAnswer();
 	}
 
@@ -38,7 +38,7 @@ public class Business implements VariableDefinitions {
 		return isKvKRegistered;
 	}
 
-	public void setIsKvKRegistered(Fact isKvKRegistered) {
+	public void setIsKvKRegistered(Question isKvKRegistered) {
 		this.isKvKRegistered = isKvKRegistered.getAnswer();
 	}
 
@@ -46,7 +46,7 @@ public class Business implements VariableDefinitions {
 		return moneyToSpend;
 	}
 
-	public void setMoneyToSpend(Fact moneyToSpend) {
+	public void setMoneyToSpend(Question moneyToSpend) {
 		this.moneyToSpend = moneyToSpend.getAnswer();
 	}
 
@@ -54,7 +54,7 @@ public class Business implements VariableDefinitions {
 		return timeWillingToSpend;
 	}
 
-	public void setTimeWillingToSpend(Fact timeWillingToSpend) {
+	public void setTimeWillingToSpend(Question timeWillingToSpend) {
 		this.timeWillingToSpend = timeWillingToSpend.getAnswer();
 	}
 

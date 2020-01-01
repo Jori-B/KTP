@@ -1,7 +1,7 @@
 package com.views;
 
-import com.sample.Fact;		
-import com.sample.MCFact;	
+import com.sample.Question;		
+import com.sample.MCQuestion;	
 /* This import can be used to reference the Main class, however, there should be another way to initialize the program */
 import com.sample.Model;
 import com.sample.VariableDefinitions;
@@ -70,6 +70,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		setModel(model);
 		initComponents();
 		createEvents();
+		this.setLocationRelativeTo(null);
 	}
 	
 	private void setVisibilityBtns(boolean textFields, boolean yesNoBtns) {
@@ -79,7 +80,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		btnNo.setVisible(yesNoBtns);
 	}
 	
-	private void setButtons(Fact current) {
+	private void setButtons(Question current) {
 		removeRedundantItemsFromList();
 		/* If it's the first fact, there is no previous question, so button disabled */
 		if (model.getFacts().indexOf(current) == 0) {
@@ -106,7 +107,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 				setVisibilityBtns(false, true);
 				//System.out.println(current.getName());
 				/* Cast the current fact to a MCFact so the getAnswer methods can be used */
-				MCFact currentMC = (MCFact)model.getSelectedQuestion(current.getName());
+				MCQuestion currentMC = (MCQuestion)model.getSelectedQuestion(current.getName());
 				btnNo.setText(currentMC.getAnswerZero());
 				btnYes.setText(currentMC.getAnswerOne());
 				break;
@@ -116,14 +117,14 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	}
 	
 	private void preparePrevQuestion() {
-		Fact prev = model.getPrevQuestion();
+		Question prev = model.getPrevQuestion();
 		model.setCurrentQuestion(prev);
 		model.findPrevQuestion(prev);
 		setButtons(prev);
 		lblQuestion.setText(prev.getQuestion());
 	}
 	
-	private void setAnsweredButtonColors(Fact current) {
+	private void setAnsweredButtonColors(Question current) {
 		// If the fact has an answer, color that answer green
 		if(current.getStatus() == HASANSWER) {
 			// If the current question has an answer, the user should be able to go to the next question
@@ -143,7 +144,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 			/* If we're going to do MC with three answer options, then this needs to change */
 			// For number questions, assuming the user generally answers with higher than 1
 			// Might also be possible to just say else???
-			if(current.getAnswer() > 1) {
+			if(current.getQuestionType() == NUMB && current.getAnswer() > 0) {
 				enterInput.setBackground(Color.GREEN);
 				textArea.setText(Integer.toString(current.getAnswer()));
 			} else {
@@ -162,14 +163,14 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		
 	}
 	
-	private void setCurQuestion(Fact current) {
+	private void setCurQuestion(Question current) {
 		setButtons(current);
 		lblQuestion.setText(current.getQuestion());
 		addToList(current);
 	}
 	
 	/* Add the element to the left hand side list, only if the item is not in the list yet */
-	private void addToList(Fact current) {
+	private void addToList(Question current) {
 		if(!answeredQs.contains(current.getName())) {
 			answeredQs.addElement(current.getName());
 		}
@@ -189,10 +190,11 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	}
 
 	
-	private void prepareNextQuestion(Fact previous) {
+	private void prepareNextQuestion(Question previous) {
 		model.findNextQuestion(previous);
-		Fact current = model.getCurrentQuestion();
+		Question current = model.getCurrentQuestion();
 		if(current != previous) {
+			textArea.setText("");
 			setCurQuestion(current);
 		} else { 
 			setVisibilityBtns(false, false);
@@ -415,7 +417,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	}
 	
 	private void enterTextAreaAnswer() {
-		Fact current = model.getCurrentQuestion();
+		Question current = model.getCurrentQuestion();
 		String input = textArea.getText().replace("\n", "");
 		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
 		try {       
@@ -434,7 +436,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		// TODO Auto-generated method stub
 		btnYes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Fact current = model.getCurrentQuestion();
+				Question current = model.getCurrentQuestion();
 				current.setAnswer(YES);
 				prepareNextQuestion(current);
 			}
@@ -442,7 +444,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		
 		btnNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Fact current = model.getCurrentQuestion();
+				Question current = model.getCurrentQuestion();
 				current.setAnswer(NO);
 				prepareNextQuestion(current);
 			}
@@ -503,7 +505,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 				 * has no answer
 				 */
 	              textArea.setText("");
-	              Fact current = model.getSelectedQuestion(list.getSelectedValue());
+	              Question current = model.getSelectedQuestion(list.getSelectedValue());
 
 	              model.setCurrentQuestion(current);
 	              setCurQuestion(current);

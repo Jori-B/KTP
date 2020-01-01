@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Fact;
+import com.sample.Question;
 
 public class Care implements VariableDefinitions {
 	public int wantsLambs;
@@ -29,7 +29,7 @@ public class Care implements VariableDefinitions {
 		return wantsLambs;
 	}
 
-	public void setWantsLambs(Fact wantsLambs) {
+	public void setWantsLambs(Question wantsLambs) {
 		this.wantsSelfShave = wantsLambs.getAnswer();
 	}
 	
@@ -37,7 +37,7 @@ public class Care implements VariableDefinitions {
 		return wantsSelfShave;
 	}
 
-	public void setWantsSelfShave(Fact wantsSelfShave) {
+	public void setWantsSelfShave(Question wantsSelfShave) {
 		this.wantsSelfShave = wantsSelfShave.getAnswer();
 	}
 
@@ -45,7 +45,7 @@ public class Care implements VariableDefinitions {
 		return wantsSelfBirth;
 	}
 
-	public void setWantsSelfBirth(Fact wantsSelfBirth) {
+	public void setWantsSelfBirth(Question wantsSelfBirth) {
 		this.wantsSelfBirth = wantsSelfBirth.getAnswer();
 	}
 

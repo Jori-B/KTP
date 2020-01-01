@@ -1,6 +1,6 @@
 package com.sample;
 
-import com.sample.Fact;
+import com.sample.Question;
 
 public class Shed implements VariableDefinitions {
 	public int hasShed;
@@ -46,7 +46,7 @@ public class Shed implements VariableDefinitions {
 		return hasShed;
 	}
 
-	public void setHasShed(Fact hasShed) {
+	public void setHasShed(Question hasShed) {
 		this.hasShed = hasShed.getAnswer();
 	}
 
@@ -54,7 +54,7 @@ public class Shed implements VariableDefinitions {
 		return curShedSize;
 	}
 
-	public void setCurShedSize(Fact curShedSize) {
+	public void setCurShedSize(Question curShedSize) {
 		this.curShedSize = curShedSize.getAnswer();
 		
 	}
@@ -63,7 +63,7 @@ public class Shed implements VariableDefinitions {
 		return roomForShed;
 	}
 
-	public void setRoomForShed(Fact roomForShed) {
+	public void setRoomForShed(Question roomForShed) {
 		this.roomForShed = (double)roomForShed.getAnswer();
 	}
 
@@ -71,7 +71,7 @@ public class Shed implements VariableDefinitions {
 		return isAllowedToBuild;
 	}
 
-	public void setIsAllowedToBuild(Fact isAllowedToBuild) {
+	public void setIsAllowedToBuild(Question isAllowedToBuild) {
 		this.isAllowedToBuild = isAllowedToBuild.getAnswer();
 	}
 
@@ -79,7 +79,7 @@ public class Shed implements VariableDefinitions {
 		return isTallerThan3;
 	}
 
-	public void setIsTallerThan3(Fact height) {
+	public void setIsTallerThan3(Question height) {
 		if(height.getAnswer() >= 3) {
 			this.isTallerThan3 = YES;
 			System.out.println("this.tall = YES;");
@@ -93,7 +93,7 @@ public class Shed implements VariableDefinitions {
 		return isPathWiderThan12;
 	}
 
-	public void setIsPathWiderThan12(Fact width) {
+	public void setIsPathWiderThan12(Question width) {
 		if(width.getAnswer() >= 12) {
 			System.out.println("this.isPathWiderThan12 = YES;");
 			this.isPathWiderThan12 = YES;
@@ -108,7 +108,7 @@ public class Shed implements VariableDefinitions {
 		return hasCementFloor;
 	}
 
-	public void setHasCementFloor(Fact hasCementFloor) {
+	public void setHasCementFloor(Question hasCementFloor) {
 		this.hasCementFloor = hasCementFloor.getAnswer();
 	}
 
@@ -116,7 +116,7 @@ public class Shed implements VariableDefinitions {
 		return hasFertilizerPlate;
 	}
 
-	public void setHasFertilizerPlate(Fact hasFertilizerPlate) {
+	public void setHasFertilizerPlate(Question hasFertilizerPlate) {
 		this.hasFertilizerPlate = hasFertilizerPlate.getAnswer();
 	}
 
@@ -124,7 +124,7 @@ public class Shed implements VariableDefinitions {
 		return hasAdjustableFences;
 	}
 
-	public void setHasAdjustableFences(Fact hasAdjustableFences) {
+	public void setHasAdjustableFences(Question hasAdjustableFences) {
 		this.hasAdjustableFences = hasAdjustableFences.getAnswer();
 	}
 
@@ -132,7 +132,7 @@ public class Shed implements VariableDefinitions {
 		return hasLamps;
 	}
 
-	public void setHasLamps(Fact hasLamps) {
+	public void setHasLamps(Question hasLamps) {
 		this.hasLamps = hasLamps.getAnswer();
 	}
 
@@ -156,7 +156,7 @@ public class Shed implements VariableDefinitions {
 		return problem;
 	}
 
-	public void setProblem(Fact problem) {
+	public void setProblem(Question problem) {
 		this.problem = problem.getAnswer();
 	}
 
