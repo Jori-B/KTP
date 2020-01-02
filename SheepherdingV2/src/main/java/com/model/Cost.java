@@ -37,6 +37,7 @@ public class Cost implements VariableDefinitions {
 	public int shedCost;
 	/* Bouwkosten Stal voor vleeskalveren (traditioneel metselwerk) 350,90 per m2 
 	 * http://decentrale.regelgeving.overheid.nl/cvdr/Images/Haaren/i263531.pdf */
+	public int fertilizerPlateCost = 20000;
 	
 	public int totalCost;
 	public int totalEarnings;
@@ -280,6 +281,14 @@ public class Cost implements VariableDefinitions {
 
 	public int getShedCost() {
 		return shedCost;
+	}
+	
+	public int getFertilizerPlateCost() {
+		return fertilizerPlateCost;
+	}
+	
+	public void setFertilizerPlateCost(int fertilizerPlateCost) {
+		this.fertilizerPlateCost = fertilizerPlateCost;
 	}
 	
 }

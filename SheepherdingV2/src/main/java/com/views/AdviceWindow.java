@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.model.Cost;
+import com.model.Model;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -26,7 +27,7 @@ public class AdviceWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AdviceWindow(Cost costs, String businessAdvice, String sheepAdvice, String landAdvice, String shedAdvice, String materialsAdvice, String careAdvice) {
+	public AdviceWindow(Cost costs, Model model, String businessAdvice, String sheepAdvice, String landAdvice, String shedAdvice, String materialsAdvice, String careAdvice) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1017, 1029);
@@ -42,7 +43,7 @@ public class AdviceWindow extends JFrame {
 		// Centre the window
 		this.setLocationRelativeTo(null);
 		
-		createCostTable(costs);
+		createCostTable(costs, model);
 		
 		JLabel lblBusiness = new JLabel("Business");
 		lblBusiness.setHorizontalAlignment(SwingConstants.LEFT);
@@ -144,11 +145,11 @@ public class AdviceWindow extends JFrame {
 		
 	}
 	
-	private void createCostTable(Cost costs) {
+	private void createCostTable(Cost costs, Model model) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CostTable costWindow = new CostTable(costs);
+					CostTable costWindow = new CostTable(costs, model);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

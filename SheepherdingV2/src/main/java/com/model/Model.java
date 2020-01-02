@@ -242,14 +242,14 @@ public class Model implements VariableDefinitions {
     }
     
     public void giveAdviceAndTable() {
-    	createAdviceWindow(costs);
+    	createAdviceWindow(costs, this);
     }
     
-    private void createAdviceWindow(Cost costs) {
+    private void createAdviceWindow(Cost costs, Model model) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AdviceWindow frame = new AdviceWindow(costs, business.getAdvice(), sheep.getAdvice(), land.getAdvice(), shed.getAdvice(), materials.getAdvice(), care.getAdvice());
+					AdviceWindow frame = new AdviceWindow(costs, model, business.getAdvice(), sheep.getAdvice(), land.getAdvice(), shed.getAdvice(), materials.getAdvice(), care.getAdvice());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

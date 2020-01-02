@@ -10,7 +10,7 @@ public class Land implements VariableDefinitions {
 	public int totalLandSize;
 	public int toeslagrecht;
 	public double landNeeded;
-	public double costLandNeeded;
+	public double costLandNeeded; /* This is the cost when you buy instead of lease */
 	public boolean landIsBigEnough;
 	public String advice = "<html>";
 	
