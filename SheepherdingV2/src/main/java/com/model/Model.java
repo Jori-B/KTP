@@ -48,6 +48,7 @@ public class Model implements VariableDefinitions {
 	public Business business = new Business();
 	public Shed shed = new Shed();
 	public Care care = new Care();
+	public Cost costs; 
     
     public Model() {
     	createKnowledgeBase();
@@ -106,7 +107,6 @@ public class Model implements VariableDefinitions {
 	
 	public Question getSelectedQuestion(String name) {
 	    int index = factListMap.get(name);
-	    System.out.println(index);
 	    return questions.get(index);
 	}
 	
@@ -129,49 +129,49 @@ public class Model implements VariableDefinitions {
         /*Sheep questions*/
         questions.add(new Question("hasSheep", YESNO, ksession, "Do you already own any sheep? No (0) Yes (1)", ASK, model));
     		// If yes
-        	questions.add(new Question("ownsNSheep", NUMB, ksession, "How many sheep do you own?", model));
+        	questions.add(new Question("ownsNSheep", NUMB, ksession, "How many sheep do you own?", DONTASK, model));
         questions.add(new Question("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
     		// if professional OR if hobby and Number of Sheep wanted > 10
-    		questions.add(new Question("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", model));
+    		questions.add(new Question("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", DONTASK, model));
         // Purely for slaughter, breeding or both
         
     	/*Land questions*/
         questions.add(new Question("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)? No (0) Yes (1)", ASK, model));
         	// If yes
-        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in acres)?", model));
+        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in acres)?", DONTASK, model));
         questions.add(new Question("hasLeasedLand", YESNO, ksession, "Are you leasing land? No (0) Yes (1)", ASK, model));  
     		// If yes
-        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", model));
+        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", DONTASK, model));
         
         /*Shed questions*/	
         questions.add(new Question("Has Shed", YESNO, ksession, "Do you have a shed? No (0) Yes (1)", ASK, model));    
         	// If yes
-        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", model));
-        	questions.add(new Question("heightShed", NUMB, ksession, "How high is your shed (in meters)?", model));
-        	questions.add(new Question("widthShed", NUMB, ksession, "How wide is the walking space of shed (in meters)?", model));
-        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", model));
-    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", model));
-    		questions.add(new Question("hasLamps", YESNO, ksession, "Does your shed have small lamps where the sheep should birth?", model));
+        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", DONTASK, model));
+        	questions.add(new Question("heightShed", NUMB, ksession, "How high is your shed (in meters)?", DONTASK, model));
+        	questions.add(new Question("widthShed", NUMB, ksession, "How wide is the walking space of shed (in meters)?", DONTASK, model));
+        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", DONTASK, model));
+    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", DONTASK, model));
+    		questions.add(new Question("hasLamps", YESNO, ksession, "Does your shed have small lamps where the sheep should birth?", DONTASK, model));
     		// If shedTooSmall
-    		questions.add(new Question("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", model));
-    		questions.add(new Question("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", model));
+    		questions.add(new Question("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", DONTASK, model));
+    		questions.add(new Question("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", DONTASK, model));
         
         /*Materials questions*/
         questions.add(new Question("Has Tractor", YESNO, ksession, "Do you have have a tractor? No (0) Yes (1)", ASK, model));
     		// If yes
-        	questions.add(new Question("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", model));
+        	questions.add(new Question("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", DONTASK, model));
         	// If more than 10 sheep
-        	questions.add(new Question("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", model));
-        	questions.add(new Question("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", model));
-        	questions.add(new Question("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", model));
-        	questions.add(new Question("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", model));
-        	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", model));
-        	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", model));
+        	questions.add(new Question("hasMower", YESNO, ksession, "Do you have have a mower? No (0) Yes (1)", DONTASK, model));
+        	questions.add(new Question("hasShaker", YESNO, ksession, "Do you have have a shaker? No (0) Yes (1)", DONTASK, model));
+        	questions.add(new Question("hasRaker", YESNO, ksession, "Do you have have a raker? No (0) Yes (1)", DONTASK, model));
+        	questions.add(new Question("hasHayPacker", YESNO, ksession, "Do you have have a hay packer? No (0) Yes (1)", DONTASK, model));
+        	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader? No (0) Yes (1)", DONTASK, model));
+        	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer? No (0) Yes (1)", DONTASK, model));
        
 		/* Care questions */
     	questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", ASK, model));
     	//factListMap.put("wantsLambs", 29);
-    		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", model, "Self", "Someone else"));
+    		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing (0) yourself or (1) let someone else do it?", DONTASK, model, "Self", "Someone else"));
         	/* How much time does it cost to shave yourself? */
         questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself? No (0) Yes (1)", ASK, model)); 
         
@@ -192,7 +192,7 @@ public class Model implements VariableDefinitions {
 		business.setIsUBNRegistered(getSelectedQuestion("isUBNRegistered"));
 		sheep.setHasSheep(getSelectedQuestion("hasSheep"));
 		sheep.setOwnsNSheep(getSelectedQuestion("ownsNSheep"));
-		sheep.setDesiresNMoreSheep(getSelectedQuestion("Number of Sheep"));
+		sheep.setTotalNSheepWanted(getSelectedQuestion("Number of Sheep"));
 		land.setHasLand(getSelectedQuestion("Has Land"));
 		land.setOwnedLandSize(getSelectedQuestion("Land Size"));
 		land.setHasLeasedLand(getSelectedQuestion("hasLeasedLand"));
@@ -218,14 +218,38 @@ public class Model implements VariableDefinitions {
 		care.setWantsSelfBirth(getSelectedQuestion("Self Birth"));
 		care.setWantsSelfShave(getSelectedQuestion("wantsSelfShave"));
 		
-		createAdviceWindow();
 	}
     
-    private void createAdviceWindow() {
+    public void enterCosts() {
+    	this.costs = new Cost(sheep.totalNSheepWanted, sheep.ownsNSheep);
+    	/* Materials */
+    	costs.setTractorCost(materials.getNeedsNewTractor(), materials.getNeedsBigTractor());
+    	costs.setGrassMaterialCost(materials.hasMower, materials.hasShaker, materials.hasRaker);
+    	/* Land */
+    	costs.setToeslagrechtCost(land.toeslagrecht);
+    	costs.setLandNeededCost(land.landNeeded); 
+    	/* Care */
+    	costs.setShaveOtherCost(care.shaveOtherCost);
+    	costs.setWoolEarnings(care.woolEarnings);
+    	/* Sheep */
+    	costs.setPhosphateRightsCost(sheep.costPhosphateRights);
+    	/* Calculate totals */
+    	costs.setTotalCost();
+    	costs.setTotalEarnings();
+    	costs.setMoneyNeeded();
+    	business.setMoneyNeeded(costs.getMoneyNeeded());
+    	costs.setMoneyToSpend(business.getMoneyToSpend());
+    }
+    
+    public void giveAdviceAndTable() {
+    	createAdviceWindow(costs);
+    }
+    
+    private void createAdviceWindow(Cost costs) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AdviceWindow frame = new AdviceWindow(business.getAdvice(), sheep.getAdvice(), land.getAdvice(), shed.getAdvice(), materials.getAdvice(), care.getAdvice());
+					AdviceWindow frame = new AdviceWindow(costs, business.getAdvice(), sheep.getAdvice(), land.getAdvice(), shed.getAdvice(), materials.getAdvice(), care.getAdvice());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

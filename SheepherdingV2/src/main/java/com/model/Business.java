@@ -10,12 +10,19 @@ public class Business implements VariableDefinitions {
 	public int timeWillingToSpend;
 	public int timeRequired; // This is not calculated yet
 	//public int slaugBreedBoth;
-	public int moneyNeeded; // This is not calculated yet
-	//public int hasEnoughMoney;
+	public int moneyNeeded; 
+	public boolean hasEnoughMoney;
 	public String advice = "<html>";
 	
 	public Business() {
 		
+	}
+	
+	public void setMoneyNeeded(int moneyNeeded) {
+		this.moneyNeeded = moneyNeeded;
+		if (moneyNeeded >= moneyToSpend) {
+			this.hasEnoughMoney = true;
+		} else { this.hasEnoughMoney = false; }
 	}
 
 	public int getHobSemiPro() {
@@ -68,8 +75,6 @@ public class Business implements VariableDefinitions {
 		} else {
 			this.advice = this.advice + "<br>" +  advice;
 		}
-	}
-	
-	
+	}	
 	
 }

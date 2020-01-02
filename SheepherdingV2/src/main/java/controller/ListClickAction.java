@@ -1,12 +1,8 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JList;
 
 import com.model.Model;
@@ -35,11 +31,9 @@ public class ListClickAction {
 	              System.out.println("Index Selected: " + index);
 	              String s = (String) list.getSelectedValue();
 	              System.out.println("Value Selected: " + s.toString()); 
-	              /* Empty text area here, because you might go to the current questions, which has no answer */
-	              frame.emptyTextArea();
 	              Question current = model.getSelectedQuestion(list.getSelectedValue());
 	              model.setCurrentQuestion(current);
-	              frame.setCurQuestion(current);
+	              frame.updateGUI(current, true);
 	          }
 	    });
 	}

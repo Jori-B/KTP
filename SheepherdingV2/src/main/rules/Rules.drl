@@ -269,7 +269,6 @@ rule "All questions asked, sheep calculations"
 	when
 		Model(allQuestionsAsked == true, $sheep : getSheep());
 	then 
-		$sheep.calcTotalSheep();
 		$sheep.calcPriceSheep();
 		$sheep.calcPhosphateRights();
 		insert( $sheep );
@@ -293,7 +292,7 @@ end
 rule "All questions asked, care calculations"
 	salience 8
 	when
-		Model(allQuestionsAsked == true, $care : getCare(), $shed : getShed());
+		Model(allQuestionsAsked == true, $care : getCare(), $shed : getShed(), $materials : getMaterials());
 		Sheep( $nSheep : totalNSheepWanted );
 	then 
 		$care.calcShaveOtherCost($nSheep);	
@@ -303,6 +302,9 @@ rule "All questions asked, care calculations"
 		$shed.calcGoalSize($nSheep);
 		$shed.calcGoalCurSizeDiff();
 		insert($shed);
+		
+		$materials.setNeedsBigTractor($nSheep);
+		insert($materials);
 end
 
 
@@ -310,12 +312,14 @@ end
 rule "All questions asked"
 	salience 1
 	when
-		model : Model(allQuestionsAsked == true);
+		model : Model(allQuestionsAsked == true, $business : getBusiness());
 	then 
 		//advice(model.getSheep().getSheepCost());
 		help(drools, "all q asked, sheep, land, care, shed inserted");
-		insert( model.getBusiness() );
-		insert( model.getMaterials() );
+		model.enterCosts();
+		insert($business);
+		
+		model.giveAdviceAndTable();
 end 
 
 

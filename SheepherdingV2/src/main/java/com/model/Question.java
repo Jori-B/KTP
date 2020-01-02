@@ -20,26 +20,6 @@ public class Question implements VariableDefinitions {
 	public FactHandle factHandle;
 	
 	private int status = NOANSWER;
-	   
-	/* This instantiation of a Fact is only used for shedTooSmall, MAYBE CONVERTING TO AN INT IS NOT THE CORRECT WAY */   
-	public Question(String name, double answer) {
-		this.name = name;
-		this.answer = (int)answer;
-	}
-	
-	/*
-	 * This instantiation is used for second order questions that need to be asked
-	 * only when certain questions have certain answers
-	 */
-	public Question(String name, int questionType, StatefulKnowledgeSession ksession, String question, Model model) {
-		this.name = name;
-		this.questionType = questionType;
-		this.ksession = ksession;
-		this.question = question;
-		this.status = NOANSWER;
-		this.model = model;
-		this.factHandle = ksession.insert(this);
-	}
    
 	/* This instantiation is used for questions that always need to be asked */
 	public Question(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model) {
@@ -50,7 +30,17 @@ public class Question implements VariableDefinitions {
 		this.model = model;
 		this.askNow = askNow;
 		this.status = NOANSWER;
-//		ksession.insert(this);
+		/* Second order questions need to be entered into the knowledge base directly, so the QuestionRules.dlr file knows about 
+		 * these questions and can ask them (only) when certain questions have certain answers*/
+		if(!askNow) {
+			this.factHandle = ksession.insert(this);
+		}
+	}
+	
+	/* This instantiation of a Fact is only used for shedTooSmall, MAYBE CONVERTING TO AN INT IS NOT THE CORRECT WAY */   
+	public Question(String name, double answer) {
+		this.name = name;
+		this.answer = (int)answer;
 	}
    
 	/* These answers are used in the Rules.dlr file */

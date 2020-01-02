@@ -37,8 +37,6 @@ public class TextAreaAction {
 		try {       
         	int numbUserIn = Integer.parseInt(input); 
         	current.setAnswer(numbUserIn);
-    		/* Empty the user input text in the field after 'enter' is pressed */
-        	frame.emptyTextArea();
     		frame.prepareNextQuestion(current);
         } catch (NumberFormatException e) {
         	JOptionPane.showMessageDialog(new JFrame(), "\'" + input + "\' is not a number.\nPlease try again", "Incorrect input", JOptionPane.PLAIN_MESSAGE);

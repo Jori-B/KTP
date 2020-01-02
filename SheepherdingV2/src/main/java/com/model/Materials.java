@@ -5,6 +5,8 @@ import com.model.Question;
 public class Materials implements VariableDefinitions {
 	public int hasTractor;
 	public int horsePowerTractor;
+	public boolean needsBigTractor;
+	public boolean needsNewTractor;
 	public int hasMower;
 	public int hasShaker;
 	public int hasRaker;
@@ -16,7 +18,42 @@ public class Materials implements VariableDefinitions {
 	public Materials() {
 		
 	}
+	
+	public void setNeedsBigTractor(int totalNSheepWanted) {
+		if (totalNSheepWanted >= 100) {
+			this.needsBigTractor = true;
+		} else {
+			this.needsBigTractor = false;
+		}
+		setNeedsNewTractor(totalNSheepWanted);
+	}
+	
+	public void setNeedsNewTractor(int totalNSheepWanted) {
+		if (hasTractor == YES) {
+			if (needsBigTractor && horsePowerTractor < 50) {
+				System.out.println("Needs a tractor less than 50 hp ");
+				this.needsNewTractor = true;
+			} else { this.needsNewTractor = false; System.out.println("No need for a tractor "); }	
+		
+		} else if (totalNSheepWanted > 10) {
+			System.out.println("Needs a tractor ");
+			this.needsNewTractor = true;
+		} else {
+			/* So little sheep wanted, no tractor needed */
+			this.needsNewTractor = false;
+			System.out.println("No need for a tractor < 10 sheep");
+		}
 
+	}
+
+	public boolean getNeedsNewTractor() {
+		return needsNewTractor;
+	}
+	
+	public boolean getNeedsBigTractor() {
+		return needsBigTractor;
+	}
+	
 	public int getHasTractor() {
 		return hasTractor;
 	}

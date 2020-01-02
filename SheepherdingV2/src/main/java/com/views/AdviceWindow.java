@@ -8,6 +8,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.model.Cost;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -23,7 +26,7 @@ public class AdviceWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AdviceWindow(String businessAdvice, String sheepAdvice, String landAdvice, String shedAdvice, String materialsAdvice, String careAdvice) {
+	public AdviceWindow(Cost costs, String businessAdvice, String sheepAdvice, String landAdvice, String shedAdvice, String materialsAdvice, String careAdvice) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1017, 1029);
@@ -38,6 +41,8 @@ public class AdviceWindow extends JFrame {
 		
 		// Centre the window
 		this.setLocationRelativeTo(null);
+		
+		createCostTable(costs);
 		
 		JLabel lblBusiness = new JLabel("Business");
 		lblBusiness.setHorizontalAlignment(SwingConstants.LEFT);
@@ -136,5 +141,18 @@ public class AdviceWindow extends JFrame {
 		lblCareAdvice.setText(careAdvice);
 		
 		layeredPane.add(lblCareAdvice);
+		
+	}
+	
+	private void createCostTable(Cost costs) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CostTable costWindow = new CostTable(costs);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

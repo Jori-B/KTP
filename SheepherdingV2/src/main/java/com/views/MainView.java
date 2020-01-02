@@ -56,7 +56,7 @@ import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class MainView extends JFrame implements VariableDefinitions, ActionListener {
+public class MainView extends JFrame implements VariableDefinitions {
 
 	private JPanel contentPane;
 	private JLabel lblQuestion;
@@ -72,6 +72,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	
 	private JList<String> list;
 	private DefaultListModel<String> answeredQs;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -82,6 +83,17 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		this.setLocationRelativeTo(null);
 	}
 	
+	public void prepareNextQuestion(Question previous) {
+		model.findNextQuestion(previous);
+		Question current = model.getCurrentQuestion();
+		if(current != previous) {
+			updateGUI(current, true);
+		} else { 
+			setVisibilityBtns(false, false);
+			lblQuestion.setText("ALL QUESTIONS ASKED");
+		}
+	}
+	
 	private void setVisibilityBtns(boolean textFields, boolean yesNoBtns) {
 		textArea.setVisible(textFields);
 		btnEnterInput.setVisible(textFields);
@@ -89,8 +101,21 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		btnRight.setVisible(yesNoBtns);
 	}
 	
-	private void setButtons(Question current) {
+	public void updateGUI(Question current, boolean questionNotInList) {
+		emptyTextArea();
+		setButtons(current);
+		setQuestion(current);
 		removeRedundantItemsFromList();
+		if(questionNotInList) {
+			addToList(current);
+		}
+	}
+	
+	public void emptyTextArea() {
+		textArea.setText("");
+	}
+	
+	private void setButtons(Question current) {
 		/* If it's the first question, there is no previous question, so button disabled */
 		if (model.getFacts().indexOf(current) == 0) {
 			btnPrevious.setEnabled(false);
@@ -123,42 +148,25 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		setAnsweredButtonColors(current);
 	}
 	
-	public void setQuestion(Question current) {
-		lblQuestion.setText(current.getQuestion());
-	}
-	
-	public void updateGUI(Question current) {
-		setButtons(current);
-		setQuestion(current);
-	}
-	
-	public void setCurQuestion(Question current) {
-		updateGUI(current);
-		addToList(current);
-	}
-	
-	public void emptyTextArea() {
-		textArea.setText("");
-	}
-	
 	private void setAnsweredButtonColors(Question current) {
+		int answer = current.getAnswer();
 		// If the fact has an answer, color that answer green
 		if(current.getStatus() == HASANSWER) {
 			// If the current question has an answer, the user should be able to go to the next question
 			btnNext.setEnabled(true);
 			// If one of these conditions holds, color the answer button green
-			if(current.getAnswer() == YES) {
+			if(answer == YES) {
 				btnLeft.setBackground(Color.GREEN);
 				// When a user has changed its answer and tries previous again, only one button should be green
 			} else {
 				btnLeft.setBackground(Color.WHITE);
 			} 
-			if(current.getAnswer() == NO) {
+			if(answer == NO) {
 				btnRight.setBackground(Color.GREEN); 
 			} else {
 				btnRight.setBackground(Color.WHITE);
 			}
-			if(current.getQuestionType() == NUMB && current.getAnswer() > 0) {
+			if(current.getQuestionType() == NUMB && answer > 0) {
 				btnEnterInput.setBackground(Color.GREEN);
 				textArea.setText(Integer.toString(current.getAnswer()));
 			} else {
@@ -173,6 +181,10 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 			// When the next question has no answer the user shouldn't be able to press next
 			btnNext.setEnabled(false);
 		}
+	}
+	
+	public void setQuestion(Question current) {
+		lblQuestion.setText(current.getQuestion());
 	}
 	
 	/* Add the element to the left hand side list, only if the item is not in the list yet */
@@ -194,25 +206,13 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 			model.clearRemoveFromList();
 		}
 	}
-
-	public void prepareNextQuestion(Question previous) {
-		model.findNextQuestion(previous);
-		Question current = model.getCurrentQuestion();
-		if(current != previous) {
-			emptyTextArea();
-			setCurQuestion(current);
-		} else { 
-			setVisibilityBtns(false, false);
-			lblQuestion.setText("ALL QUESTIONS ASKED");
-		}
-	}
 	
 	private void initComponents() {
 		//SETTING UP FRAME
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
 		setTitle("Sheep Herder System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 970, 621);
+		setBounds(100, 100, 970, 667);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -277,19 +277,19 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGap(60)
 									.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
 									.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 									.addGap(60))
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+									.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
 									.addContainerGap())))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(210)
-							.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+							.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
 							.addGap(210))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(260)
-							.addComponent(btnEnterInput, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+							.addComponent(btnEnterInput, GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
 							.addGap(260))))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -307,22 +307,22 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 					.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addGap(199))
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 560, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_contentPane.setHonorsVisibility(false);
 		gl_contentPane.setAutoCreateGaps(true);
 		
-		JLabel lblAnsweredQuestions = new JLabel("Answered Questions:");
+		JLabel lblAnsweredQuestions = new JLabel("Questions:");
 		lblAnsweredQuestions.setForeground(new Color(255, 255, 255));
 		lblAnsweredQuestions.setFont(new Font("Verdana", Font.PLAIN, 15));
 
 		DefaultListModel<String> answeredQs = new DefaultListModel<String>();
 		setAnsweredQs(answeredQs);
 		JList<String> list_1 = new JList<String>(answeredQs);
+		list_1.setBackground(new Color(112, 128, 144));
 		setList(list_1);
 		
-		list_1.setBackground(new Color(112, 128, 144));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -356,7 +356,16 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		
 		setButtons(model.getCurrentQuestion());	
 	}
-		
+	
+	private void createEvents() {
+		new LeftBtnAction(btnLeft, this, model);
+		new RightBtnAction(btnRight, this, model);
+		new PreviousAction(btnPrevious, this, model);
+		new NextAction(btnNext, this, model);
+		new TextAreaAction(btnEnterInput, textArea, this, model);
+		new ListClickAction(list, this, model);
+	}
+	
 	private void setModel(Model model) {
 		this.model = model;
 	}
@@ -420,19 +429,5 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	private void setAnsweredQs(DefaultListModel<String> answeredQs) {
 		this.answeredQs = answeredQs;
 	}
-	
-	private void createEvents() {
-		new LeftBtnAction(btnLeft, this, model);
-		new RightBtnAction(btnRight, this, model);
-		new PreviousAction(btnPrevious, this, model);
-		new NextAction(btnNext, this, model);
-		new TextAreaAction(btnEnterInput, textArea, this, model);
-		new ListClickAction(list, this, model);
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }

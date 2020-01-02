@@ -9,7 +9,7 @@ public class Sheep implements VariableDefinitions {
 	public int totalNSheepWanted; 
 	public int costPhosphateRights;
 	public int sheepCost;
-	public int maxAmountSheep; // We still need a functions for maxAmountOfSheep
+	public int maxAmountOfSheep; 
 	public int nSheepMore;
 	public String advice = "<html>";
 	
@@ -18,28 +18,15 @@ public class Sheep implements VariableDefinitions {
 	}
 	
 	/* Calculations */
-	public void calcTotalSheep() {
-		if (ownsNSheep == 0) {
-			System.out.println("owns sheep is null");
-			this.totalNSheepWanted = desiresNMoreSheep;
-		} else {
-			System.out.println("owns sheep is not empty");
-			this.totalNSheepWanted = desiresNMoreSheep + ownsNSheep;
-		}
-	}
-	
 	public void calcPriceSheep() {
-		this.sheepCost = totalNSheepWanted * 100;
+		this.desiresNMoreSheep = totalNSheepWanted - ownsNSheep;
+		this.sheepCost = desiresNMoreSheep * 100;
 	}
 	
 	/* Getters and setters */
 	public void calcNumberOfSheepMore(int totalLandSize) {
-		if (ownsNSheep == 0) {
-			System.out.println("owns sheep is null");
-			this.nSheepMore = (int)(totalLandSize / 2.85);
-		} else {
-			this.nSheepMore = (int)((totalLandSize / 2.85) - ownsNSheep) ; // I think this is correct, but haven't checked
-		}
+		this.maxAmountOfSheep = (int)(totalLandSize / 2.85);
+		this.nSheepMore = (maxAmountOfSheep - totalNSheepWanted); // I think this is correct, but haven't checked
 	}
 	
 	public void calcPhosphateRights() { 
@@ -74,8 +61,8 @@ public class Sheep implements VariableDefinitions {
 		return totalNSheepWanted;
 	}
 
-	public void setTotalNSheepWanted(int totalNSheepWanted) {
-		this.totalNSheepWanted = totalNSheepWanted;
+	public void setTotalNSheepWanted(Question totalNSheepWanted) {
+		this.totalNSheepWanted = totalNSheepWanted.getAnswer();
 	}
 
 	public int getSheepCost() {
@@ -86,12 +73,12 @@ public class Sheep implements VariableDefinitions {
 		this.sheepCost = sheepCost;
 	}
 
-	public int getMaxAmountSheep() {
-		return maxAmountSheep;
+	public int getMaxAmountOfSheep() {
+		return maxAmountOfSheep;
 	}
 
-	public void setMaxAmountSheep(Question maxAmountSheep) {
-		this.maxAmountSheep = maxAmountSheep.getAnswer();
+	public void setMaxAmountOfSheep(Question maxAmountOfSheep) {
+		this.maxAmountOfSheep = maxAmountOfSheep.getAnswer();
 	}
 
 	public int getnSheepMore() {

@@ -29,7 +29,7 @@ public class PreviousAction {
 				model.setCurrentQuestion(prev);
 				/* find the question before the previous question, to set it */
 				model.findPrevQuestion(prev);
-				frame.updateGUI(prev);
+				frame.updateGUI(prev, false);
 			}
 		});
 	}
