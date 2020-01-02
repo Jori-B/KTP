@@ -1,6 +1,6 @@
-package com.sample;
+package com.model;
 
-import com.sample.Model;
+import com.model.Model;
 
 
 /* 

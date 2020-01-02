@@ -1,4 +1,4 @@
-package com.sample;
+package com.model;
 
 public interface VariableDefinitions {
 	/* All question types have a name. As of right now we don't really use these */ 

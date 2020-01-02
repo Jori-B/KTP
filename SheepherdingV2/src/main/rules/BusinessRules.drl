@@ -2,17 +2,17 @@
 package sheeprules
 
 // list any import classes here.
-import com.sample.Model;
-import com.sample.Question;
-import com.sample.Shed;
-import com.sample.Materials;
-import com.sample.Business;
-import com.sample.Land;
-import com.sample.Care;
-import com.sample.Sheep;
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
 
-import com.sample.Main; 
-import function com.sample.Utility.help;
+import com.model.Main; 
+import function com.model.Utility.help;
 
 dialect "java"
 

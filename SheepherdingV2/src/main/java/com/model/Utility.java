@@ -1,4 +1,4 @@
-package com.sample;
+package com.model;
 
 import org.drools.spi.KnowledgeHelper;
 

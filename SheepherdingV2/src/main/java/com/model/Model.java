@@ -1,11 +1,4 @@
-package com.sample;
-
-import com.sample.Land;			
-import com.sample.Materials;
-import com.sample.Sheep;
-import com.sample.Business;
-import com.sample.Shed;
-import com.sample.Care;
+package com.model;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
@@ -23,6 +16,12 @@ import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
+import com.model.Business;
+import com.model.Care;
+import com.model.Land;
+import com.model.Materials;
+import com.model.Shed;
+import com.model.Sheep;
 import com.views.AdviceWindow;
 import com.views.MainView;
 

@@ -1,6 +1,6 @@
-package com.sample;
+package com.model;
 
-import com.sample.Question;
+import com.model.Question;
 
 public class Materials implements VariableDefinitions {
 	public int hasTractor;

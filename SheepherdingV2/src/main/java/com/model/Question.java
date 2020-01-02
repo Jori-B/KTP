@@ -1,4 +1,4 @@
-package com.sample;
+package com.model;
 
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;

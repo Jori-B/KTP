@@ -1,11 +1,17 @@
 package com.views;
 
-import com.sample.Question;		
-import com.sample.MCQuestion;	
-/* This import can be used to reference the Main class, however, there should be another way to initialize the program */
-import com.sample.Model;
-import com.sample.VariableDefinitions;
+import com.model.MCQuestion;
+import com.model.Model;
+import com.model.Question;
+import com.model.VariableDefinitions;
 import com.sun.org.apache.xpath.internal.operations.Number;
+
+import controller.LeftBtnAction;
+import controller.ListClickAction;
+import controller.NextAction;
+import controller.PreviousAction;
+import controller.RightBtnAction;
+import controller.TextAreaAction;
 
 import java.awt.BorderLayout;		
 import java.awt.EventQueue;
@@ -55,12 +61,15 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	private JPanel contentPane;
 	private JLabel lblQuestion;
 	public Model model;
-	private JButton btnYes;
-	private JButton btnNo;
-	private JButton enterInput;
+	
+	private JButton btnLeft;
+	private JButton btnRight;
+	
+	private JButton btnEnterInput;
 	private JTextField textArea;
 	private JButton btnPrevious;
 	private JButton btnNext;
+	
 	private JList<String> list;
 	private DefaultListModel<String> answeredQs;
 	/**
@@ -75,14 +84,14 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	
 	private void setVisibilityBtns(boolean textFields, boolean yesNoBtns) {
 		textArea.setVisible(textFields);
-		enterInput.setVisible(textFields);
-		btnYes.setVisible(yesNoBtns);
-		btnNo.setVisible(yesNoBtns);
+		btnEnterInput.setVisible(textFields);
+		btnLeft.setVisible(yesNoBtns);
+		btnRight.setVisible(yesNoBtns);
 	}
 	
 	private void setButtons(Question current) {
 		removeRedundantItemsFromList();
-		/* If it's the first fact, there is no previous question, so button disabled */
+		/* If it's the first question, there is no previous question, so button disabled */
 		if (model.getFacts().indexOf(current) == 0) {
 			btnPrevious.setEnabled(false);
 			/* First list element is added when the first question is asked. The rest of them are added in setCurrentQuestion() */
@@ -95,33 +104,41 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		switch(current.getQuestionType()) {
 			case YESNO:
 				setVisibilityBtns(false, true);
-				btnYes.setText("Yes");
-				btnNo.setText("No");
+				btnLeft.setText("Yes");
+				btnRight.setText("No");
 				break;
 			case NUMB:
 				setVisibilityBtns(true, false);
 				/* Request focus to the textarea so the user can start typing straight away */
 				textArea.requestFocus();
 				break;
-			case MC: // THIS METHOD SHOULD INCLUDE ALL MULTIPLE CHOICE ANSWERS
+			case MC: 
 				setVisibilityBtns(false, true);
-				//System.out.println(current.getName());
 				/* Cast the current fact to a MCFact so the getAnswer methods can be used */
 				MCQuestion currentMC = (MCQuestion)model.getSelectedQuestion(current.getName());
-				btnNo.setText(currentMC.getAnswerZero());
-				btnYes.setText(currentMC.getAnswerOne());
+				btnRight.setText(currentMC.getAnswerZero());
+				btnLeft.setText(currentMC.getAnswerOne());
 				break;
 		}
 		setAnsweredButtonColors(current);
-		
 	}
 	
-	private void preparePrevQuestion() {
-		Question prev = model.getPrevQuestion();
-		model.setCurrentQuestion(prev);
-		model.findPrevQuestion(prev);
-		setButtons(prev);
-		lblQuestion.setText(prev.getQuestion());
+	public void setQuestion(Question current) {
+		lblQuestion.setText(current.getQuestion());
+	}
+	
+	public void updateGUI(Question current) {
+		setButtons(current);
+		setQuestion(current);
+	}
+	
+	public void setCurQuestion(Question current) {
+		updateGUI(current);
+		addToList(current);
+	}
+	
+	public void emptyTextArea() {
+		textArea.setText("");
 	}
 	
 	private void setAnsweredButtonColors(Question current) {
@@ -131,42 +148,31 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 			btnNext.setEnabled(true);
 			// If one of these conditions holds, color the answer button green
 			if(current.getAnswer() == YES) {
-				btnYes.setBackground(Color.GREEN);
+				btnLeft.setBackground(Color.GREEN);
 				// When a user has changed its answer and tries previous again, only one button should be green
 			} else {
-				btnYes.setBackground(Color.WHITE);
+				btnLeft.setBackground(Color.WHITE);
 			} 
 			if(current.getAnswer() == NO) {
-				btnNo.setBackground(Color.GREEN); 
+				btnRight.setBackground(Color.GREEN); 
 			} else {
-				btnNo.setBackground(Color.WHITE);
+				btnRight.setBackground(Color.WHITE);
 			}
-			/* If we're going to do MC with three answer options, then this needs to change */
-			// For number questions, assuming the user generally answers with higher than 1
-			// Might also be possible to just say else???
 			if(current.getQuestionType() == NUMB && current.getAnswer() > 0) {
-				enterInput.setBackground(Color.GREEN);
+				btnEnterInput.setBackground(Color.GREEN);
 				textArea.setText(Integer.toString(current.getAnswer()));
 			} else {
 				// empty the text area when there isn't an answer ( this else is used when previous question order is changed )
-				textArea.setText("");
+				emptyTextArea();
 			}
 		// For unanswered questions, color buttons white
 		} else {
-			
-			btnYes.setBackground(Color.WHITE);
-			enterInput.setBackground(Color.WHITE);
-			btnNo.setBackground(Color.WHITE);
+			btnLeft.setBackground(Color.WHITE);
+			btnEnterInput.setBackground(Color.WHITE);
+			btnRight.setBackground(Color.WHITE);
 			// When the next question has no answer the user shouldn't be able to press next
 			btnNext.setEnabled(false);
 		}
-		
-	}
-	
-	private void setCurQuestion(Question current) {
-		setButtons(current);
-		lblQuestion.setText(current.getQuestion());
-		addToList(current);
 	}
 	
 	/* Add the element to the left hand side list, only if the item is not in the list yet */
@@ -189,12 +195,11 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		}
 	}
 
-	
-	private void prepareNextQuestion(Question previous) {
+	public void prepareNextQuestion(Question previous) {
 		model.findNextQuestion(previous);
 		Question current = model.getCurrentQuestion();
 		if(current != previous) {
-			textArea.setText("");
+			emptyTextArea();
 			setCurQuestion(current);
 		} else { 
 			setVisibilityBtns(false, false);
@@ -222,13 +227,13 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		lblQuestion.setForeground(SystemColor.controlLtHighlight);
 		lblQuestion.setFont(new Font("Verdana", Font.PLAIN, 20));		
 		
-		JButton btnYes = new JButton("Yes");
-		setYesBtn(btnYes);
-		btnYes.setFont(new Font("Verdana", Font.PLAIN, 20));
+		JButton btnLeft = new JButton("Yes");
+		setYesBtn(btnLeft);
+		btnLeft.setFont(new Font("Verdana", Font.PLAIN, 20));
 		
-		JButton btnNo = new JButton("No");
-		setNoBtn(btnNo);
-		btnNo.setFont(new Font("Verdana", Font.PLAIN, 20));
+		JButton btnRight = new JButton("No");
+		setNoBtn(btnRight);
+		btnRight.setFont(new Font("Verdana", Font.PLAIN, 20));
 		
 		//BELOW THIS BELONGS TO THE RIGHTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
@@ -238,11 +243,11 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		JTextField textArea = new JTextField();
 		setTextArea(textArea);
 		textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		textArea.setText("");
+		emptyTextArea();
 		
-		JButton enterInput = new JButton("Enter");
-		setInputBtn(enterInput);
-		enterInput.setFont(new Font("Dialog", Font.PLAIN, 20));
+		JButton btnEnterInput = new JButton("Enter");
+		setInputBtn(btnEnterInput);
+		btnEnterInput.setFont(new Font("Dialog", Font.PLAIN, 20));
 		
 		JButton btnPrevious = new JButton("Previous");
 		setPrevBtn(btnPrevious);
@@ -271,9 +276,9 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGap(60)
-									.addComponent(btnYes, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
-									.addComponent(btnNo, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 									.addGap(60))
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
@@ -284,7 +289,7 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 							.addGap(210))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(260)
-							.addComponent(enterInput, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+							.addComponent(btnEnterInput, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
 							.addGap(260))))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -296,10 +301,10 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnYes, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-						.addComponent(btnNo, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnLeft, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+						.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
 					.addGap(2)
-					.addComponent(enterInput, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addGap(199))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 560, GroupLayout.PREFERRED_SIZE)
@@ -361,27 +366,27 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 	}
 	
 	private JButton getYesBtn() {
-		return btnYes;
+		return btnLeft;
 	}
 
-	private void setYesBtn(JButton btnYes) {
-		this.btnYes = btnYes;
+	private void setYesBtn(JButton btnLeft) {
+		this.btnLeft = btnLeft;
 	}
 	
 	private JButton getNoBtn() {
-		return btnNo;
+		return btnRight;
 	}
 
-	private void setNoBtn(JButton btnNo) {
-		this.btnNo = btnNo;
+	private void setNoBtn(JButton btnRight) {
+		this.btnRight = btnRight;
 	}
 	
 	private JButton getInputBtn() {
-		return enterInput;
+		return btnEnterInput;
 	}
 
-	private void setInputBtn(JButton enterInput) {
-		this.enterInput = enterInput;
+	private void setInputBtn(JButton btnEnterInput) {
+		this.btnEnterInput = btnEnterInput;
 	}
 
 	private JTextField getTextArea() {
@@ -416,101 +421,13 @@ public class MainView extends JFrame implements VariableDefinitions, ActionListe
 		this.answeredQs = answeredQs;
 	}
 	
-	private void enterTextAreaAnswer() {
-		Question current = model.getCurrentQuestion();
-		String input = textArea.getText().replace("\n", "");
-		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
-		try {       
-        	int numbUserIn = Integer.parseInt(input); 
-        	current.setAnswer(numbUserIn);
-    		/* Empty the user input text in the field after 'enter' is pressed */
-    		textArea.setText("");
-    		prepareNextQuestion(current);
-        } catch (NumberFormatException e) {
-        	JOptionPane.showMessageDialog(new JFrame(), "\'" + input + "\' is not a number.\nPlease try again", "Incorrect input", JOptionPane.PLAIN_MESSAGE);
-        	textArea.setText("");
-        }
-	}
-	
 	private void createEvents() {
-		// TODO Auto-generated method stub
-		btnYes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Question current = model.getCurrentQuestion();
-				current.setAnswer(YES);
-				prepareNextQuestion(current);
-			}
-		});
-		
-		btnNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Question current = model.getCurrentQuestion();
-				current.setAnswer(NO);
-				prepareNextQuestion(current);
-			}
-		});
-		
-		btnPrevious.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				preparePrevQuestion();
-			}
-		});
-		
-		btnNext.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				prepareNextQuestion(model.getCurrentQuestion());
-			}
-		});
-		
-		textArea.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				/* When the user presses enter while the textArea is on screen, enter the answer */
-				if(e.getKeyChar() == KeyEvent.VK_ENTER && textArea.isVisible()) {
-					enterTextAreaAnswer();
-                }    
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		enterInput.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				enterTextAreaAnswer();
-			}
-		});
-		
-		list.addMouseListener(new MouseAdapter(){
-	          @Override
-	          public void mouseClicked(MouseEvent e) {
-	              System.out.println("Mouse click.");
-	              int index = list.getSelectedIndex();
-	              System.out.println("Index Selected: " + index);
-	              String s = (String) list.getSelectedValue();
-	              System.out.println("Value Selected: " + s.toString()); 
-				/*
-				 * Empty text area here, because you might go to the current questions, which
-				 * has no answer
-				 */
-	              textArea.setText("");
-	              Question current = model.getSelectedQuestion(list.getSelectedValue());
-
-	              model.setCurrentQuestion(current);
-	              setCurQuestion(current);
-	          }
-	    });
+		new LeftBtnAction(btnLeft, this, model);
+		new RightBtnAction(btnRight, this, model);
+		new PreviousAction(btnPrevious, this, model);
+		new NextAction(btnNext, this, model);
+		new TextAreaAction(btnEnterInput, textArea, this, model);
+		new ListClickAction(list, this, model);
 	}
 
 	@Override
