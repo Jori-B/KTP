@@ -1,0 +1,40 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+ 
+//rule "Nagpur Medicine Item"
+   //when
+     /// item : ItemCity(purchaseCity == ItemCity.City.NAGPUR, 
+      //   typeofItem == ItemCity.Type.MEDICINES)
+   //then
+     // BigDecimal tax = new BigDecimal(0.0);
+     // item.setLocalTax(tax.multiply(item.getSellPrice()));
+     // help(drools,"added info");
+//end
+
+//rule "Nagpur Groceries Item"
+  // when
+   //   item : ItemCity(purchaseCity == ItemCity.City.NAGPUR, 
+        // typeofItem == ItemCity.Type.GROCERIES)
+   //then
+      //BigDecimal tax = new BigDecimal(1.0);
+      //item.setLocalTax(tax.multiply(item.getSellPrice()));
+      //help(drools,"info");
+//end
+
+rule "Hello World"
+    when
+        m : Message( status == Message.HELLO, myMessage : message )
+    then
+        System.out.println( myMessage );
+        m.setMessage( "Goodbye cruel world" );
+        m.setStatus( Message.GOODBYE );
+        update( m );
+end
+
+rule "GoodBye"
+    when
+        Message( status == Message.GOODBYE, myMessage : message )
+    then
+        System.out.println( myMessage );
+end

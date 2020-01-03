@@ -1,0 +1,185 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+rule "Mention shed size needed"
+	salience 10
+	when
+		Sheep( $nSheep : totalNSheepWanted > 0);
+		$shed : Shed($shedSize : curShedSize, $goalSize : goalSize); 
+	then
+		$shed.setAdvice("Rougly 2.5 meters per sheep is needed in a shed. Since you want " + $nSheep + " sheep, " +
+		"your shed should be " + $goalSize + " meters big");
+end
+
+rule "Great shed"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isTallerThan3 == YES, isPathWiderThan12 == YES, hasCementFloor == YES, hasFertilizerPlate == YES, hasAdjustableFences == YES, hasLamps == YES);
+	then
+		$shed.setAdvice("Your shed meets all the requirements for the amount of sheep you want.");
+end
+
+rule "Correct dimensions shed"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isTallerThan3 == YES, isPathWiderThan12 == YES);
+	then
+		$shed.setAdvice("Your shed has the correct dimensions for holding the amount of sheep you want.");
+end
+
+rule "Shed is big enough, but dimensions off"
+	salience 3
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0);
+		Shed(isTallerThan3 == NO || isPathWiderThan12 == NO);
+	then
+		$shed.setAdvice("Your shed is big enough, but ");
+end
+
+rule "Shed not big enough and dimensions off"
+	salience 3
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff >= 0);
+		Shed(isTallerThan3 == NO || isPathWiderThan12 == NO);
+	then
+		$shed.setAdvice("Your shed is not big enough, and ");
+end
+
+rule "Shed not tall"
+	salience 2
+	when
+		$shed : Shed( hasShed == YES, isTallerThan3 == NO);
+	then
+		$shed.setAdvice("your shed is not high enough for a tractor to go through.");
+end
+
+rule "Shed not wide"
+	salience 2
+	when
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO);
+	then
+		$shed.setAdvice("your shed in not wide enough for a tractor to go through. Also, space is needed to store food (and materials).");
+end
+
+rule "Shed not wide and tall"
+	salience 2
+	when
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO, isTallerThan3 == NO);
+	then
+		$shed.setAdvice("your shed is not wide and high enough for a tractor to go through. Also, space in needed to store food (and materials).");
+end
+
+rule "Shed not wide, but room"
+	salience 1
+	when
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO, isAllowedToBuild == YES, roomForShed > 0);
+	then
+		$shed.setAdvice("You could consider widening your shed or expanding your shed, since you are allowed to build.");
+end
+
+rule "Hobby, small shed, no build"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == NO);
+		Business(hobSemiPro == HOBBY);
+	then
+		// Which sheep to advice exactly???
+		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you cannot build. You could consider " +
+		"herding sheep that don't need a shed. Some of those only need a small shed on the land you have.");
+end
+
+rule "Pro, small shed, no build"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == NO);
+		Business(hobSemiPro == PRO);
+	then
+		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you aren't allowed to build. " + 
+		"Therefore it is not recommended to herd sheep professionally.");
+end
+
+rule "Small shed, room for expansion"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed >= goalCurSizeDiff);
+	then
+		$shed.setAdvice("Your shed is too small, but you have enough room to expand your shed. This will cost you + costBuildShed");
+end
+
+rule "Hobby, small shed, no room for expansion"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == HOBBY);
+	then
+		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you don't have enough room to expand. " + 
+		"You could consider herding sheep that don't need a shed or herding less sheep. Some of those only need a small shed " +
+		"on the land you have, like the Soay.");
+end
+
+rule "Pro, small shed, no room for expansion"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == PRO);
+	then
+		// Maybe before saying it is worth doing it semi professionally we should look at the data
+		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you aren't allowed to build. " + 
+		"Therefore it is not recommended to sheep herd professionally. It might be worth considerering doing it semi " + 
+		"professionally with fewer sheep");
+end
+
+rule "Hobby, no shed, little room"
+	when
+		$shed : Shed( hasShed == NO, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == HOBBY);
+	then
+		// advice says land you have but might not have land
+		$shed.setAdvice("You don't have enough room to build a shed for the amount of sheep you want. You could consider " + 
+		"herding sheep that don't need a shed or herding less sheep. Some of those only need a small shed on the land you have.");
+end
+
+rule "Pro, no shed, little room"
+	when
+		$shed : Shed( hasShed == NO, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == PRO);
+	then
+		$shed.setAdvice("You don't have enough room to build a shed for the amount of sheep you want. Therefore it is not recommended " + 
+		"to sheep herd professionally. It might be worth considerering doing it semi professionally with fewer sheep");
+end
+
+rule "No flat floor"
+	when
+		$shed : Shed( hasShed == YES, hasCementFloor == NO);
+	then
+		$shed.setAdvice("The floor in your shed is not flat. A flat cement floor is recommended");
+end
+
+rule "No fertilizer plate"
+	when
+		$shed : Shed( hasShed == YES, hasFertilizerPlate == NO);
+	then
+		$shed.setAdvice("A fertilizer plate is needed for not letting the defication get below the shed floor. This costs roughly 20.000€.");
+end
+
+rule "No fences"
+	when
+		$shed : Shed( hasShed == YES, hasAdjustableFences == NO);
+	then
+		$shed.setAdvice("Adjustable fences are handy for separating sheep in the shed. This is also handy for administration purposes.");
+end
+
+rule "No lamps"
+	when
+		$shed : Shed( hasShed == YES, hasLamps == NO);
+	then
+		$shed.setAdvice("When the birthing takes place, lambs need light the entire night. So you should buy some lamps.");
+end
