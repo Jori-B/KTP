@@ -20,7 +20,7 @@ rule "Land is big enough"
 	when
 		$land : Land(landIsBigEnough);
 	then
-		$land.setAdvice("U heeft genoeg land voor de hoeveelheid schapen die u wilt houden");
+		$land.setAdvice("You have enough land for the amount of sheep you would like to hold");
 end
 
 rule "Not enough land"
@@ -30,16 +30,16 @@ rule "Not enough land"
 // Only talking about buying land. How much will leasing land cost rougly?
 	then
 		help(drools,"info");
-		$land.setAdvice("U zult meer land moeten kopen of leasen. U kunt per hectare ongeveer 3 schapen houden. Aangezien u " + 
-		$nSheep + " schapen wilt, en u " + $landSize + " hectare land (incl. lease) heeft, heeft u " + $landNeeded + " hectare land extra nodig.");
-		$land.setAdvice("Een hectare land kost ongeveer 50.000 euro. U heeft dus intotaal " + $cost + "euro voor het kopen van land nodig.");
+		$land.setAdvice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
+		$nSheep + " sheep, and you have " + $landSize + " acres of land (incl. lease) you need " + $landNeeded + " acres more land.");
+		$land.setAdvice("An acre of land costs rougly 50.000 euros. Therefore you'd need " + $cost + "euros for buying land.");
 end
 
 rule "Not enough land, no lease"
 	when
 		$land : Land(landNeeded > 0, hasLeasedLand == NO);
 	then
-		$land.setAdvice("U kunt u beschikbare hoeveelheidland wellicht verhogen door middel van leasen, kijk in uw buurt wat de opties zijn."); 
+		$land.setAdvice("Try to increment your available land by checking for leasing options in your area."); 
 end     
 
 rule "Hobby, land too small, no shed"
@@ -49,7 +49,7 @@ rule "Hobby, land too small, no shed"
 		Shed(isAllowedToBuild == NO || roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == HOBBY);
 	then 
-		$land.setAdvice("U heeft weinig land en geen schuur, u kunt voor de Nederlandse Land Geit gaan, deze heeft weinig land en geen schuur nodig.");
+		$land.setAdvice("You have little land and no shed. You could go for the dutch land goat, which needs little land and doesn't need a shed.");
 end
 
 rule "Hobby, has (too) small land"
@@ -57,16 +57,16 @@ rule "Hobby, has (too) small land"
 		$land : Land(hasLand == YES, landNeeded > 0);
 		Business(hobSemiPro == HOBBY);
 	then
-		$land.setAdvice("Aangezien u weinig land heeft kunt u er ook voor kiezen om voor een kleiner ras te gaan dat minder land nodig heeft " +
-		"zoals de Skudde, Soay, Quessant of Engelse rassen zoals de Hampsindown, Suffock en Kerry Hill.");
+		$land.setAdvice("Since you don't have enough land, instead of buying or leasing more, you could choose sheep that need smaller land " +
+		"sizes like the Skudde, Soay, Quessant or English races like the Hampsindown, Suffock and Kerry Hill.");
 end
 
 rule "Toeslagrechten"
 	when
 		$land : Land($cost : toeslagrecht > 0); 
 	then
-		$land.setAdvice("Houd er rekening mee dat u toeslagrechten dient te betalen over elke hectare land, namelijk 300 euro per hectare. " +
-		"In uw geval kost dit u " + $cost + " euro");	
+		$land.setAdvice("One needs to keep in mind that 300 euros entitlement (i.e. toeslagrechten) need to be paid per used acre of land. " +
+		"In your case this will cost you " + $cost + " euros");	
 end	
 
 		

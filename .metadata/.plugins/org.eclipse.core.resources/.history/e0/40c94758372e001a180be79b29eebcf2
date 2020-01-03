@@ -21,7 +21,7 @@ rule "Hobby, wants more than 10 sheep"
 		$business : Business(hobSemiPro == HOBBY); 
 		Sheep(totalNSheepWanted > 10);
 	then
-		$business.setAdvice("Wanneer u meer dan 10 schapen wilt houden zult u moeten overwegen of u dit niet liever (semi)professioneel wilt doen.");
+		$business.setAdvice("If you want to hold more than 10 sheep you should consider doing this (semi)professionally.");
 end
 
 rule "Not KvK registered"
@@ -29,32 +29,32 @@ rule "Not KvK registered"
 		$business : Business(isKvKRegistered == NO); 
 		Sheep(totalNSheepWanted > 10);
 	then
-		$business.setAdvice("Om meer dan 10 schapen te houden zult u zich moeten regristreren bij de Kamer van Koophandel (KVK) " +
-		"Voor meer informatie of KVK regristratie kunt u <deze link> volgen.");
+		$business.setAdvice("To herd sheep more than ten sheep you need to be registered at the KVK. For more information about " +
+		"registering at the KVK you can follow <this link>.");
 end
 
 rule "Not UBN registered"
 	when
 		$business : Business(isUBNRegistered == NO); 
 	then
-		$business.setAdvice("U bent nog niet in bezit van een uniek bedrijfsnummer (UBN), dit is echter nodig wanneer u schapen wilt houden. " +
-		"Elke schaap dient geregristreerd te worden aan uw UBN. U kunt meer informatie over het verkrijgen van een UBN <hier> vinden.");
+		$business.setAdvice("You do not have a unique business number (UBN) yet, which you do need if you want to herd sheep. " +
+		"Namely, every sheep needs to be registered to your UBN. You can find more information about getting an UBN <here>.");
 end
 
 rule "Not enough money"
 	when
 		$business : Business(moneyToSpend < moneyNeeded);
 	then
-		$business.setAdvice("U heeft momenteel niet genoeg kapitaal om u geprefereerde bedrijf te beginnen. Bekijk de tabel hieronder" + 
-		"om uw huidige inkomsten en uitgaven te zien, orobeer op sommige punten te bezuinigen of uw start kapitaal te verhogen.");
+		$business.setAdvice("You currently do not have enough funds to start the sheepfarm that you would prefer. Attend the " + 
+		"table below to see what expenses you currently have, try to economize on some of the expendetures or increment your starting capital.");
 end
 
 rule "Enough money"
 	when
 		$business : Business(moneyToSpend >= moneyNeeded);
 	then
-		$business.setAdvice("U start kapitaal is toereikend om uw geprefereerde bedrijf te beginnen." + 
-		"bekijk de onderstaande tabel voor meer informatie hierover.");
+		$business.setAdvice("You have a large enough starting capital to cover all the costs of starting your prefered sheepfarm." + 
+		"See the table below for information about this.");
 end
 
 rule "Does't have enough time"
@@ -62,9 +62,9 @@ rule "Does't have enough time"
 		$business : Business(timeWillingToSpend < timeRequired);
 		Sheep($totalNSheepWanted : totalNSheepWanted);
 	then
-		$business.setAdvice("U heeft aangegeven slechts +$timewillingtospend+ uur per week aan u schapen te willen besteden. " +
-		"Echter kan dit te weinig zijn om goed voor " + $totalNSheepWanted + " schapen te zorgen.");
-		$business.setAdvice("U zult hiervoor een besluit moeten maken of u tevreden bent met minder schapen of meer besteedde tijd.");
+		$business.setAdvice("You declared that you would like to spend +timeWillingToSpend+ hours per week on your sheep. " +
+		"However this might not be enough time to tend to all " + $totalNSheepWanted + " sheep.");
+		$business.setAdvice("Therefore, delibirate whether you would be okay with having less sheep and/or spending more time.");
 end
 
 // In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
@@ -76,7 +76,7 @@ rule "All good"
 		Land(landIsBigEnough);
 		not Shed(shedTooSmall);
 	then
-		$business.setAdvice("Het ziet er naar uit dat u een winstgevend schapen bedrijf kunt beginnen.");
+		$business.setAdvice("You should be able to start a profitable sheep herding business");
 end
 
 
