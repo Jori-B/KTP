@@ -1,0 +1,175 @@
+#created on: Dec 7, 2019
+package cityrules
+
+// list any import classes here.
+import com.sample.Fact;
+import com.sample.Values;
+//import com.sample.ReadInput;
+import com.sample.Main; 
+import function com.sample.Utility.help;
+import function com.sample.ValueCalculations.*;
+
+import function com.sample.Advice.*;
+
+// declare any global variables here
+
+global Values gvalues;
+
+dialect "java"
+      
+rule "Hobby self birthing"
+	when
+		hobprof : Fact(Fact.Name == "mcHobProf", answer == HOBBY);
+		birth : Fact(Fact.Name == "mcBirth", answer == SELF);
+	then
+		help(drools,"info");
+		advice("You want to be a hobby herder who births themselves");
+		
+end
+
+rule "Hobby other birthing"
+	when
+		hobprof : Fact(Fact.Name == "mcHobProf", answer == HOBBY);
+		birth : Fact(Fact.Name == "mcBirth", answer == OTHER);
+	then
+		help(drools,"info");
+		advice("You want to be a hobby herder who doesn't birth sheep themselves");
+end
+
+rule "Professional self birthing"
+	when
+		hobprof : Fact(Fact.Name == "mcHobProf", answer == PRO);
+		birth : Fact(Fact.Name == "mcBirth", answer == SELF);
+	then
+		help(drools,"info");	
+		advice("You want to be a professional herder who births sheep themselves");
+end
+
+rule "Professional other birthing"
+	when
+		hobprof : Fact(Fact.Name == "mcHobProf", answer == PRO);
+		birth : Fact(Fact.Name == "mcBirth", answer == OTHER);
+	then
+		help(drools,"info");
+		advice("You want to be a professional herder who doesn't want to do birthing themselves.");
+end
+
+rule "No shed"
+	when
+		shed : Fact(Fact.Name == "ynShed", answer == NO);
+		sheep : Fact(Fact.Name == "nmSheep");
+	then
+		help(drools,"info");
+		advice("You should buy a shed. Since you want " + sheep.getAnswer() + 
+		" sheep your shed should be " + sheep.getAnswer() * 10 + " square meters big");
+end
+ 
+rule "Has shed"
+	when
+		shed : Fact(Fact.Name == "ynShed", answer == YES);
+		nmShedSize: Fact(Fact.Name =="nmShedSize", status == NOANSWER); // status == UNUSED
+	then
+		help(drools,"info");
+		modify(nmShedSize) { askQuestion(false) }
+		//update(nmShedSize);
+		//Add values
+		gvalues.addShedSize(nmShedSize.getAnswer());
+		
+end
+
+rule "Has land"
+	when
+	// status is a variable that's not yet used, but I thought it might be useful to have such a variable to prevent rules from firing twice...
+		land : Fact(Fact.Name == "ynLand", answer == YES);
+		nmLandSize : Fact(Fact.Name == "nmLandSize", status == NOANSWER);
+	then
+		help(drools,"info");
+		modify(nmLandSize) { askQuestion(false) }
+		//update(nmLandSize);
+		//Add values
+		gvalues.addAvailableLand(nmLandSize.getAnswer());
+		
+end
+
+// To be profitable one needs to have at least 200 sheep and 70 acres of land (SO THIS SHOULD BE A RULE FOR PROFFESIONAL SHEEP HERDERS. For 200 sheep you need 70 acres of land
+// 200/70 is 2.86 sheep/acre. 
+rule "Has land and wants n sheep"
+	when
+		sheep : Fact(Fact.Name == "nmSheep");
+		nmLandSize : Fact(Fact.Name == "nmLandSize", status == HASANSWER, answer < (sheep.getAnswer() * 2.85));
+// Only talking about buying land. How much will leasing land cost rougly?
+	then
+		help(drools,"info");
+		advice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
+		sheep.getAnswer() + " sheep, and you have " + nmLandSize.getAnswer() + " acres of land, you need " +
+		numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()) + " acres more land.\n" +
+		"An acre of land costs rougly 50.000�. Therefore you'll need " + 
+		neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()) + "� for buying land.\n" + 
+		"Also one needs to keep in mind that 300� entitlement (i.e. toeslagrechten) need to be paid per used acre of land. In your case this will cost you " + 
+		toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()) + "�");
+		//Add values
+		gvalues.addSheep(sheep.getAnswer());
+		gvalues.addNeededLand(numberOfAcresMore(sheep.getAnswer(), nmLandSize.getAnswer()));
+		gvalues.addMoneyCost(neededMoneyForLand(sheep.getAnswer(), nmLandSize.getAnswer()));
+		gvalues.addMoneyCost(toeslagrechten(sheep.getAnswer(),nmLandSize.getAnswer()));
+		
+end
+
+// ALL THE FORMULAS IN HERE SHOULD PROBABLY BE MOVED TO A SEPARATE CLASS CALLED e.g. Cost.java 
+
+rule "Has enough land and wants n sheep"
+	when
+		sheep : Fact(Fact.Name == "nmSheep");
+		nmLandSize : Fact(Fact.Name == "nmLandSize", status == HASANSWER, answer >= (sheep.getAnswer() * 2.85));
+	then
+		help(drools,"info");
+		advice("You have enough land. Per acre you can hold roughly 3 sheep. Since you have " + 
+		nmLandSize.getAnswer() + " acres, you could get " + 
+		numberOfSheepMore(nmLandSize.getAnswer(),sheep.getAnswer())  + " more sheep");
+end
+
+// When you have more than 5 sheep you need to pay phosphate rights. Prices per sheep differ depending on slaugter, male, female, place and weight (non-slaugther lambs are free). Avg is roughly 90� per sheep. HOW OFTEN??
+rule "Phosphate rights"
+	when
+		sheep : Fact(Fact.Name == "nmSheep", answer > 5);
+	then
+		help(drools, "phosphate");  
+		advice("When you have more than five sheep you'll need to pay (90�) phosphate rights per sheep. For " + sheep.getAnswer() + " this will cost " + (sheep.getAnswer() * 90) + "� per ??");
+end
+
+// multiplying the amount of sheep times the shed size is arbitrary. Only during birthing (some) sheep need to be inside
+rule "Has shed and wants n sheep"
+	when
+		sheep : Fact(Fact.Name == "nmSheep");
+		shedsize : Fact(Fact.Name == "nmShedSize", status == HASANSWER, answer < sheep.getAnswer() * 10);
+	then
+		help(drools,"info");
+		advice("You should build another shed or expand your shed. Since you want " + sheep.getAnswer() + 
+		" sheep, and your shed is " + shedsize.getAnswer() + " square meters, your shed should be " + 
+		shedSize(sheep.getAnswer(),shedsize.getAnswer()) + " square meters bigger");
+end
+
+// Why should people have a tractor? What are the alternatives? How much does a tractor cost exactly (https://edepot.wur.nl/429700)? 
+rule "Has tractor"
+	when 
+		tractor : Fact(Fact.Name == "ynTractor", answer == NO);
+	then
+		advice("You should probably buy a tractor");
+
+end
+
+// In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
+rule "All good"
+	when
+		tractor : Fact(Fact.Name == "ynTractor", answer == YES);
+		sheep : Fact(Fact.Name == "nSheep", answer > 200);
+		land : Fact(Fact.Name == "nmLandSize", status == HASANSWER, answer >= (sheep.getAnswer() * 2.85));
+		nmShedSize : Fact(Fact.Name == "nmShedSize", status == HASANSWER, answer > (sheep.getAnswer() * 10));
+	then
+		advice("You should be able to start a profitable sheep herding business");
+end
+
+
+		
+		
+		

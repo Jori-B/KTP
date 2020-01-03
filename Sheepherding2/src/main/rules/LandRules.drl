@@ -1,0 +1,74 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+rule "Land is big enough"
+	when
+		$land : Land(landIsBigEnough);
+	then
+		$land.setAdvice("U heeft genoeg land voor de hoeveelheid schapen die u wilt houden");
+end
+
+rule "Not enough land"
+	when
+		Sheep( $nSheep : totalNSheepWanted);
+		$land : Land( $landSize : totalLandSize, $landNeeded : landNeeded > 0, $cost : costLandNeeded );		
+// Only talking about buying land. How much will leasing land cost rougly?
+	then
+		help(drools,"info");
+		$land.setAdvice("U zult meer land moeten kopen of leasen. U kunt per hectare ongeveer 3 schapen houden. Aangezien u " + 
+		$nSheep + " schapen wilt, en u " + $landSize + " hectare land (incl. lease) heeft, heeft u " + $landNeeded + " hectare land extra nodig.");
+		$land.setAdvice("Een hectare land kost ongeveer 50.000 euro. U heeft dus intotaal " + $cost + "euro voor het kopen van land nodig.");
+end
+
+rule "Not enough land, no lease"
+	when
+		$land : Land(landNeeded > 0, hasLeasedLand == NO);
+	then
+		$land.setAdvice("U kunt u beschikbare hoeveelheidland wellicht verhogen door middel van leasen, kijk in uw buurt wat de opties zijn."); 
+end     
+
+rule "Hobby, land too small, no shed"
+	when
+		$land : Land(landNeeded > 0);
+		Shed(hasShed == NO);
+		Shed(isAllowedToBuild == NO || roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == HOBBY);
+	then 
+		$land.setAdvice("U heeft weinig land en geen schuur, u kunt voor de Nederlandse Land Geit gaan, deze heeft weinig land en geen schuur nodig.");
+end
+
+rule "Hobby, has (too) small land"
+	when
+		$land : Land(hasLand == YES, landNeeded > 0);
+		Business(hobSemiPro == HOBBY);
+	then
+		$land.setAdvice("Aangezien u weinig land heeft kunt u er ook voor kiezen om voor een kleiner ras te gaan dat minder land nodig heeft " +
+		"zoals de Skudde, Soay, Quessant of Engelse rassen zoals de Hampsindown, Suffock en Kerry Hill.");
+end
+
+rule "Toeslagrechten"
+	when
+		$land : Land($cost : toeslagrecht > 0); 
+	then
+		$land.setAdvice("Houd er rekening mee dat u toeslagrechten dient te betalen over elke hectare land, namelijk 300 euro per hectare. " +
+		"In uw geval kost dit u " + $cost + " euro");	
+end	
+
+		
+		
+		
