@@ -1,0 +1,88 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+rule "Hobby, wants more than 10 sheep"
+	when
+		$business : Business(hobSemiPro == HOBBY); 
+		Sheep(totalNSheepWanted > 10);
+	then
+		$business.setAdvice("Wanneer u meer dan 10 schapen wilt houden zult u moeten overwegen of u dit niet liever (semi)professioneel wilt doen.");
+end
+
+rule "Not KvK registered"
+	when
+		$business : Business(isKvKRegistered == NO); 
+		Sheep(totalNSheepWanted > 10);
+	then
+		$business.setAdvice("Om meer dan 10 schapen te houden zult u zich moeten regristreren bij de Kamer van Koophandel (KVK) " +
+		"Voor meer informatie of KVK regristratie kunt u <deze link> volgen.");
+end
+
+rule "Not UBN registered"
+	when
+		$business : Business(isUBNRegistered == NO); 
+	then
+		$business.setAdvice("U bent nog niet in bezit van een uniek bedrijfsnummer (UBN), dit is echter nodig wanneer u schapen wilt houden. " +
+		"Elke schaap dient geregristreerd te worden aan uw UBN. U kunt meer informatie over het verkrijgen van een UBN <hier> vinden.");
+end
+
+rule "Not enough money"
+	when
+		$business : Business(moneyToSpend < moneyNeeded);
+	then
+		$business.setAdvice("U heeft momenteel niet genoeg kapitaal om u geprefereerde bedrijf te beginnen. Bekijk de tabel hieronder" + 
+		"om uw huidige inkomsten en uitgaven te zien, orobeer op sommige punten te bezuinigen of uw start kapitaal te verhogen.");
+end
+
+rule "Enough money"
+	when
+		$business : Business(moneyToSpend >= moneyNeeded);
+	then
+		$business.setAdvice("U start kapitaal is toereikend om uw geprefereerde bedrijf te beginnen." + 
+		"bekijk de onderstaande tabel voor meer informatie hierover.");
+end
+
+rule "Does't have enough time"
+	when
+		$business : Business(timeWillingToSpend < timeRequired);
+		Sheep($totalNSheepWanted : totalNSheepWanted);
+	then
+		$business.setAdvice("U heeft aangegeven slechts +$timewillingtospend+ uur per week aan u schapen te willen besteden. " +
+		"Echter kan dit te weinig zijn om goed voor " + $totalNSheepWanted + " schapen te zorgen.");
+		$business.setAdvice("U zult hiervoor een besluit moeten maken of u tevreden bent met minder schapen of meer besteedde tijd.");
+end
+
+// In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
+rule "All good"
+	when
+		$business : Business();
+		tractor : Materials(hasTractor == YES, horsePowerTractor >= 50, hasRaker == YES, hasShaker == YES, hasMower == YES);
+		sheep : Sheep(totalNSheepWanted > 200);
+		Land(landIsBigEnough);
+		not Shed(shedTooSmall);
+	then
+		$business.setAdvice("Het ziet er naar uit dat u een winstgevend schapen bedrijf kunt beginnen.");
+end
+
+
+
+
+
+		
+		
+		

@@ -8,6 +8,7 @@ public class Land implements VariableDefinitions {
 	public int hasLeasedLand;
 	public int leasedLandSize;
 	public int totalLandSize;
+	public int landSizeToeslag;
 	public int toeslagrecht;
 	public double landNeeded;
 	public double costLandNeeded; /* This is the cost when you buy instead of lease */
@@ -45,14 +46,11 @@ public class Land implements VariableDefinitions {
 		this.costLandNeeded = 50000 * landNeeded; 
 	} 
 	
-	public void calcToeslagRecht() {
-		/*
-		 * This doesn't reflect the fact that people might already have certain pieces
-		 * of land with toeslagrechten
-		 */
-		this.toeslagrecht = (int)landNeeded * 300;
-		
-	}
+//	public void calcToeslagRecht() {
+//		/* One can expect to gain 350€ a year per acre of land with toeslagrechten */
+//		this.toeslagrecht = (int)landSizeToeslag * 350;
+//		
+//	}
 
 	/* Getters and setters */
 	public int getHasLand() {
@@ -69,6 +67,16 @@ public class Land implements VariableDefinitions {
 
 	public void setOwnedLandSize(Question ownedLandSize) {
 		this.ownedLandSize = ownedLandSize.getAnswer();
+	}
+	
+	public int getLandSizeToeslag() {
+		return landSizeToeslag;
+	}
+
+	public void setLandSizeToeslag(Question landSizeToeslag) {
+		this.landSizeToeslag = landSizeToeslag.getAnswer();
+		/* One can expect to gain 350€ a year per acre of land with toeslagrechten */
+		this.toeslagrecht = landSizeToeslag.getAnswer() * 350;
 	}
 
 	public int getHasLeasedLand() {

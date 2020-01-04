@@ -1,0 +1,86 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+rule "Wants self birth"
+	when 
+		$care : Care(wantsSelfBirth == SELF);
+	then
+		$care.setAdvice("Zelf lammeren scheelt u + costBirthing + euro. U kunt verwachten om + sheepSoldEarnings euro te verdienen");
+end
+
+rule "Hobby, wants other birth"
+	when 
+		$care : Care(wantsSelfBirth == OTHER);
+		Business(hobSemiPro == HOBBY);
+	then
+		$care.setAdvice("Extern lammeren kost u waarschijnlijk + costBirthing + euro. Sommigge rassen zoals de Soay lammeren zonder hulp, " + 
+		"u kunt voor een dergelijk ras kiezen om hier op te besparen.");
+end
+
+rule "Pro, wants other birth"
+	when 
+		$care : Care(wantsSelfBirth == OTHER);
+		Business(hobSemiPro == PRO);
+	then
+		$care.setAdvice("Als professional wordt het aangeraden om zelf te lammeren. Extern lammeren kost u + costBirthing + euro");
+end
+
+rule "Pro doesn't want lambs"
+	when
+		$care : Care(wantsLambs == NO);
+		Business(hobSemiPro == PRO);
+	then
+		$care.setAdvice("Als professional wordt het aangeraden om schapen te fokken, dit is namelijk u primaire inkomsten bron. U verdient dan + sheepSoldEarnings");
+end
+
+rule "Shave self"
+	when 
+		$care : Care(wantsSelfShave == YES, $woolEarnings : woolEarnings, $shaveOtherCost : shaveOtherCost);
+		Sheep($totalNSheepWanted : totalNSheepWanted); 
+	then
+		$care.setAdvice("Houd er rekening mee dat scheren niet winstgevend is. Per schaap verdient u ongeveer 1.50�. In uw geval wilt u " + 
+		$totalNSheepWanted + " schapen. Dit levert u ongeveer " + $woolEarnings + " euro op.");
+		$care.setAdvice("U kunt iemand inhuren om het scheren voor u te doen. Per schaap kost dit ongeveer 3.50 euro. Intotaal kost het u dus ongeveer" +
+		$shaveOtherCost + " euro.");
+end
+
+rule "Shave other"
+	when 
+		$care : Care(wantsSelfShave == NO, $shaveOtherCost : shaveOtherCost);
+		Sheep($totalNSheepWanted : totalNSheepWanted); 
+	then
+		$care.setAdvice("Scheren is niet winstgevend. Echter zult u uw schapen eens per jaar moeten scheren." +
+		"U kunt iemand inhuren om het scheren voor u te doen. Per schaap kost dit ongeveer 3.50 euro. Intotaal kost het u dus ongeveer" +
+		$shaveOtherCost + " euro.");
+end
+
+rule "Hobby, shave other"
+	when 
+		$care : Care(wantsSelfShave == NO);
+		Business(hobSemiPro == HOBBY);
+	then
+		$care.setAdvice("Als hobby schapen herder kunt u een schapen ras kiezen dat niet geschoren hoeft te worden, zoals bijvoorbeeld de Soay.");
+end
+
+
+
+
+
+		
+		
+		

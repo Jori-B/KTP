@@ -1,0 +1,25 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+rule "Phosphate"
+	when
+		$sheep : Sheep($totalNSheepWanted : totalNSheepWanted > 5, $costPhosphateRights : costPhosphateRights);
+	then
+		$sheep.setAdvice("Wanneer u meer dan 5 schapen heeft moet u fosfaatrechten betalen (90€ per schaap). Voor " + 
+		$totalNSheepWanted + " gaat u dit " + $costPhosphateRights + " euros kosten?");
+end

@@ -6,10 +6,11 @@ public class Cost implements VariableDefinitions {
 	public int mowerCost;
 	public int shakerCost;
 	public int rakerCost;
+	public int fertilizerSpreaderCost;
 	//public int haypackerRentCost;
 	
 	/* Land */
-	public int toeslagrechtCost;
+	public int toeslagrechtEarnings;
 	public double landNeededCost; 
 	/* Pachtovereenkomsten. Regionorm is 600 euros / acre on average 
 	 * https://www.rvo.nl/onderwerpen/agrarisch-ondernemen/grond/pachten-en-verpachten/pachtnormen-en-pachtprijzen-berekenen */
@@ -20,13 +21,12 @@ public class Cost implements VariableDefinitions {
 	//public int birthOtherCost; // maybe just remove this? 
 	public double woolEarnings;
 	public double myasTreatmentCost; 
-	// just saying worming costs 100 euros a year
-	public int wormCost = 100;
+	public double wormCost;
 	
 	/* Business */
 	public int earMarkCost;
-	public int RVOAdminCost;
-	public int slaughterCost;
+	public double RVOAdminCost;
+	public double slaughterCost;
 	
 	/* Sheep */
 	public int sheepBoughtCost;
@@ -53,6 +53,7 @@ public class Cost implements VariableDefinitions {
     	setSheepSoldEarnings(totalNSheepWanted);
     	/* Shed */
     	setShedCost(totalNSheepWanted);
+    	setWormCost(totalNSheepWanted);
 	}
 	
 	public void setTractorCost(boolean needsNewTractor, boolean needsBigTractor) {
@@ -64,7 +65,7 @@ public class Cost implements VariableDefinitions {
 		} else { this.tractorCost = 0; System.out.println("Needs no tractor ");}
 	}
 	
-	public void setGrassMaterialCost(int hasMower, int hasShaker, int hasRaker) {
+	public void setGrassMaterialCost(int hasMower, int hasShaker, int hasRaker, int hasFertilizerSpreader) {
 		/*
 		 * All of these materials together cost roughly 20000 secondhand. So one of them
 		 * is 20000/3
@@ -78,6 +79,10 @@ public class Cost implements VariableDefinitions {
 		}
 		if(hasRaker == NO) {
 			this.rakerCost = costOne;
+		}
+		/* spreader costs roughly 1000€*/
+		if(hasFertilizerSpreader == NO) {
+			this.fertilizerSpreaderCost = 1000;
 		}
 	}
 	
@@ -101,11 +106,11 @@ public class Cost implements VariableDefinitions {
 	}
 	
 	public void setAdminastrativeCost(int totalNSheepWanted, int ownsNSheep, boolean wantsSlaughter) {
-		/* All these costs are roughly 1 euros per sheep, so total amount of sheep as the cost. */
+		/* costs are roughly 1 euros per sheep, so total amount of sheep as the cost. */
 		this.earMarkCost = totalNSheepWanted - ownsNSheep; /* When you own the sheep you already have them registered */
-		this.RVOAdminCost = totalNSheepWanted - ownsNSheep;
+		this.RVOAdminCost = ((totalNSheepWanted - ownsNSheep) * 1.5);
 		if (wantsSlaughter) {
-			this.slaughterCost = totalNSheepWanted;
+			this.slaughterCost = (totalNSheepWanted * 0.5);
 		} else { this.slaughterCost = 0; }
 	}
 	
@@ -131,7 +136,7 @@ public class Cost implements VariableDefinitions {
 	}
 	
 	public void setTotalEarnings() {
-		this.totalEarnings = (int)woolEarnings + sheepSoldEarnings;
+		this.totalEarnings = (int)woolEarnings + sheepSoldEarnings + toeslagrechtEarnings;
 	}
 	
 	public int getTotalEarnings() {
@@ -139,8 +144,8 @@ public class Cost implements VariableDefinitions {
 	}
 	
 	public void setTotalCost() {
-		this.totalCost = tractorCost + mowerCost + shakerCost + rakerCost + toeslagrechtCost + (int)landNeededCost + (int)shaveOtherCost + (int)myasTreatmentCost + wormCost + earMarkCost 
-				+ RVOAdminCost + slaughterCost + sheepBoughtCost + phosphateRightsCost + shedCost;
+		this.totalCost = tractorCost + mowerCost + shakerCost + rakerCost + (int)landNeededCost + (int)shaveOtherCost + (int)myasTreatmentCost + (int)wormCost + earMarkCost 
+				+ (int)RVOAdminCost + (int)slaughterCost + sheepBoughtCost + shedCost;
 	}
 	
 	public int getTotalCost() {
@@ -166,6 +171,10 @@ public class Cost implements VariableDefinitions {
 	public int getMowerCost() {
 		return mowerCost;
 	}
+	
+	public int getFertilizerSpreaderCost() {
+		return fertilizerSpreaderCost;
+	}
 
 	public void setMowerCost(int mowerCost) {
 		this.mowerCost = mowerCost;
@@ -187,12 +196,12 @@ public class Cost implements VariableDefinitions {
 		this.rakerCost = rakerCost;
 	}
 
-	public int getToeslagrechtCost() {
-		return toeslagrechtCost;
+	public int getToeslagrechtEarnings() {
+		return toeslagrechtEarnings;
 	}
 
-	public void setToeslagrechtCost(int toeslagrechtCost) {
-		this.toeslagrechtCost = toeslagrechtCost;
+	public void setToeslagrechtEarnings(int toeslagrechtEarnings) {
+		this.toeslagrechtEarnings = toeslagrechtEarnings;
 	}
 
 	public double getShaveOtherCost() {
@@ -227,12 +236,18 @@ public class Cost implements VariableDefinitions {
 		this.myasTreatmentCost = myasTreatmentCost;
 	}
 
-	public int getWormCost() {
+	public double getWormCost() {
 		return wormCost;
 	}
 
-	public void setWormCost(int wormCost) {
-		this.wormCost = wormCost;
+	/* for 2.5 liters you can worm 250 lambs. 2.5 liters costs roughly 150€. Therefore, 150/250 = 0.60€ is needed per lamb */
+	public void setWormCost(int totalNSheepWanted) {
+		/* ewes need to be wormed only once a year, while lambs need to be wormed 2-3 times a year 
+		 * Ewes get roughly two lambs.
+		 */
+		int lambs = totalNSheepWanted * 2;
+		int ewes = totalNSheepWanted;
+		this.wormCost = (lambs * 0.60) + (ewes * 0.60);
 	}
 
 	public int getEarMarkCost() {
@@ -243,19 +258,19 @@ public class Cost implements VariableDefinitions {
 		this.earMarkCost = earMarkCost;
 	}
 
-	public int getRVOAdminCost() {
+	public double getRVOAdminCost() {
 		return RVOAdminCost;
 	}
 
-	public void setRVOAdminCost(int rVOAdminCost) {
-		RVOAdminCost = rVOAdminCost;
+	public void setRVOAdminCost(double RVOAdminCost) {
+		this.RVOAdminCost = RVOAdminCost;
 	}
 
-	public int getSlaughterCost() {
+	public double getSlaughterCost() {
 		return slaughterCost;
 	}
 
-	public void setSlaughterCost(int slaughterCost) {
+	public void setSlaughterCost(double slaughterCost) {
 		this.slaughterCost = slaughterCost;
 	}
 

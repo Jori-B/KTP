@@ -45,12 +45,12 @@ public class CostTable implements VariableDefinitions {
 		frame.getContentPane().setBackground(SystemColor.activeCaption);
 		frame.getContentPane().setLayout(null);
 		
-//		JLabel lblCosts = new JLabel("Cost table");
-//		lblCosts.setHorizontalAlignment(SwingConstants.LEFT);
-//		lblCosts.setVerticalAlignment(SwingConstants.TOP);
-//		lblCosts.setFont(new Font("Arial Black", Font.BOLD, 16));
-//		lblCosts.setBounds(12, 0, 965, 30);
-//		frame.getContentPane().add(lblCosts);
+		JLabel lblCosts = new JLabel("Cost table");
+		lblCosts.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCosts.setVerticalAlignment(SwingConstants.TOP);
+		lblCosts.setFont(new Font("Arial Black", Font.BOLD, 16));
+		lblCosts.setBounds(10, 13, 965, 30);
+		frame.getContentPane().add(lblCosts);
 		Materials materials = model.getMaterials();
 		int getTractor = 0;
 		if(materials.getNeedsNewTractor()) {
@@ -59,6 +59,7 @@ public class CostTable implements VariableDefinitions {
 		int getMower = 1;
 		int getShaker = 1;
 		int getRaker = 1;
+		int getFertilizerSpreader = 1;
 		if(materials.getHasMower() == YES) {
 			getMower = 0;
 		} 
@@ -68,7 +69,13 @@ public class CostTable implements VariableDefinitions {
 		if(materials.getHasRaker() == YES) {
 			getRaker = 0;
 		} 
-		
+		if(materials.getHasFertilizerSpreader() == YES) {
+			getFertilizerSpreader = 0;
+		} 
+		double shaveCost = 0;
+		if(model.getCare().getWantsSelfShave() == NO) {
+			shaveCost = costs.getShaveOtherCost();
+		}
 		int getFertilizerPlate = 1;
 		if(model.getShed().getHasFertilizerPlate() == YES) {
 			getFertilizerPlate = 0;
@@ -80,37 +87,38 @@ public class CostTable implements VariableDefinitions {
 		
 		String[] colNames = {"Item",		"Count", 	"Price"};
 		Object[][] costsArray = {
-						{"--------------------------- COSTS -------------------------","---------------------------------------------------------------","---------------------------------------------------------------"},
-						{"Trekker", 					getTractor+" tractor",					"€"+twoDigits.format(costs.getTractorCost())},
-						{"Maaier", 						getMower+" maaier",						"€"+twoDigits.format(costs.getMowerCost())},
-						{"Schudder",	 					getShaker+" schudder",					"€"+twoDigits.format(costs.getShakerCost())},
-						{"Harker",	 					getRaker+" harker",						"€"+twoDigits.format(costs.getRakerCost())},
-						{"Toeslagrechten", 				twoDigits.format(landNeeded)+" hectare",	"€"+twoDigits.format(costs.getToeslagrechtCost())},
-						{"Land benodigt", 				twoDigits.format(landNeeded)+" hectare pachten",			"€"+twoDigits.format(costs.getLandNeededCost())},
-						{"Scheren door ander", 				totalNSheepWanted+" schapen",				"€"+twoDigits.format(costs.getShaveOtherCost())},
-						{"Myas behandelingen", 				(totalNSheepWanted*3)+" behandelingen",	"€"+twoDigits.format(costs.getMyasTreatmentCost())},
-						{"Wormen",		 				desiresNMoreSheep+" behandelingen",		"€"+twoDigits.format(costs.getWormCost())},
-						{"Oor merken",	 				desiresNMoreSheep+" oormerken",			"€"+twoDigits.format(costs.getEarMarkCost())},
-						{"RVO administratie",			desiresNMoreSheep+" schapen",				"€"+twoDigits.format(costs.getRVOAdminCost())},
-						{"Slacht registratie",		totalNSheepWanted+" schapen",				"€"+twoDigits.format(costs.getSlaughterCost())},
-						{"Schapen kopen",				desiresNMoreSheep+" schapen",				"€"+twoDigits.format(costs.getSheepBoughtCost())},
-						{"Fosfaatrechten",			totalNSheepWanted+" rights",			"€"+twoDigits.format(costs.getPhosphateRightsCost())},
-						{"Schuur bouwen/uitbreiden",				model.getShed().getGoalCurSizeDiff()+" vierkante meters",	"€"+twoDigits.format(costs.getShedCost())},
-						{"Schuur mestplaat",		getFertilizerPlate+" plaat",			"€"+twoDigits.format(costs.getFertilizerPlateCost())},
-						{"------------------------ EARNINGS ------------------------","---------------------------------------------------------------","---------------------------------------------------------------"},
-						{"Schapen verkocht",					(totalNSheepWanted*2)+" lammeren",			"€"+twoDigits.format(costs.getSheepSoldEarnings())},
-						{"Wol verkocht",					totalNSheepWanted+" wolvachten",		"€"+twoDigits.format(costs.getWoolEarnings())},
-						{"------------------------- TOTALS --------------------------","---------------------------------------------------------------","---------------------------------------------------------------"},
-						{"Totale kosten",					"",										"€"+twoDigits.format(costs.getTotalCost())},
-						{"Totale inkomsten dit jaar",	"",										"€"+twoDigits.format(costs.getTotalEarnings())},
-						{"Kosten minus inkomsten",		"",										"€"+twoDigits.format(costs.getMoneyNeeded())},
-						{"-------------------- YOUR BUSINESS ---------------------","---------------------------------------------------------------","---------------------------------------------------------------"},
-						{"Geld te besteden door u",				"",										"€"+twoDigits.format(costs.getMoneyToSpend())},
-						{"Te besteden minus kosten plus inkomsten",	"",								"€"+twoDigits.format((costs.getMoneyToSpend() - costs.getMoneyNeeded()))},
+						{"------------------ COSTS --------------------","-------------------------------------------------","-------------------------------------------------"},
+						{"Tractor", 					getTractor+" tractor",					"€"+twoDigits.format(costs.getTractorCost())},
+						{"Mower", 						getMower+" mower",						"€"+twoDigits.format(costs.getMowerCost())},
+						{"Shaker",	 					getShaker+" shaker",					"€"+twoDigits.format(costs.getShakerCost())},
+						{"Raker",	 					getRaker+" raker",						"€"+twoDigits.format(costs.getRakerCost())},
+						{"Fertilizer spreader",			getFertilizerSpreader+" spreader",		"€"+twoDigits.format(costs.getFertilizerSpreaderCost())},
+						{"Land needed", 				twoDigits.format(landNeeded)+" acres leased",			"€"+twoDigits.format(costs.getLandNeededCost())},
+						{"Shave other", 				totalNSheepWanted+" sheep",				"€"+twoDigits.format(shaveCost)},
+						{"Myas Treatment", 				(totalNSheepWanted*3)+" treatments",	"€"+twoDigits.format(costs.getMyasTreatmentCost())},
+						{"Worming",		 				totalNSheepWanted+" treatments",		"€"+twoDigits.format(costs.getWormCost())},
+						{"Ear marks",	 				desiresNMoreSheep+" ear marks",			"€"+twoDigits.format(costs.getEarMarkCost())},
+						{"RVO administration",			desiresNMoreSheep+" sheep",				"€"+twoDigits.format(costs.getRVOAdminCost())},
+						{"Slaughter registration",		totalNSheepWanted+" sheep",				"€"+twoDigits.format(costs.getSlaughterCost())},
+						{"Buying sheep",				desiresNMoreSheep+" sheep",				"€"+twoDigits.format(costs.getSheepBoughtCost())},
+						{"Shed building",				model.getShed().getGoalCurSizeDiff()+" square meters",	"€"+twoDigits.format(costs.getShedCost())},
+						{"Shed fertilizer plate",		getFertilizerPlate+" plate",			"€"+twoDigits.format(costs.getFertilizerPlateCost())},
+						{"--------------- EARNINGS -------------------","-------------------------------------------------","-------------------------------------------------"},
+						{"Sheep sold",					(totalNSheepWanted*2)+" lambs",			"€"+twoDigits.format(costs.getSheepSoldEarnings())},
+						{"Wool Sold",					totalNSheepWanted+" coats of fur",		"€"+twoDigits.format(costs.getWoolEarnings())},
+						{"Toeslagrechten", 				twoDigits.format(landNeeded)+" acres",	"€"+twoDigits.format(costs.getToeslagrechtEarnings())},
+						{"---------------- TOTALS ---------------------","-------------------------------------------------","-------------------------------------------------"},
+						{"Total costs",					"",										"€"+twoDigits.format(costs.getTotalCost())},
+						{"Total earnings this year",	"",										"€"+twoDigits.format(costs.getTotalEarnings())},
+						{"Costs minus earnings",		"",										"€"+twoDigits.format(costs.getMoneyNeeded())},
+						{"----------- YOUR BUSINESS ---------------","-------------------------------------------------","-------------------------------------------------"},
+						{"Money to spend",				"",										"€"+twoDigits.format(costs.getMoneyToSpend())},
+						{"Your spending minus total needed",	"",								"€"+twoDigits.format((costs.getMoneyToSpend() - costs.getMoneyNeeded()))},
 		};
 		
 
 		table = new JTable(costsArray, colNames);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 //		table.setBounds(12, 24, 816, 293);
 		
 		frame.getContentPane().add(table);

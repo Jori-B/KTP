@@ -1,0 +1,185 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+rule "Mention shed size needed"
+	salience 10
+	when
+		Sheep( $nSheep : totalNSheepWanted > 0);
+		$shed : Shed($shedSize : curShedSize, $goalSize : goalSize); 
+	then
+		$shed.setAdvice("Ongeveer 2.5 meter per schaap is nodig in een schuur. Aangezien u " + $nSheep + " schapen wilt, " +
+		"zou uw schuur " + $goalSize + " meter groot moeten zijn");
+end
+
+rule "Great shed"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isTallerThan3 == YES, isPathWiderThan12 == YES, hasCementFloor == YES, hasFertilizerPlate == YES, hasAdjustableFences == YES, hasLamps == YES);
+	then
+		$shed.setAdvice("Uw schuur voldoet aan alle eisen voor de hoeveelheid schapen die u wilt.");
+end
+
+rule "Correct dimensions shed"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0, isTallerThan3 == YES, isPathWiderThan12 == YES);
+	then
+		$shed.setAdvice("Uw schuur heeft de juiste dimensies voor de hoeveelheid schapen die u wilt..");
+end
+
+rule "Shed is big enough, but dimensions off"
+	salience 3
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff < 0);
+		Shed(isTallerThan3 == NO || isPathWiderThan12 == NO);
+	then
+		$shed.setAdvice("Uw schuur is groot genoeg, maar ");
+end
+
+rule "Shed not big enough and dimensions off"
+	salience 3
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff >= 0);
+		Shed(isTallerThan3 == NO || isPathWiderThan12 == NO);
+	then
+		$shed.setAdvice("Uw schuur is niet groot genoeg, en ");
+end
+
+rule "Shed not tall"
+	salience 2
+	when
+		$shed : Shed( hasShed == YES, isTallerThan3 == NO);
+	then
+		$shed.setAdvice("uw schuur is niet hoog genoeg om er met de tractor onderdoor te kunnen.");
+end
+
+rule "Shed not wide"
+	salience 2
+	when
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO);
+	then
+		$shed.setAdvice("uw schuur is niet breed genoeg om er met de tractor tussendoor te kunnen. Er is ook ruimte nodig om om voedsel (en materialen) op te slaan.");
+end
+
+rule "Shed not wide and tall"
+	salience 2
+	when
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO, isTallerThan3 == NO);
+	then
+		$shed.setAdvice("uw schuur is niet breed en hoog genoeg om er met de tractor tussendoor te kunnen. Er is ook ruimte nodig om om voedsel (en materialen) op te slaan.");
+end
+
+rule "Shed not wide, but room"
+	salience 1
+	when
+		$shed : Shed( hasShed == YES, isPathWiderThan12 == NO, isAllowedToBuild == YES, roomForShed > 0);
+	then
+		$shed.setAdvice("U kunt overwegen om uw schuur te verwijden aangezien u toestemming heeft om te bouwen");
+end
+
+rule "Hobby, small shed, no build"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == NO);
+		Business(hobSemiPro == HOBBY);
+	then
+		// Which sheep to advice exactly???
+		$shed.setAdvice("Uw schuur is te klein voor de hoeveelheid schapen die u wilt houden en u mag bouwen. U kunt overwegen " +
+		"om schapen te houden die geen schuur nodig hebben. Sommigen hebben alleen een kleine schuur nodig op het land.");
+end
+
+rule "Pro, small shed, no build"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == NO);
+		Business(hobSemiPro == PRO);
+	then
+		$shed.setAdvice("Uw schuur is te klein voor de hoeveelheid schapen die u wilt houden en u mag niet bouwen. " + 
+		"Daarom is het niet aangeraden om professioneel schapen te gaan houden.");
+end
+
+rule "Small shed, room for expansion"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed >= goalCurSizeDiff);
+	then
+		$shed.setAdvice("Uw schuur is te klein maar u heeft genoeg ruimte om uw schuur uit te breiden. Dit gaat u zie tabel € kosten");
+end
+
+rule "Hobby, small shed, no room for expansion"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == HOBBY);
+	then
+		$shed.setAdvice("Uw schuur is te klein voor de hoeveelheid schapen die u wilt en u heeft niet genoeg ruimte om uit te breiden. " + 
+		"U kunt overwegen schapen te herden die geen schuur nodig hebben of minder schapen te nemen. Sommige schapen hebben alleen een kleine schuur nodig " +
+		"op uw land, zoals de Soay.");
+end
+
+rule "Pro, small shed, no room for expansion"
+	when
+		$shed : Shed( hasShed == YES, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == PRO);
+	then
+		// Maybe before saying it is worth doing it semi professionally we should look at the data
+		$shed.setAdvice("Uw schuur is te klein voor de hoeveelheid schapen die u wilt en u mag niet bouwen. " + 
+		"Daarom is het niet aan te raden om professioneel schapen te gaan houden. Het kan te overwegen zijn om semi " + 
+		"professioneel te beginnen met een paar dagen in de week en minder schapen");
+end
+
+rule "Hobby, no shed, little room"
+	when
+		$shed : Shed( hasShed == NO, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == HOBBY);
+	then
+		// advice says land you have but might not have land
+		$shed.setAdvice("U heeft niet genoeg ruimte om een schuur te bouwen voor de hoeveelheid schapen die u wilt. " + 
+		"U kunt overwegen om schapen te nemen die geen schuur nodig hebben of minder schapen te nemen. Sommige schapen hebben alleen een klein schuurtje nodig op het land.");
+end
+
+rule "Pro, no shed, little room"
+	when
+		$shed : Shed( hasShed == NO, goalCurSizeDiff > 0, isAllowedToBuild == YES, roomForShed < goalCurSizeDiff);
+		Business(hobSemiPro == PRO);
+	then
+		$shed.setAdvice("U heeft niet genoeg ruimte om een schuur te bouwen voor de hoeveelheid schapen die u wilt. Daarom is het niet aan te raden " + 
+		"om professioneel herder te worden. Het kan te overwegen zijn om semi professioneel te beginnen, met een paar dagen in de week en minder schapen.");
+end
+
+rule "No flat floor"
+	when
+		$shed : Shed( hasShed == YES, hasCementFloor == NO);
+	then
+		$shed.setAdvice("Uw vloer is niet vlak. Een vlakke cementen vloer is aan te raden");
+end
+
+rule "No fertilizer plate"
+	when
+		$shed : Shed( hasShed == YES, hasFertilizerPlate == NO);
+	then
+		$shed.setAdvice("Een mestplaat is nodig om niet de mest te laten lekker onder de schuur grond. Deze kost ongeveer 20.000€.");
+end
+
+rule "No fences"
+	when
+		$shed : Shed( hasShed == YES, hasAdjustableFences == NO);
+	then
+		$shed.setAdvice("Aanpasbare hebben zijn handig om de schapen te scheiden in de schuur. Dit is ook handig voor de administratie.");
+end
+
+rule "No lamps"
+	when
+		$shed : Shed( hasShed == YES, hasLamps == NO);
+	then
+		$shed.setAdvice("Wanneer het lammeren plaat vindt hebben de lammen de hele nacht licht nodig. Dus u zou lampen moeten kopen.");
+end

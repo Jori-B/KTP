@@ -1,0 +1,144 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+rule "Enough horsepower tractor"
+	when
+		$materials : Materials(hasTractor == YES, horsePowerTractor >= 50);
+	then
+		$materials.setAdvice("Je trekker heeft genoeg paardenkracht om proffessioneel te gebruiken voor elke hoeveelheid schapen");
+end
+
+rule "Not enough horsepower tractor"
+	when
+		$materials : Materials(hasTractor == YES, horsePowerTractor < 50);
+		Sheep(totalNSheepWanted >= 100);
+	then
+		$materials.setAdvice("Het is aan te raden om een trekker van meer dan 50 paardenkracht te nemen om het land te bewerken  " +
+		"Dus u wordt geadviseerd om een trekker met meer paardenkracht te kopen. Tweedehands kost u dat zon €20.000.");
+end
+
+rule "Enough horsepower 100 sheep"
+	when
+		$materials : Materials(hasTractor == YES, horsePowerTractor < 50);
+		Sheep(totalNSheepWanted < 100);
+		Business(hobSemiPro == PRO);
+	then
+		$materials.setAdvice("Wanneer je een professional bent is aan te raden om een trekker van meer dan 50 paardenkracht te nemen om het " + 
+		"land te bewerken. Omdat u wilt starten met minder dan 100 schapen is het oke om wat minder paardenkracht te hebben voor nu. " +
+		"Echter, voor mee dan 100 schapen is meer paardenkracht handig. Tweedehands kost u dat zon €20.000.");
+end
+
+rule "No tractor less 10 sheep"
+	when
+		$materials : Materials(hasTractor == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted < 10);
+		Business(hobSemiPro == HOBBY);
+	then
+		$materials.setAdvice("Het zou mogelijk moeten zijn om " + $totalNSheepWanted + " te hoeden zonder een trekker te bezitten, " + 
+		"in plaats daarvan kunt een kruiwagen gebruiken voor de meeste taken.");
+end
+
+rule "No tractor between 10and100 sheep"
+	when
+		$materials : Materials(hasTractor == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10, totalNSheepWanted <= 100);
+	then
+		$materials.setAdvice("U zou een trekker moeten kopen omdat u " + $totalNSheepWanted + " schapen wilt houden." +
+		" U kunt een trekker aanschaffen van onder de 50 pk. Echter, wanneer u besluit meer dan " +
+ 		"100 schapen te nemen is het aan te raden om een trekker aan te schaffen met 50 tot 70 pk.");
+end
+
+rule "No tractor, more than 100 sheep"
+	when
+		$materials : Materials(hasTractor == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 100);
+	then
+		$materials.setAdvice("U zou een trekker moeten kopen omdat u " + $totalNSheepWanted + " schapen wilt houden." + 
+		" Het is aan te raden om een trekker aan te schaffen met 50 tot 70 pk.");
+end
+
+rule "All grass materials"
+	when
+		$materials : Materials(hasMower == YES, hasRaker == YES, hasShaker == YES);
+	then
+		$materials.setAdvice("U heeft alle meest essentiele machines voor grasland bewerking; een maaier, schudder, en een harker. ");
+end
+
+rule "Grass material missing"
+	// Higher salience so that this sentence is printed before the sentences about which one is missing
+	salience 2
+	when
+		$materials : Materials(hasMower == NO || hasRaker == NO || hasShaker == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("Er zijn drie essentiele machines voor grasland bewerking wanneer u veel schapen heeft; een maaier, schudder, " + 
+		"en een harker. Voor iedere professionele schapenherder is het aan te raden om deze aan te schaffen. U heeft nog niet al deze machines.");
+end
+
+rule "Mower missing"
+	// Lower salience so that this sentence is printed after the sentences about which one is missing
+	salience 1
+	when
+		$materials : Materials(hasMower == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("U zou een maaier moeten aanschaffen.");
+end
+
+rule "Shaker missing"
+	// Lower salience so that this sentence is printed after the sentences about which one is missing
+	salience 1
+	when
+		$materials : Materials(hasShaker == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("U zou een schudder moeten aanschaffen.");
+end
+
+rule "Raker missing"
+	// Lower salience so that this sentence is printed after the sentences about which one is missing
+	salience 1
+	when
+		$materials : Materials(hasRaker == NO);
+		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
+	then
+		$materials.setAdvice("U zou een harker moeten aanschaffen.");
+end
+
+rule "Haypacker missing"
+	when
+		$materials : Materials(hasHayPacker == NO);
+	then
+		$materials.setAdvice("Een hooiverpakker is duur, dus het is oke om deze niet aan te schaffen. U kunt deze beter huren of iemand " +
+		"inhuren voor de hooiverpakking.");
+end
+
+rule "Fertilizer spreader missing"
+	when
+		$materials : Materials(hasFertilizerSpreader == NO);
+	then
+		$materials.setAdvice("Een mest strooier is handig. Maar als u niet veel te besteden heeft kunt u rondkomen zonder.");
+end
+
+rule "Mest Gatherer missing"
+	when
+		$materials : Materials(hasMestGatherer == NO);
+	then
+		$materials.setAdvice("Het is handig om een mestverzamelaar te hebben. De mest van de schapen in de schuur kan als kuntmest " + 
+		"over het land gestrooid worden. Wanneer u niet veel geld heeft kunt u kiezen er geen een aan te schaffen.");
+end

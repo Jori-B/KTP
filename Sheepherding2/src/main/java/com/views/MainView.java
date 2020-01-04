@@ -1,6 +1,6 @@
 package com.views;
 
-import com.model.MCQuestion;
+import com.model.MCQuestion;	
 import com.model.Model;
 import com.model.Question;
 import com.model.VariableDefinitions;
@@ -73,6 +73,10 @@ public class MainView extends JFrame implements VariableDefinitions {
 	private JList<String> list;
 	private DefaultListModel<String> answeredQs;
 	
+	private JTextField lengthArea;
+	private JLabel lblWidth;
+	private JLabel lblLength;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -129,13 +133,17 @@ public class MainView extends JFrame implements VariableDefinitions {
 		switch(current.getQuestionType()) {
 			case YESNO:
 				setVisibilityBtns(false, true);
-				btnLeft.setText("Ja");
-				btnRight.setText("Nee");
+				btnLeft.setText("Yes");
+				btnRight.setText("No");
 				break;
 			case NUMB:
 				setVisibilityBtns(true, false);
 				/* Request focus to the textarea so the user can start typing straight away */
 				textArea.requestFocus();
+				if (current.getName() == "Shed Size") {
+					setLengthAreaVisible(true);
+					lengthArea.requestFocus();
+				}
 				break;
 			case MC: 
 				setVisibilityBtns(false, true);
@@ -154,20 +162,20 @@ public class MainView extends JFrame implements VariableDefinitions {
 		if(current.getStatus() == HASANSWER) {
 			// If the current question has an answer, the user should be able to go to the next question
 			btnNext.setEnabled(true);
-			// If one of these conditions holds, color the answer button green
+			// If one of these conditions holds, color the answer button red
 			if(answer == YES) {
-				btnLeft.setBackground(Color.GREEN);
+				btnLeft.setBackground(Color.RED);
 				// When a user has changed its answer and tries previous again, only one button should be green
 			} else {
 				btnLeft.setBackground(Color.WHITE);
 			} 
 			if(answer == NO) {
-				btnRight.setBackground(Color.GREEN); 
+				btnRight.setBackground(Color.RED); 
 			} else {
 				btnRight.setBackground(Color.WHITE);
 			}
 			if(current.getQuestionType() == NUMB && answer > 0) {
-				btnEnterInput.setBackground(Color.GREEN);
+				btnEnterInput.setBackground(Color.RED);
 				textArea.setText(Integer.toString(current.getAnswer()));
 			} else {
 				// empty the text area when there isn't an answer ( this else is used when previous question order is changed )
@@ -207,6 +215,12 @@ public class MainView extends JFrame implements VariableDefinitions {
 		}
 	}
 	
+	public void setLengthAreaVisible(boolean setVisible) {
+		lengthArea.setVisible(setVisible);
+		lblWidth.setVisible(setVisible);
+		lblLength.setVisible(setVisible);
+	}
+	
 	private void initComponents() {
 		//SETTING UP FRAME
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
@@ -224,7 +238,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		lblQuestion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblQuestion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblQuestion.setBackground(new Color(47, 79, 79));
-		lblQuestion.setForeground(SystemColor.controlLtHighlight);
+		lblQuestion.setForeground(Color.BLACK);
 		lblQuestion.setFont(new Font("Verdana", Font.PLAIN, 20));		
 		
 		JButton btnLeft = new JButton("Yes");
@@ -257,6 +271,19 @@ public class MainView extends JFrame implements VariableDefinitions {
 		
 		/* Tried to import an image here. It did not work to get the size small.
 		 * This should be a way to enter a scaled down image, however I can't get it to work */
+		
+		JTextField lengthArea = new JTextField();
+		lengthArea.setText("");
+		lengthArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		setLengthArea(lengthArea);
+		
+		JLabel lblWidth = new JLabel("Width:");
+		lblWidth.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		setLblWidth(lblWidth);
+		
+		JLabel lblLength = new JLabel("Length:");
+		lblLength.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		setlblLength(lblLength);
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
 //		Image img = sheepPic.getImage();
@@ -269,36 +296,51 @@ public class MainView extends JFrame implements VariableDefinitions {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGap(61)
+										.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+										.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+										.addGap(60))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGap(260)
+										.addComponent(btnEnterInput, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+										.addGap(260))))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+								.addContainerGap()))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(1)
+							.addGap(96)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(60)
-									.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-									.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-									.addGap(60))
+									.addComponent(lblLength, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+									.addGap(45)
+									.addComponent(lengthArea, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
-									.addContainerGap())))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(210)
-							.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-							.addGap(210))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(260)
-							.addComponent(btnEnterInput, GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-							.addGap(260))))
+									.addComponent(lblWidth, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+									.addGap(42)
+									.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)))
+							.addContainerGap())))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(180)
+					.addGap(162)
 					.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-					.addGap(38)
-					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblLength, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lengthArea, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+					.addGap(27)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWidth, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnLeft, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
@@ -307,7 +349,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 					.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addGap(199))
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_contentPane.setHonorsVisibility(false);
@@ -362,7 +404,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		new RightBtnAction(btnRight, this, model);
 		new PreviousAction(btnPrevious, this, model);
 		new NextAction(btnNext, this, model);
-		new TextAreaAction(btnEnterInput, textArea, this, model);
+		new TextAreaAction(btnEnterInput, textArea, lengthArea, this, model);
 		new ListClickAction(list, this, model);
 	}
 	
@@ -429,5 +471,21 @@ public class MainView extends JFrame implements VariableDefinitions {
 	private void setAnsweredQs(DefaultListModel<String> answeredQs) {
 		this.answeredQs = answeredQs;
 	}
+	
+	private void setLengthArea(JTextField lengthArea) {
+		this.lengthArea = lengthArea;
+		lengthArea.setVisible(false);
+	}
+	
+	private void setLblWidth(JLabel lblWidth) {
+		this.lblWidth= lblWidth;
+		lblWidth.setVisible(false);
+	}
+	
+	private void setlblLength(JLabel lblLength) {
+		this.lblLength = lblLength;
+		lblLength.setVisible(false);
+	}
+
 
 }

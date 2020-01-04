@@ -8,11 +8,14 @@ public class Shed implements VariableDefinitions {
 	public double roomForShed; 
 	public int isAllowedToBuild;
 	public int isTallerThan3;
-	public int isPathWiderThan12;
+	public int isPathWiderThan3;
+	public int widthShed;
+	public int lengthShed;
 	public int hasCementFloor;
 	public int hasFertilizerPlate;
 	public int hasAdjustableFences;
-	public int hasLamps;
+	public int hasElectricity;
+	public int hasWater;
 	public double goalSize; 
 	public double goalCurSizeDiff;
 	public boolean shedTooSmall;
@@ -29,6 +32,7 @@ public class Shed implements VariableDefinitions {
 	}
 	
 	public void calcGoalCurSizeDiff() { 
+		System.out.println("Calculated shed size: " + curShedSize);
 		this.goalCurSizeDiff = goalSize - curShedSize;
 		if(goalCurSizeDiff > 0) {
 			this.shedTooSmall = true;
@@ -89,27 +93,35 @@ public class Shed implements VariableDefinitions {
 		}
 	}
 
-	public int getIsPathWiderThan12() {
-		return isPathWiderThan12;
+	public int getisPathWiderThan3() {
+		return isPathWiderThan3;
 	}
 
-	public void setIsPathWiderThan12(Question width) {
-		if(width.getAnswer() >= 12) {
-			System.out.println("this.isPathWiderThan12 = YES;");
-			this.isPathWiderThan12 = YES;
+	public void setIsPathWiderThan3(Question width) {
+		if(width.getAnswer() >= 3) {
+			System.out.println("this.isPathWiderThan3 = YES;");
+			this.isPathWiderThan3 = YES;
 		} else {
-			this.isPathWiderThan12 = NO;
-			System.out.println("this.isPathWiderThan12 = NO;");
+			this.isPathWiderThan3 = NO;
+			System.out.println("this.isPathWiderThan3 = NO;");
 		}
 		
 	}
 
-	public int getHasCementFloor() {
-		return hasCementFloor;
+	public int getWidthShed() {
+		return widthShed;
 	}
 
-	public void setHasCementFloor(Question hasCementFloor) {
-		this.hasCementFloor = hasCementFloor.getAnswer();
+	public void setWidthShed(int widthShed) {
+		this.widthShed = widthShed;
+	}
+	
+	public int getLengthShed() {
+		return lengthShed;
+	}
+
+	public void setLengthShed(int lengthShed) {
+		this.lengthShed = lengthShed;
 	}
 
 	public int getHasFertilizerPlate() {
@@ -118,6 +130,14 @@ public class Shed implements VariableDefinitions {
 
 	public void setHasFertilizerPlate(Question hasFertilizerPlate) {
 		this.hasFertilizerPlate = hasFertilizerPlate.getAnswer();
+	}
+	
+	public int getHasCementFloor() {
+		return hasCementFloor;
+	}
+
+	public void setHasCementFloor(Question hasCementFloor) {
+		this.hasCementFloor = hasCementFloor.getAnswer();
 	}
 
 	public int getHasAdjustableFences() {
@@ -128,12 +148,19 @@ public class Shed implements VariableDefinitions {
 		this.hasAdjustableFences = hasAdjustableFences.getAnswer();
 	}
 
-	public int getHasLamps() {
-		return hasLamps;
+	public int getHasElectricity() {
+		return hasElectricity;
 	}
 
-	public void setHasLamps(Question hasLamps) {
-		this.hasLamps = hasLamps.getAnswer();
+	public void setHasElectricity(Question hasElectricity) {
+		this.hasElectricity = hasElectricity.getAnswer();
+	}
+	
+	public int getHasWater() {
+		return hasWater;
+	}
+	public void setHasWater(Question hasWater) {
+		this.hasWater = hasWater.getAnswer();
 	}
 
 	public double getGoalSize() {

@@ -18,12 +18,14 @@ public class TextAreaAction {
 
 	JButton btnEnterInput;
 	JTextField textArea;
+	JTextField lengthArea;
 	MainView frame;
 	Model model;
 	
-	public TextAreaAction(JButton btnEnterInput, JTextField textArea, MainView frame, Model model) {
+	public TextAreaAction(JButton btnEnterInput, JTextField textArea, JTextField lengthArea, MainView frame, Model model) {
 		this.btnEnterInput = btnEnterInput;
 		this.textArea = textArea;
+		this.lengthArea = lengthArea;
 		this.frame = frame;
 		this.model = model;
 		addBtnAction();
@@ -32,16 +34,20 @@ public class TextAreaAction {
 	
 	private void enterTextAreaAnswer() {
 		Question current = model.getCurrentQuestion();
-		String input = textArea.getText().replace("\n", "");
-		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
-		try {       
-        	int numbUserIn = Integer.parseInt(input); 
-        	current.setAnswer(numbUserIn);
-    		frame.prepareNextQuestion(current);
-        } catch (NumberFormatException e) {
-        	JOptionPane.showMessageDialog(new JFrame(), "\'" + input + "\' is not a number.\nPlease try again", "Incorrect input", JOptionPane.PLAIN_MESSAGE);
-        	frame.emptyTextArea();
-        }
+		if (lengthArea.isVisible()) {
+			enterWidthAndHeight(current);
+		} else {
+			String input = textArea.getText().replace("\n", "");
+			/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
+			try {       
+	        	int numbUserIn = Integer.parseInt(input); 
+	        	current.setAnswer(numbUserIn);
+	    		frame.prepareNextQuestion(current);
+	        } catch (NumberFormatException e) {
+	        	JOptionPane.showMessageDialog(new JFrame(), "\'" + input + "\' is not a number.\nPlease try again", "Incorrect input", JOptionPane.PLAIN_MESSAGE);
+	        	frame.emptyTextArea();
+	        }
+		}
 	}
 	
 	private void addBtnAction() {
@@ -76,5 +82,25 @@ public class TextAreaAction {
 				
 			}
 		});
+	}
+	
+	private void enterWidthAndHeight(Question current) {
+		String inputWidth = textArea.getText().replace("\n", "");
+		String inputLength = lengthArea.getText().replace("\n", "");
+		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
+		try {       
+        	int width = Integer.parseInt(inputWidth); 
+        	int length = Integer.parseInt(inputLength); 
+        	model.getShed().setWidthShed(width);
+        	model.getShed().setLengthShed(length);
+        	/* current question in this case is size of shed */
+        	current.setAnswer(width * length);
+        	frame.setLengthAreaVisible(false);
+    		frame.prepareNextQuestion(current);
+        } catch (NumberFormatException e) {
+        	JOptionPane.showMessageDialog(new JFrame(), "One of the inputs is incorrect. Please try again", "Incorrect input", JOptionPane.PLAIN_MESSAGE);
+        	frame.emptyTextArea();
+        }
+		
 	}
 }

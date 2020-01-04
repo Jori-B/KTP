@@ -1,6 +1,6 @@
 package com.views;
 
-import com.model.MCQuestion;
+import com.model.MCQuestion;	
 import com.model.Model;
 import com.model.Question;
 import com.model.VariableDefinitions;

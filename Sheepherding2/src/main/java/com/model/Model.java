@@ -1,6 +1,6 @@
 package com.model;
 
-import java.awt.EventQueue;
+import java.awt.EventQueue;	
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -120,60 +120,64 @@ public class Model implements VariableDefinitions {
 	 */
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {		
     	/*Business Questions*/
-    	questions.add(new MCQuestion("Hobby or Pro", MC, ksession, "Wil je schapen houden als hobby of profesioneel?", ASK, model, "Hobby", "Professioneel"));
+    	questions.add(new MCQuestion("Hobby or Pro", MC, ksession, "Do you want do farming as a hobby or professionally?", ASK, model, "Hobby", "Professional"));
         setCurrentQuestion(questions.get(0));
-        questions.add(new Question("timeWillingToSpend", NUMB, ksession, "<html> Hoeveel dagen per week ben je van plan <br> om te besteden aan het verzorgen van schapen? <html>", ASK, model));
-        questions.add(new Question("moneyToSpend", NUMB, ksession, "Wat is je start kapitaal (in euro's)?", ASK, model));
-        questions.add(new Question("isUBNRegistered", YESNO, ksession, "Heeft u al een uniek bedrijfsnummer (UBN)?", ASK, model));
-        
+        questions.add(new Question("timeWillingToSpend", NUMB, ksession, "<html>How many days are you willing to spend per week <br> on sheep herding? <html>", ASK, model));
+        questions.add(new Question("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", ASK, model));
+        questions.add(new Question("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", ASK, model));
+        // SLAUGHTER
         /*Sheep questions*/
-        questions.add(new Question("hasSheep", YESNO, ksession, "Bent u al in het bezit van schapen", ASK, model));
-    		// If yes
-        	questions.add(new Question("ownsNSheep", NUMB, ksession, "Hoeveel schapen bezit u?", DONTASK, model));
-        questions.add(new Question("Number of Sheep", NUMB, ksession, "Hoeveel schapen zou u intotaal willen bezitten?", ASK, model));
+        	// IF isUBNRegistered
+        	questions.add(new Question("hasSheep", YESNO, ksession, "Do you already own any sheep?", DONTASK, model));
+    			// If yes
+        		questions.add(new Question("ownsNSheep", NUMB, ksession, "How many sheep do you own?", DONTASK, model));
+        questions.add(new Question("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", ASK, model));
     		// if professional OR if hobby and Number of Sheep wanted > 10
-    		questions.add(new Question("isKVKRegistered", YESNO, ksession, "Bent u geregristreerd bij de kamer van koophandel (KVK)?", DONTASK, model));
+    		questions.add(new Question("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", DONTASK, model));
         // Purely for slaughter, breeding or both
         
     	/*Land questions*/
-        questions.add(new Question("Has Land", YESNO, ksession, "Bent u in bezit van land (exclusief geleased land)?", ASK, model));
+        questions.add(new Question("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)?", ASK, model));
         	// If yes
-        	questions.add(new Question("Land Size", NUMB, ksession, "Hoe groot is u land (in hectare)?", DONTASK, model));
-        questions.add(new Question("hasLeasedLand", YESNO, ksession, "Pacht u ook land?", ASK, model));  
+        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in acres)?", DONTASK, model));
+        	questions.add(new Question("toeslagrechten", NUMB, ksession, "<html>How many acres of land have <br>payment entitlements (\"toeslagrechten\")?<html>", DONTASK, model));
+        questions.add(new Question("hasLeasedLand", YESNO, ksession, "Are you leasing land?", ASK, model));  
     		// If yes
-        	questions.add(new Question("leasedLandSize", NUMB, ksession, "Hoe groot is het land dat u pacht?", DONTASK, model));
+        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", DONTASK, model));
         
         /*Shed questions*/	
-        questions.add(new Question("Has Shed", YESNO, ksession, "Bent u in het bezit van een schuur?", ASK, model));    
+        questions.add(new Question("Has Shed", YESNO, ksession, "Do you have a shed?", ASK, model));    
         	// If yes
-        	questions.add(new Question("Shed Size", NUMB, ksession, "Wat is het oppervlakte van u schuur (in vierkante meters)?", DONTASK, model));
-        	questions.add(new Question("heightShed", NUMB, ksession, "Hoe hoog is u schuur (in meters)?", DONTASK, model));
-        	questions.add(new Question("widthShed", NUMB, ksession, "Hoe breed is het beloopbare deel van u schuur (in meters)?", DONTASK, model));
-        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Heeft u een mestplaat in uw schuur?", DONTASK, model));
-    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Heeft uw schuur een platte vloer?", DONTASK, model));
-    		questions.add(new Question("hasLamps", YESNO, ksession, "Heeft u schuur lampen waar de ooien kunnen baren?", DONTASK, model));
+        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", DONTASK, model));
+        	questions.add(new Question("heightShed", NUMB, ksession, "How high is your shed (in meters)?", DONTASK, model));
+        	questions.add(new Question("widthShed", NUMB, ksession, "How wide is the path in your shed (in meters)?", DONTASK, model));
+        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate in your shed?", DONTASK, model));
+        	questions.add(new Question("hasAdjustableFences", YESNO, ksession, "Does your shed have fences already?", DONTASK, model));
+    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", DONTASK, model));
+    		questions.add(new Question("hasElectricity", YESNO, ksession, "Does your shed have electricity?", DONTASK, model));
+    		questions.add(new Question("hasWater", YESNO, ksession, "Does your shed have water works?", DONTASK, model));
     		// If shedTooSmall
-    		questions.add(new Question("isAllowedToBuild", YESNO, ksession, "<html>Heeft u de mogelijkheid om u <br>schuur uit te breiden (zowel fysiek als wettelijk)<html>", DONTASK, model));
-    		questions.add(new Question("roomForShed", NUMB, ksession, "Hoe groot is u uitbreidingsmogelijkeid (in vierkante meters)?", DONTASK, model));
+    		questions.add(new Question("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", DONTASK, model));
+    		questions.add(new Question("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", DONTASK, model));
         
         /*Materials questions*/
-        questions.add(new Question("Has Tractor", YESNO, ksession, "Bent u in het bezit van een tractor?", ASK, model));
+        questions.add(new Question("Has Tractor", YESNO, ksession, "Do you have have a tractor?", ASK, model));
     		// If yes
-        	questions.add(new Question("horsePowerTractor", NUMB, ksession, "Hoeveel paardenkracht heeft u tractor?", DONTASK, model));
+        	questions.add(new Question("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have", DONTASK, model));
         	// If more than 10 sheep
-        	questions.add(new Question("hasMower", YESNO, ksession, "Heeft u een maaier?", DONTASK, model));
-        	questions.add(new Question("hasShaker", YESNO, ksession, "Heeft u een schudder?", DONTASK, model));
-        	questions.add(new Question("hasRaker", YESNO, ksession, "Heeft u een harker?", DONTASK, model));
-        	questions.add(new Question("hasHayPacker", YESNO, ksession, "Heeft u een hooiverpakker?", DONTASK, model));
-        	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Heeft u een mestversprijder?", DONTASK, model));
-        	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Heeft u een mestverzamelaar?", DONTASK, model));
+        	questions.add(new Question("hasMower", YESNO, ksession, "Do you have have a mower?", DONTASK, model));
+        	questions.add(new Question("hasShaker", YESNO, ksession, "Do you have have a shaker?", DONTASK, model));
+        	questions.add(new Question("hasRaker", YESNO, ksession, "Do you have have a raker?", DONTASK, model));
+        	questions.add(new Question("hasHayPacker", YESNO, ksession, "Do you have have a hay packer?", DONTASK, model));
+        	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader?", DONTASK, model));
+        	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer?", DONTASK, model));
        
 		/* Care questions */
-    	questions.add(new Question("wantsLambs", YESNO, ksession, "Wilt u uw schapen laten lammeren?", ASK, model));
+    	questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", ASK, model));
     	//factListMap.put("wantsLambs", 29);
-    		questions.add(new MCQuestion("Self Birth", MC, ksession, "Wilt u zelf lammeren of huurt u een extern persoon?", DONTASK, model, "Zelf", "Externe"));
+    		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing yourself or let someone else do it?", DONTASK, model, "Self", "Someone else"));
         	/* How much time does it cost to shave yourself? */
-        questions.add(new Question("wantsSelfShave", YESNO, ksession, "Wilt u zelf scheren?", ASK, model)); 
+        questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself?", ASK, model)); 
         
         enterFactsInHash();
     }
@@ -195,15 +199,18 @@ public class Model implements VariableDefinitions {
 		sheep.setTotalNSheepWanted(getSelectedQuestion("Number of Sheep"));
 		land.setHasLand(getSelectedQuestion("Has Land"));
 		land.setOwnedLandSize(getSelectedQuestion("Land Size"));
+		land.setLandSizeToeslag(getSelectedQuestion("toeslagrechten"));
 		land.setHasLeasedLand(getSelectedQuestion("hasLeasedLand"));
 		land.setLeasedLandSize(getSelectedQuestion("leasedLandSize"));
 		shed.setHasShed(getSelectedQuestion("Has Shed"));
 		shed.setCurShedSize(getSelectedQuestion("Shed Size"));
 		shed.setIsTallerThan3(getSelectedQuestion("heightShed"));
-		shed.setIsPathWiderThan12(getSelectedQuestion("widthShed"));
+		shed.setIsPathWiderThan3(getSelectedQuestion("widthShed"));
 		shed.setHasFertilizerPlate(getSelectedQuestion("hasFertilizer"));
+		shed.setHasAdjustableFences(getSelectedQuestion("hasAdjustableFences"));
 		shed.setHasCementFloor(getSelectedQuestion("hasFlatFloor"));
-		shed.setHasLamps(getSelectedQuestion("hasLamps"));
+		shed.setHasElectricity(getSelectedQuestion("hasElectricity"));
+		shed.setHasWater(getSelectedQuestion("hasWater"));
 		shed.setIsAllowedToBuild(getSelectedQuestion("isAllowedToBuild"));
 		shed.setRoomForShed(getSelectedQuestion("roomForShed"));
 		materials.setHasTractor(getSelectedQuestion("Has Tractor"));
@@ -224,15 +231,15 @@ public class Model implements VariableDefinitions {
     	this.costs = new Cost(sheep.totalNSheepWanted, sheep.ownsNSheep);
     	/* Materials */
     	costs.setTractorCost(materials.getNeedsNewTractor(), materials.getNeedsBigTractor());
-    	costs.setGrassMaterialCost(materials.hasMower, materials.hasShaker, materials.hasRaker);
+    	costs.setGrassMaterialCost(materials.hasMower, materials.hasShaker, materials.hasRaker, materials.hasFertilizerSpreader);
     	/* Land */
-    	costs.setToeslagrechtCost(land.toeslagrecht);
+    	costs.setToeslagrechtEarnings(land.toeslagrecht);
     	costs.setLandNeededCost(land.landNeeded); 
     	/* Care */
     	costs.setShaveOtherCost(care.shaveOtherCost);
     	costs.setWoolEarnings(care.woolEarnings);
     	/* Sheep */
-    	costs.setPhosphateRightsCost(sheep.costPhosphateRights);
+    	//costs.setPhosphateRightsCost(sheep.costPhosphateRights);
     	/* Calculate totals */
     	costs.setTotalCost();
     	costs.setTotalEarnings();
@@ -280,7 +287,7 @@ public class Model implements VariableDefinitions {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		kbuilder.add(ResourceFactory.newClassPathResource("Rules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("ShedRules.drl"), ResourceType.DRL);
-		kbuilder.add(ResourceFactory.newClassPathResource("SheepRules.drl"), ResourceType.DRL);
+		//kbuilder.add(ResourceFactory.newClassPathResource("SheepRules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("BusinessRules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("CareRules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("LandRules.drl"), ResourceType.DRL);

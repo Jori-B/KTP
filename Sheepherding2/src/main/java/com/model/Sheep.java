@@ -7,7 +7,7 @@ public class Sheep implements VariableDefinitions {
 	public int ownsNSheep;
 	public int desiresNMoreSheep;
 	public int totalNSheepWanted; 
-	public int costPhosphateRights;
+//	public int costPhosphateRights;
 	public int sheepCost;
 	public int maxAmountOfSheep; 
 	public int nSheepMore;
@@ -29,9 +29,9 @@ public class Sheep implements VariableDefinitions {
 		this.nSheepMore = (maxAmountOfSheep - totalNSheepWanted); // I think this is correct, but haven't checked
 	}
 	
-	public void calcPhosphateRights() { 
-		this.costPhosphateRights = 90 * totalNSheepWanted; 
-	} 
+//	public void calcPhosphateRights() { 
+//		this.costPhosphateRights = 90 * totalNSheepWanted; 
+//	} 
 
 	public int getHasSheep() {
 		return hasSheep;
@@ -89,13 +89,13 @@ public class Sheep implements VariableDefinitions {
 		this.nSheepMore = nSheepMore;
 	}
 
-	public int getCostPhosphateRights() {
-		return costPhosphateRights;
-	}
-
-	public void setCostPhosphateRights(int costPhosphateRights) {
-		this.costPhosphateRights = costPhosphateRights;
-	}
+//	public int getCostPhosphateRights() {
+//		return costPhosphateRights;
+//	}
+//
+//	public void setCostPhosphateRights(int costPhosphateRights) {
+//		this.costPhosphateRights = costPhosphateRights;
+//	}
 
 	
 	public String getAdvice() {
