@@ -12,7 +12,7 @@ public class Business implements VariableDefinitions {
 	//public int slaugBreedBoth;
 	public int moneyNeeded; 
 	public boolean hasEnoughMoney;
-	public String advice = "<html>";
+	public String advice = "<html>&emsp;";
 	
 	public Business() {
 		
@@ -70,10 +70,10 @@ public class Business implements VariableDefinitions {
 	}
 
 	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>")) {
+		if(this.advice.equals("<html>&emsp;")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br>" +  advice;
+			this.advice = this.advice + "<br>&emsp;" +  advice;
 		}
 	}	
 	

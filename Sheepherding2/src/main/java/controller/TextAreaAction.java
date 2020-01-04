@@ -90,16 +90,10 @@ public class TextAreaAction {
 		String inputLength = lengthArea.getText().replace("\n", "");
 		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
 		try {       
-        	int width = Integer.parseInt(inputWidth); 
-        	int length = Integer.parseInt(inputLength); 
+        	int width = (int)Double.parseDouble(inputWidth); 
+        	int length = (int)Double.parseDouble(inputLength); 
         	Shed shed = model.getShed();
         	shed.setWidthAndLength(width, length);
-        	/* The fact needs to be entered in the ksession, so the rules can access it */
-        	Question qLength = new Question("shedLength", 0);
-        	qLength.setKSession(model.getKSession());
-        	qLength.setAnswer(shed.getLengthShed());
-        	model.getFacts().add(qLength);
-
         	/* current question in this case is size of shed */
         	current.setAnswer(width * length);
         	frame.setLengthAreaVisible(false);

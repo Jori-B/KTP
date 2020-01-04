@@ -119,65 +119,101 @@ public class Model implements VariableDefinitions {
 	 * HashMap, for easy access based on their identifying name.
 	 */
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {		
-    	/*Business Questions*/
-    	questions.add(new MCQuestion("Hobby or Pro", MC, ksession, "Do you want do farming as a hobby or professionally?", "<html>This system considers someone a professional when they are trying <br>to make money doing sheep herding<html>", ASK, model, "Hobby", "Professional"));
+    	/*Business Questions*/ //&emsp; is the tab character
+    	questions.add(new MCQuestion("Hobby or Pro", MC, ksession, "Do you want do farming as a hobby or professionally?", 
+    			"<html>&emsp;This system considers someone a professional when they are trying <br>&emsp;to make money doing sheep herding.<html>", ASK, model, "Hobby", "Professional"));
         setCurrentQuestion(questions.get(0));
-        questions.add(new Question("timeWillingToSpend", NUMB, ksession, "<html>How many days are you willing to spend per week <br> on sheep herding? <html>", "<html>Keep in mind that everyone who has animals needs to <br>check on those animals every day. However, in this case it is meant: <br>how many days would you fully want to spend on herding.<html>", ASK, model));
-        questions.add(new Question("moneyToSpend", NUMB, ksession, "How much money do you have to spend on sheep herding?", "<html>What is your starting capital? <br>Sheep herding is expensive at first, since there are many <br>materials, a shed and land that you need to have<html>", ASK, model));
-        questions.add(new Question("isUBNRegistered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", "Everyone who has farm animals needs to be registered at the UBN.", ASK, model));
+        questions.add(new Question("Time willing to spend", NUMB, ksession, "<html>How many days are you willing to spend per week <br> on sheep herding? <html>", 
+        		"<html>&emsp;Keep in mind that everyone who has animals needs to <br>&emsp;check on those animals every day. However, in this case it is meant: <br>&emsp;how many days would you fully want to spend on herding.<html>", 
+        		ASK, model));
+        questions.add(new Question("Money to spend", NUMB, ksession, "How much money do you have to spend on sheep herding?", 
+        		"<html>&emsp;What is your starting capital? <br>&emsp;Sheep herding is expensive at first, since there are many <br>&emsp;materials, a shed and land that you need to have<html>", ASK, model));
+        questions.add(new Question("Is UBN registered", YESNO, ksession, "Does your farm already have a Unique Business Number (UBN)?", 
+        		"<html>&emsp;Everyone who has farm animals needs to be registered at the UBN.<html>", ASK, model));
         // SLAUGHTER
         /*Sheep questions*/
         	// IF isUBNRegistered
-        	questions.add(new Question("hasSheep", YESNO, ksession, "Do you already own any sheep?", "If you already own sheep it is interesting for this system to know how many.", DONTASK, model));
+        	questions.add(new Question("Has sheep", YESNO, ksession, "Do you already own any sheep?", 
+        			"<html>&emsp;If you already own sheep it is interesting for this system to know how many.<html>", DONTASK, model));
     			// If yes
-        		questions.add(new Question("ownsNSheep", NUMB, ksession, "How many sheep do you own?", "If you already own sheep it is interesting for this system to know how many.", DONTASK, model));
-        questions.add(new Question("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", "<html>Someone who works 7 days on the farm and wants to make money would <br>be recommended to get at least 200 sheep.<html>", ASK, model));
+        		questions.add(new Question("Owned number of sheep", NUMB, ksession, "How many sheep do you own?", 
+        				"<html>&emsp;If you already own sheep it is interesting for this system to know how many.<html>", DONTASK, model));
+        questions.add(new Question("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", 
+        		"<html>&emsp;Someone who works 7 days on the farm and wants to make money would <br>&emsp;be recommended to get at least 200 sheep.<html>", ASK, model));
     		// if professional OR if hobby and Number of Sheep wanted > 10
-    		questions.add(new Question("isKVKRegistered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", "Every business needs to be registered at the KvK.", DONTASK, model));
+    		questions.add(new Question("Is KVK registered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", 
+    				"<html>&emsp;Every business needs to be registered at the KvK.<html>", DONTASK, model));
         // Purely for slaughter, breeding or both
         
     	/*Land questions*/
-        questions.add(new Question("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)?", "Some people lease land. Here we are first only interested in owned land.", ASK, model));
+        questions.add(new Question("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)?", 
+        		"<html>&emsp;Some people lease land. Here we are first only interested in owned land.<html>", ASK, model));
         	// If yes
-        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in acres)?", "If you don't know exactly, then answer an estimation.", DONTASK, model));
-        	questions.add(new Question("toeslagrechten", NUMB, ksession, "<html>How many acres of land have <br>payment entitlements (\"toeslagrechten\")?<html>", "<html>Toeslagrechten cannot be bought anymore. <br>However, some people still own land with toeslagrechten. <br>The system will calculate how much you get for you payment entitlements <br>per year, based on the estimate of 350 euros per acre.<html>", DONTASK, model));
-        questions.add(new Question("hasLeasedLand", YESNO, ksession, "Are you leasing land?", "Leasing land is much cheaper than buying it.", ASK, model));  
+        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in acres)?", 
+        			"<html>&emsp;If you don't know exactly, then answer an estimation.", DONTASK, model));
+        	questions.add(new Question("Toeslagrechten", NUMB, ksession, "<html>How many acres of land have <br>payment entitlements (\"toeslagrechten\")?<html>", 
+        			"<html>&emsp;Toeslagrechten cannot be bought anymore. <br>&emsp;However, some people still own land with toeslagrechten. <br>&emsp;The system will calculate how much you get for you payment entitlements <br>&emsp;per year, based on the estimate of 350 euros per acre.<html>", DONTASK, model));
+        questions.add(new Question("Has leased land", YESNO, ksession, "Are you leasing land?", 
+        		"<html>&emsp;Leasing land is much cheaper than buying it.<html>", ASK, model));  
     		// If yes
-        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", "Leasing land is much cheaper than buying it.", DONTASK, model));
+        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", 
+        			"<html>&emsp;Leasing land is much cheaper than buying it.<html>", DONTASK, model));
         
         /*Shed questions*/	
-        questions.add(new Question("Has Shed", YESNO, ksession, "Do you have a shed?", "A shed is essential for sheep when they are birthing.", ASK, model));    
+        questions.add(new Question("Has Shed", YESNO, ksession, "Do you have a shed?", 
+        		"<html>&emsp;A shed is essential for sheep when they are birthing.", ASK, model));    
         	// If yes
-        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", "2.5 squared meters per sheep is recommended.", DONTASK, model));
-        	questions.add(new Question("heightShed", NUMB, ksession, "How high is your shed (in meters)?", "The shed needs to be high enough for a tractor to go through (3m).", DONTASK, model));
-        	questions.add(new Question("pathWidthShed", NUMB, ksession, "How wide is the path in your shed (in meters)?", "The path needs to be wide enough for a tractor to go through (3m).", DONTASK, model));
-        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate outside your shed?", "It is mandatory to have a fertilizer plate.", DONTASK, model));
-        	questions.add(new Question("hasAdjustableFences", YESNO, ksession, "Does your shed have fences already?", "<html>Sheep need to be divided in small pens. <br>Also fences for eating are necessary.<html>", DONTASK, model));
-    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your have a flat floor?", "Flat floors are handy.", DONTASK, model));
-    		questions.add(new Question("hasElectricity", YESNO, ksession, "Does your shed have electricity?", "Lamps should be hung in the shed, for you and lambs.", DONTASK, model));
-    		questions.add(new Question("hasWater", YESNO, ksession, "Does your shed have water works?", "Sheep need water.", DONTASK, model));
+        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", 
+        			"<html>&emsp;2.5 squared meters per sheep is recommended.<html>", DONTASK, model));
+        	questions.add(new Question("heightShed", NUMB, ksession, "How high is your shed (in meters)?", 
+        			"<html>&emsp;The shed needs to be high enough for a tractor to go through (3m).<html>", DONTASK, model));
+        	questions.add(new Question("pathWidthShed", NUMB, ksession, "How wide is the path in your shed (in meters)?", 
+        			"<html>&emsp;The path needs to be wide enough for a tractor to go through (3m).<html>", DONTASK, model));
+        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate outside your shed?", 
+        			"<html>&emsp;It is mandatory to have a fertilizer plate.<html>", DONTASK, model));
+        	questions.add(new Question("hasAdjustableFences", YESNO, ksession, "Does your shed have fences already?", 
+        			"<html>&emsp;Sheep need to be divided in small pens. <br>&emsp;Also fences for eating are necessary.<html>", DONTASK, model));
+    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your shed have a flat floor?", 
+    				"<html>&emsp;Flat floors are handy.<html>", DONTASK, model));
+    		questions.add(new Question("hasElectricity", YESNO, ksession, "Does your shed have electricity?", 
+    				"<html>&emsp;Lamps should be hung in the shed, for you and lambs.<html>", DONTASK, model));
+    		questions.add(new Question("hasWater", YESNO, ksession, "Does your shed have water works?", 
+    				"<html>&emsp;Sheep need water.<html>", DONTASK, model));
     		// If shedTooSmall
-    		questions.add(new Question("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", "<html>Your shed is considered too small. <br>According to the nuisance law are you allowed to build more shed? <br>Approval needs to be asked for this in case you dont<html>", DONTASK, model));
-    		questions.add(new Question("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", "Your shed is considered too small.", DONTASK, model));
+    		questions.add(new Question("isAllowedToBuild", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", 
+    				"<html>&emsp;Your shed is considered too small. <br>&emsp;According to the nuisance law are you allowed to build more shed? <br>&emsp;Approval needs to be asked for this in case you dont<html>", DONTASK, model));
+    		questions.add(new Question("roomForShed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", 
+    				"<html>&emsp;Your shed is considered too small.<html>", DONTASK, model));
         
         /*Materials questions*/
-        questions.add(new Question("Has Tractor", YESNO, ksession, "Do you have have a tractor?", "For any professional a tractor is recommended to work the land.", ASK, model));
+        questions.add(new Question("Has Tractor", YESNO, ksession, "Do you have a tractor?", 
+        		"<html>&emsp;For any professional a tractor is recommended to work the land.<html>", ASK, model));
     		// If yes
-        	questions.add(new Question("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have?", "Between 50 and 70 horsepower is enough.", DONTASK, model));
+        	questions.add(new Question("horsePowerTractor", NUMB, ksession, "How much horsepower does your tractor have?", 
+        			"<html>&emsp;Between 50 and 70 horsepower is enough.<html>", DONTASK, model));
         	// If more than 10 sheep
-        	questions.add(new Question("hasMower", YESNO, ksession, "Do you have have a mower?", "One of the essential materials for working the grassland", DONTASK, model));
-        	questions.add(new Question("hasShaker", YESNO, ksession, "Do you have have a shaker?", "One of the essential materials for working the grassland", DONTASK, model));
-        	questions.add(new Question("hasRaker", YESNO, ksession, "Do you have have a raker?", "One of the essential materials for working the grassland", DONTASK, model));
-        	questions.add(new Question("hasHayPacker", YESNO, ksession, "Do you have have a hay packer?", "<html>Expensive, but nice to have. <br>One can hire someone to do this for them.<html>", DONTASK, model));
-        	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have have a fertilizer spreader?", "One of the essential materials for working the grassland", DONTASK, model));
-        	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have have a mest gatherer?", "<html>Expensive, but nice to have. <br>One can hire someone to do this for them.<html>", DONTASK, model));
+        	questions.add(new Question("hasMower", YESNO, ksession, "Do you have a mower?", 
+        			"<html>&emsp;One of the essential materials for working the grassland<html>", DONTASK, model));
+        	questions.add(new Question("hasShaker", YESNO, ksession, "Do you have a shaker?", 
+        			"<html>&emsp;One of the essential materials for working the grassland<html>", DONTASK, model));
+        	questions.add(new Question("hasRaker", YESNO, ksession, "Do you have a raker?", 
+        			"<html>&emsp;One of the essential materials for working the grassland<html>", DONTASK, model));
+        	questions.add(new Question("hasHayPacker", YESNO, ksession, "Do you have a hay packer?", 
+        			"<html>&emsp;Expensive, but nice to have. <br>&emsp;One can hire someone to do this for them.<html>", DONTASK, model));
+        	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have a fertilizer spreader?", 
+        			"<html>&emsp;One of the essential materials for working the grassland", DONTASK, model));
+        	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have a mest gatherer?", 
+        			"<html>&emsp;Expensive, but nice to have. <br>&emsp;One can hire someone to do this for them.<html>", DONTASK, model));
        
 		/* Care questions */
-    	questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", "Lambing is the main source of income for sheep herders.", ASK, model));
+    	questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", 
+    			"<html>&emsp;Lambing is the main source of income for sheep herders.<html>", ASK, model));
     	//factListMap.put("wantsLambs", 29);
-    		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing yourself or let someone else do it?", "Every sheep herder should learn this.", DONTASK, model, "Self", "Someone else"));
+    		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing yourself or let someone else do it?", 
+    				"<html>&emsp;Every sheep herder should learn this.<html>", DONTASK, model, "Self", "Someone else"));
         	/* How much time does it cost to shave yourself? */
-        questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave yourself?", "<html>Shaving doesn't earn you much money. <br>One can hire someone to do this for them.<html>", ASK, model)); 
+        questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave the sheep yourself?", 
+        		"<html>&emsp;Shaving doesn't earn you much money. <br>&emsp;One can hire someone to do this for them.<html>", ASK, model)); 
         
         enterFactsInHash();
     }
@@ -190,17 +226,17 @@ public class Model implements VariableDefinitions {
 	 */
     public void setAllAnswers() {
 		business.setHobSemiPro(getSelectedQuestion("Hobby or Pro"));
-		business.setIsKvKRegistered(getSelectedQuestion("isKVKRegistered"));
-		business.setTimeWillingToSpend(getSelectedQuestion("timeWillingToSpend"));
-		business.setMoneyToSpend(getSelectedQuestion("moneyToSpend"));
-		business.setIsUBNRegistered(getSelectedQuestion("isUBNRegistered"));
-		sheep.setHasSheep(getSelectedQuestion("hasSheep"));
-		sheep.setOwnsNSheep(getSelectedQuestion("ownsNSheep"));
+		business.setIsKvKRegistered(getSelectedQuestion("Is KVK registered"));
+		business.setTimeWillingToSpend(getSelectedQuestion("Time willing to spend"));
+		business.setMoneyToSpend(getSelectedQuestion("Money to spend"));
+		business.setIsUBNRegistered(getSelectedQuestion("Is UBN registered"));
+		sheep.setHasSheep(getSelectedQuestion("Has sheep"));
+		sheep.setOwnsNSheep(getSelectedQuestion("Owned number of sheep"));
 		sheep.setTotalNSheepWanted(getSelectedQuestion("Number of Sheep"));
 		land.setHasLand(getSelectedQuestion("Has Land"));
 		land.setOwnedLandSize(getSelectedQuestion("Land Size"));
-		land.setLandSizeToeslag(getSelectedQuestion("toeslagrechten"));
-		land.setHasLeasedLand(getSelectedQuestion("hasLeasedLand"));
+		land.setLandSizeToeslag(getSelectedQuestion("Toeslagrechten"));
+		land.setHasLeasedLand(getSelectedQuestion("Has leased land"));
 		land.setLeasedLandSize(getSelectedQuestion("leasedLandSize"));
 		shed.setHasShed(getSelectedQuestion("Has Shed"));
 		shed.setCurShedSize(getSelectedQuestion("Shed Size"));

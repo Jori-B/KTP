@@ -145,10 +145,6 @@ public class MainView extends JFrame implements VariableDefinitions {
 				setVisibilityBtns(true, false);
 				/* Request focus to the textarea so the user can start typing straight away */
 				textArea.requestFocus();
-				if (current.getName() == "Shed Size") {
-					setLengthAreaVisible(true);
-					lengthArea.requestFocus();
-				}
 				break;
 			case MC: 
 				setVisibilityBtns(false, true);
@@ -158,7 +154,25 @@ public class MainView extends JFrame implements VariableDefinitions {
 				btnLeft.setText(currentMC.getAnswerOne());
 				break;
 		}
+		if (current.getName() == "Shed Size") {
+			setUpTwoTextFields();
+		} else { 
+			setLengthAreaVisible(false);
+		}
 		setAnsweredButtonColors(current);
+	}
+	
+	private void setUpTwoTextFields() {
+		setLengthAreaVisible(true);
+		lengthArea.requestFocus();
+	}
+	
+	private void setShedAnswers() {
+		double lengthShed = model.getShed().getLengthShed();
+		if (lengthShed > 0) { /* when one of them has an answer, the other has an answer as well */
+			lengthArea.setText(Double.toString(lengthShed));
+			textArea.setText(Double.toString(model.getShed().getWidthShed()));
+		}
 	}
 	
 	private void setAnsweredButtonColors(Question current) {
@@ -182,6 +196,9 @@ public class MainView extends JFrame implements VariableDefinitions {
 			if(current.getQuestionType() == NUMB && answer > 0) {
 				btnEnterInput.setBackground(Color.RED);
 				textArea.setText(Integer.toString(current.getAnswer()));
+				if(current.getName() == "Shed Size") {
+					setShedAnswers();
+				}
 			} else {
 				// empty the text area when there isn't an answer ( this else is used when previous question order is changed )
 				emptyTextArea();

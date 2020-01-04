@@ -13,7 +13,7 @@ public class Land implements VariableDefinitions {
 	public double landNeeded;
 	public double costLandNeeded; /* This is the cost when you buy instead of lease */
 	public boolean landIsBigEnough;
-	public String advice = "<html>";
+	public String advice = "<html>&emsp;";
 	
 	public Land() {
 		
@@ -133,10 +133,10 @@ public class Land implements VariableDefinitions {
 	}
 
 	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>")) {
+		if(this.advice.equals("<html>&emsp;")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br>" + advice;
+			this.advice = this.advice + "<br>&emsp;" + advice;
 		}
 	}
 	

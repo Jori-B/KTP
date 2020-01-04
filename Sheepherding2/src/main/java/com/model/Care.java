@@ -11,7 +11,7 @@ public class Care implements VariableDefinitions {
 	// public int sheepBorn;
 	// public int sheepSoldEarnings;
 	// public int costOtherBirth;
-	public String advice = "<html>";
+	public String advice = "<html>&emsp;";
 	
 	public Care() {
 		
@@ -70,10 +70,10 @@ public class Care implements VariableDefinitions {
 	}
 
 	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>")) {
+		if(this.advice.equals("<html>&emsp;")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br>" + advice;
+			this.advice = this.advice + "<br>&emsp;" + advice;
 		}
 	}
 

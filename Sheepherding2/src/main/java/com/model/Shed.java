@@ -22,15 +22,28 @@ public class Shed implements VariableDefinitions {
 	public double goalCurSizeDiff;
 	public boolean shedTooSmall;
 	public int problem;
-	public String advice = "<html>";
+	public String advice = "<html>&emsp;";
 	
 	public Shed() {
 		
 	}
 	
 	/* Calculations */
-	public void calcGoalSize(int totalNSheepWanted) { 
-		this.goalSize = totalNSheepWanted * 2.5;
+	public double calcGoalSize(int totalNSheepWanted) { 
+		/* A shed should have roughly 3 meters of path in the middle
+		 * the width of the shed besides the path needs to be 4 meters on both sides of it to hold sheep there
+		 * Adding this up yields a general width of 11 meters (4+3+4)
+		 * 2.5 square meters per sheep is needed in a shed. Dividing this by 11 yields the required length
+		 */
+		double sheepRoomRequired = (totalNSheepWanted * 2.5);
+		double lengthGoal =  sheepRoomRequired / 11;
+		/* After this the length needs to be multiplied by the path width needed 
+		 * This is then added to find the final goal size
+		 */
+		double goalSize = (sheepRoomRequired + (lengthGoal * 3));
+		this.goalSize = goalSize;
+		/* Return is used for the rule file */
+		return goalSize;
 	}
 	
 	public void calcGoalCurSizeDiff() { 
@@ -217,10 +230,10 @@ public class Shed implements VariableDefinitions {
 	}
 
 	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>")) {
+		if(this.advice.equals("<html>&emsp;")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br>" + advice;
+			this.advice = this.advice + "<br>&emsp;" + advice;
 		}
 	}
 	

@@ -11,7 +11,7 @@ public class Sheep implements VariableDefinitions {
 	public int sheepCost;
 	public int maxAmountOfSheep; 
 	public int nSheepMore;
-	public String advice = "<html>";
+	public String advice = "<html>&emsp;";
 	
 	public Sheep() {
 		
@@ -103,10 +103,10 @@ public class Sheep implements VariableDefinitions {
 	}
 
 	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>")) {
+		if(this.advice.equals("<html>&emsp;")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br>" + advice;
+			this.advice = this.advice + "<br>&emsp;" + advice;
 		}
 	}
 	

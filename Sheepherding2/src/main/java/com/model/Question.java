@@ -156,5 +156,9 @@ public class Question implements VariableDefinitions {
 	public void setIsModified(boolean isModified) {
 		this.isModified = isModified;
 	}
+	
+	public Model getModel() {
+		return model;
+	}
 
 }

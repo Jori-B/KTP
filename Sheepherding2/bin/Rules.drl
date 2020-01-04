@@ -20,7 +20,7 @@ dialect "java"
 rule "Wants more than 10 sheep"
 	when
 		Question(Question.Name == "Number of Sheep", answer > 10);
-		kvk : Question(Question.Name =="isKVKRegistered", askNow == false); 
+		kvk : Question(Question.Name =="Is KVK registered", askNow == false); 
 	then
 		help(drools,"he wants to be a pro");
 		modify(kvk) { askQuestion(true) }
@@ -31,7 +31,7 @@ end
 rule "Wants more than 10 sheep changed"
 	when
 		Question(Question.Name == "Number of Sheep", answer < 10);
-		kvk : Question(Question.Name =="isKVKRegistered", askNow == true); 
+		kvk : Question(Question.Name =="Is KVK registered", askNow == true); 
 	then
 		help(drools,"he has changed wanting more than 10 sheep");
 		modify(kvk) { setAskNow(false) }
@@ -42,7 +42,7 @@ rule "Has land"
 	// status is a variable that's not yet used, but I thought it might be useful to have such a variable to prevent rules from firing twice...
 		land : Question(Question.Name == "Has Land", answer == YES);
 		nmLandSize : Question(Question.Name == "Land Size", askNow == false);
-		toeslagrechten : Question(Question.Name == "toeslagrechten");
+		toeslagrechten : Question(Question.Name == "Toeslagrechten");
 	then
 		help(drools,"info");
 		modify(nmLandSize) { askQuestion(true) }
@@ -54,7 +54,7 @@ rule "Has land has changed"
 	when
 		land : Question(Question.Name == "Has Land", answer == NO);
 		nmLandSize : Question(Question.Name == "Land Size", askNow == true);
-		toeslagrechten : Question(Question.Name == "toeslagrechten");
+		toeslagrechten : Question(Question.Name == "Toeslagrechten");
 	then
 		help(drools,"info");
 		modify(nmLandSize) { setAskNow(false) }
@@ -63,7 +63,7 @@ end
 
 rule "Has leased land"
 	when
-		land : Question(Question.Name == "hasLeasedLand", answer == YES);
+		land : Question(Question.Name == "Has leased land", answer == YES);
 		nmLandSize : Question(Question.Name == "leasedLandSize", askNow == false);
 	then
 		help(drools,"info");
@@ -72,7 +72,7 @@ end
 
 rule "Has leased land has changed"
 	when
-		land : Question(Question.Name == "hasLeasedLand", answer == NO);
+		land : Question(Question.Name == "Has leased land", answer == NO);
 		nmLandSize : Question(Question.Name == "leasedLandSize", askNow == true);
 	then
 		help(drools,"info");
@@ -82,8 +82,8 @@ end
 // Only if someone is UBN registered can he have any sheep
 rule "Is UBN registered"
 	when
-		isUBNRegistered : Question(Question.Name == "isUBNRegistered", answer == YES);
-		hasSheep : Question(Question.Name =="hasSheep", askNow == false); 
+		isUBNRegistered : Question(Question.Name == "Is UBN registered", answer == YES);
+		hasSheep : Question(Question.Name =="Has sheep", askNow == false); 
 	then
 		help(drools,"he is UBN regis");
 		modify(hasSheep) { askQuestion(true) }
@@ -91,9 +91,9 @@ end
 
 rule "Is UBN registered changed changed"
 	when
-		isUBNRegistered : Question(Question.Name == "isUBNRegistered", answer == NO);
-		hasSheep : Question(Question.Name =="hasSheep", askNow == true); 
-		nSheepOwned : Question(Question.Name =="ownsNSheep"); 
+		isUBNRegistered : Question(Question.Name == "Is UBN registered", answer == NO);
+		hasSheep : Question(Question.Name =="Has sheep", askNow == true); 
+		nSheepOwned : Question(Question.Name =="Owned number of sheep"); 
 	then
 		help(drools,"he has changed having a sheep");
 		modify(hasSheep) { setAskNow(false) }
@@ -103,8 +103,8 @@ end
 
 rule "Has sheep"
 	when
-		ownsSheep : Question(Question.Name == "hasSheep", answer == YES);
-		nSheepOwned : Question(Question.Name =="ownsNSheep", askNow == false); 
+		ownsSheep : Question(Question.Name == "Has sheep", answer == YES);
+		nSheepOwned : Question(Question.Name =="Owned number of sheep", askNow == false); 
 	then
 		help(drools,"he has sheep");
 		modify(nSheepOwned) { askQuestion(true) }
@@ -112,8 +112,8 @@ end
 
 rule "Has sheep changed"
 	when
-		ownsSheep : Question(Question.Name == "hasSheep", answer == NO);
-		nSheepOwned : Question(Question.Name =="ownsNSheep", askNow == true); 
+		Question(Question.Name == "Has sheep", answer == NO);
+		nSheepOwned : Question(Question.Name =="Owned number of sheep", askNow == true); 
 	then
 		help(drools,"he has changed having a sheep");
 		modify(nSheepOwned) { setAskNow(false) }
@@ -162,52 +162,20 @@ rule "Has shed changed"
 		// MAYBE THE SHEDSIZE ANSWER SHOULD BE SET TO 0 AS WELL???
 end
 
-rule "Calc shed room for sheep when path size is available (path bigger than 3m)"
-	salience 2
-	when
-		Question(Question.Name == "pathWidthShed", $pathWidth : answer >= 3);
-		$nmShedSize : Question(Question.Name =="Shed Size", $totalSize : answer > 0, isModified == false);
-		Question(Question.Name == "shedLength", $lengthShed : answer > 0);
-	then
-		// true shed size for the sheep room is minus the path (always assuming the path is in the length of shed)
-		modify($nmShedSize) { setAnswer(($totalSize - (int)($lengthShed * $pathWidth))) }
-		// ISsmodified is used so the rule doesnt fire multiple times
-		modify($nmShedSize) { setIsModified(true) }
-		help(drools,"calculation shed minus path size");
-end
-
-rule "Calc shed room for sheep when path size is available (path smaller than 3m)"
-	salience 2
-	when
-		Question(Question.Name == "pathWidthShed", answer < 3, status == HASANSWER);
-		$nmShedSize : Question(Question.Name =="Shed Size", $totalSize : answer > 0, isModified == false);
-		Question(Question.Name == "shedLength", $lengthShed : answer > 0);
-	then
-		// true shed size for the sheep room is minus the path (always assuming the path is in the length of shed)
-		// path width needs to be at least 3m so we subtract this
-		modify($nmShedSize) { setAnswer(($totalSize - (int)($lengthShed * 3))) }
-		// ISsmodified is used so the rule doesnt fire multiple times
-		modify($nmShedSize) { setIsModified(true) }
-		help(drools,"calculation shed minus path size");
-end
-
 rule "Calc goal current shed size difference"
 	salience 1
 	when
-		Question(Question.Name == "pathWidthShed", status == HASANSWER);
 		Question(Question.Name == "Number of Sheep", $nSheep : answer > 0);
-		$nmShedSize: Question(Question.Name =="Shed Size", isModified);
-		Question(Question.Name == "shedLength", answer > 0);
+		$nmShedSize: Question(Question.Name =="Shed Size", answer > 0, $shed : model.getShed());
 	then 
-		insert (new Question("goalSize", $nSheep * 2.5));
+		insert (new Question("goalSize", $shed.calcGoalSize($nSheep)));
 		help(drools,"calculating shed goal size");
 		
 end
 
 rule "Shed too small" 
 	when
-		Question(Question.Name == "pathWidthShed", status == HASANSWER);
-		(Question(Question.Name == "Shed Size", $curSize : answer, isModified) and Question(Question.Name == "goalSize", answer > $curSize)) or Question(Question.Name == "Has Shed", answer == NO);
+		(Question(Question.Name == "Shed Size", $curSize : answer > 0) and Question(Question.Name == "goalSize", answer > $curSize)) or Question(Question.Name == "Has Shed", answer == NO);
 		isAllowedToBuild : Question(Question.Name == "isAllowedToBuild", askNow == false);
 		roomForShed : Question(Question.Name == "roomForShed", askNow == false);
 	then
