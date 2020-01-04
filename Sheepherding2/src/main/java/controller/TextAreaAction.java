@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import com.model.Model;
 import com.model.Question;
+import com.model.Shed;
 import com.views.MainView;
 
 public class TextAreaAction {
@@ -91,8 +92,14 @@ public class TextAreaAction {
 		try {       
         	int width = Integer.parseInt(inputWidth); 
         	int length = Integer.parseInt(inputLength); 
-        	model.getShed().setWidthShed(width);
-        	model.getShed().setLengthShed(length);
+        	Shed shed = model.getShed();
+        	shed.setWidthAndLength(width, length);
+        	/* The fact needs to be entered in the ksession, so the rules can access it */
+        	Question qLength = new Question("shedLength", 0);
+        	qLength.setKSession(model.getKSession());
+        	qLength.setAnswer(shed.getLengthShed());
+        	model.getFacts().add(qLength);
+
         	/* current question in this case is size of shed */
         	current.setAnswer(width * length);
         	frame.setLengthAreaVisible(false);

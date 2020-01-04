@@ -6,6 +6,7 @@ import com.model.Question;
 import com.model.VariableDefinitions;
 import com.sun.org.apache.xpath.internal.operations.Number;
 
+import controller.InfoClickAction;
 import controller.LeftBtnAction;
 import controller.ListClickAction;
 import controller.NextAction;
@@ -77,6 +78,9 @@ public class MainView extends JFrame implements VariableDefinitions {
 	private JLabel lblWidth;
 	private JLabel lblLength;
 	
+	private JLabel lblInformationText;
+	private JLabel lblInfo;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -109,6 +113,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		emptyTextArea();
 		setButtons(current);
 		setQuestion(current);
+		setInformationText(current);
 		removeRedundantItemsFromList();
 		if(questionNotInList) {
 			addToList(current);
@@ -195,6 +200,10 @@ public class MainView extends JFrame implements VariableDefinitions {
 		lblQuestion.setText(current.getQuestion());
 	}
 	
+	public void setInformationText(Question current) {
+		lblInformationText.setText(current.getExplanation());
+	}
+	
 	/* Add the element to the left hand side list, only if the item is not in the list yet */
 	private void addToList(Question current) {
 		if(!answeredQs.contains(current.getName())) {
@@ -226,7 +235,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
 		setTitle("Sheep Herder System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 970, 667);
+		setBounds(100, 100, 974, 773);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -284,6 +293,20 @@ public class MainView extends JFrame implements VariableDefinitions {
 		JLabel lblLength = new JLabel("Length:");
 		lblLength.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		setlblLength(lblLength);
+		
+		JLabel lblInfo = new JLabel("");
+		lblInfo.setToolTipText("If you want more information about the question, click here.");
+		lblInfo.setIcon(new ImageIcon(MainView.class.getResource("/com/resources/infoBubble2.png")));
+		setLblInfo(lblInfo);
+		
+		JLabel lblInformationText = new JLabel(model.getCurrentQuestion().getExplanation());
+		lblInformationText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		lblInformationText.setForeground(Color.BLACK);
+		lblInformationText.setOpaque(true);
+		lblInformationText.setBackground(new Color(119, 136, 153));
+		lblInformationText.setVisible(false);
+		setLblInformationText(lblInformationText);
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
 //		Image img = sheepPic.getImage();
@@ -296,42 +319,53 @@ public class MainView extends JFrame implements VariableDefinitions {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGap(61)
-										.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
-										.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-										.addGap(60))
+										.addGap(48)
+										.addComponent(lblInformationText, GroupLayout.PREFERRED_SIZE, 555, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(lblInfo))
 									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGap(260)
-										.addComponent(btnEnterInput, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-										.addGap(260))))
+										.addGap(110)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+											.addGroup(gl_contentPane.createSequentialGroup()
+												.addComponent(lblLength, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+												.addGap(45)
+												.addComponent(lengthArea, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
+											.addGroup(gl_contentPane.createSequentialGroup()
+												.addComponent(lblWidth, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+												.addGap(42)
+												.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)))))
+								.addGap(66))
 							.addGroup(gl_contentPane.createSequentialGroup()
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(lblQuestion, GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+								.addGap(54)
+								.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)
+								.addGap(57))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGap(252)
+								.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
 								.addContainerGap()))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(96)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblLength, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
-									.addGap(45)
-									.addComponent(lengthArea, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblWidth, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
-									.addGap(42)
-									.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 697, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(162)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(50, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblInfo)
+						.addComponent(lblInformationText, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
+					.addGap(55)
 					.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -341,16 +375,13 @@ public class MainView extends JFrame implements VariableDefinitions {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblWidth, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnLeft, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-						.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-					.addGap(2)
+						.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnLeft, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-					.addGap(199))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
-					.addContainerGap())
+					.addGap(210))
 		);
 		gl_contentPane.setHonorsVisibility(false);
 		gl_contentPane.setAutoCreateGaps(true);
@@ -362,6 +393,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		DefaultListModel<String> answeredQs = new DefaultListModel<String>();
 		setAnsweredQs(answeredQs);
 		JList<String> list_1 = new JList<String>(answeredQs);
+		list_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		list_1.setBackground(new Color(112, 128, 144));
 		setList(list_1);
 		
@@ -406,6 +438,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		new NextAction(btnNext, this, model);
 		new TextAreaAction(btnEnterInput, textArea, lengthArea, this, model);
 		new ListClickAction(list, this, model);
+		new InfoClickAction(lblInfo, lblInformationText, this, model);
 	}
 	
 	private void setModel(Model model) {
@@ -486,6 +519,12 @@ public class MainView extends JFrame implements VariableDefinitions {
 		this.lblLength = lblLength;
 		lblLength.setVisible(false);
 	}
-
-
+	
+	private void setLblInfo(JLabel lblInfo) {
+		this.lblInfo = lblInfo;
+	}
+	
+	private void setLblInformationText(JLabel lblInformationText) {
+		this.lblInformationText = lblInformationText;
+	}
 }

@@ -125,7 +125,7 @@ rule "Has shed"
 		nmShedSize: Question(Question.Name =="Shed Size", askNow == false); 
 
         heightShed: Question(Question.Name == "heightShed"); 
-        widthShed: Question(Question.Name == "widthShed");
+        pathWidthShed: Question(Question.Name == "pathWidthShed");
         hasFertilizer: Question(Question.Name == "hasFertilizer"); 
         hasAdjustableFences : Question(Question.Name == "hasAdjustableFences"); 
     	hasFlatFloor: Question(Question.Name == "hasFlatFloor");
@@ -134,7 +134,7 @@ rule "Has shed"
 		help(drools,"he has a shed");
 		modify(nmShedSize) { askQuestion(true) }
 		modify(heightShed) { askQuestion(true) } 
-        modify(widthShed) { askQuestion(true) }
+        modify(pathWidthShed) { askQuestion(true) }
         modify(hasFertilizer) { askQuestion(true) }
         modify(hasAdjustableFences) { askQuestion(true) }
     	modify(hasFlatFloor) { askQuestion(true) }
@@ -147,7 +147,7 @@ rule "Has shed changed"
 		nmShedSize: Question(Question.Name =="Shed Size", askNow == true);
 		
 		heightShed: Question(Question.Name == "heightShed"); 
-        widthShed: Question(Question.Name == "widthShed");
+        pathWidthShed: Question(Question.Name == "pathWidthShed");
         hasFertilizer: Question(Question.Name == "hasFertilizer"); 
     	hasFlatFloor: Question(Question.Name == "hasFlatFloor");
     	hasElectricity: Question(Question.Name == "hasElectricity");
@@ -155,18 +155,49 @@ rule "Has shed changed"
 		help(drools,"he has changed having a shed");
 		modify(nmShedSize) { setAskNow(false) }
 		modify(heightShed) { setAskNow(false) } 
-        modify(widthShed) { setAskNow(false) }
+        modify(pathWidthShed) { setAskNow(false) }
         modify(hasFertilizer) { setAskNow(false) }
     	modify(hasFlatFloor) { setAskNow(false) }
     	modify(hasElectricity) { setAskNow(false) }
 		// MAYBE THE SHEDSIZE ANSWER SHOULD BE SET TO 0 AS WELL???
 end
 
-rule "Calc goal current shed size difference"
+rule "Calc shed room for sheep when path size is available (path bigger than 3m)"
+	salience 2
 	when
-		Question(Question.Name == "Number of Sheep", $nSheep : answer > 0);
-		$nmShedSize: Question(Question.Name =="Shed Size", answer > 0);
+		Question(Question.Name == "pathWidthShed", $pathWidth : answer >= 3);
+		$nmShedSize : Question(Question.Name =="Shed Size", $totalSize : answer > 0, isModified == false);
+		Question(Question.Name == "shedLength", $lengthShed : answer > 0);
+	then
+		// true shed size for the sheep room is minus the path (always assuming the path is in the length of shed)
+		modify($nmShedSize) { setAnswer(($totalSize - (int)($lengthShed * $pathWidth))) }
+		// ISsmodified is used so the rule doesnt fire multiple times
+		modify($nmShedSize) { setIsModified(true) }
+		help(drools,"calculation shed minus path size");
+end
 
+rule "Calc shed room for sheep when path size is available (path smaller than 3m)"
+	salience 2
+	when
+		Question(Question.Name == "pathWidthShed", answer < 3, status == HASANSWER);
+		$nmShedSize : Question(Question.Name =="Shed Size", $totalSize : answer > 0, isModified == false);
+		Question(Question.Name == "shedLength", $lengthShed : answer > 0);
+	then
+		// true shed size for the sheep room is minus the path (always assuming the path is in the length of shed)
+		// path width needs to be at least 3m so we subtract this
+		modify($nmShedSize) { setAnswer(($totalSize - (int)($lengthShed * 3))) }
+		// ISsmodified is used so the rule doesnt fire multiple times
+		modify($nmShedSize) { setIsModified(true) }
+		help(drools,"calculation shed minus path size");
+end
+
+rule "Calc goal current shed size difference"
+	salience 1
+	when
+		Question(Question.Name == "pathWidthShed", status == HASANSWER);
+		Question(Question.Name == "Number of Sheep", $nSheep : answer > 0);
+		$nmShedSize: Question(Question.Name =="Shed Size", isModified);
+		Question(Question.Name == "shedLength", answer > 0);
 	then 
 		insert (new Question("goalSize", $nSheep * 2.5));
 		help(drools,"calculating shed goal size");
@@ -175,7 +206,8 @@ end
 
 rule "Shed too small" 
 	when
-		(Question(Question.Name == "Shed Size", $curSize : answer > 0) and Question(Question.Name == "goalSize", answer > $curSize)) or Question(Question.Name == "Has Shed", answer == NO);
+		Question(Question.Name == "pathWidthShed", status == HASANSWER);
+		(Question(Question.Name == "Shed Size", $curSize : answer, isModified) and Question(Question.Name == "goalSize", answer > $curSize)) or Question(Question.Name == "Has Shed", answer == NO);
 		isAllowedToBuild : Question(Question.Name == "isAllowedToBuild", askNow == false);
 		roomForShed : Question(Question.Name == "roomForShed", askNow == false);
 	then

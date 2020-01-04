@@ -7,12 +7,12 @@ public class MCQuestion extends Question {
 	public String answerZero;
 	public String answerOne;
 	
-	public MCQuestion(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model) {
-		super(name, questionType, ksession, question, askNow, model);
+	public MCQuestion(String name, int questionType, StatefulKnowledgeSession ksession, String question, String explanation, boolean askNow, Model model) {
+		super(name, questionType, ksession, question, explanation, askNow, model);
 	}
 	
-	public MCQuestion(String name, int questionType, StatefulKnowledgeSession ksession, String question, boolean askNow, Model model, String answerZero, String answerOne) {
-		super(name, questionType, ksession, question, askNow, model);
+	public MCQuestion(String name, int questionType, StatefulKnowledgeSession ksession, String question, String explanation, boolean askNow, Model model, String answerZero, String answerOne) {
+		super(name, questionType, ksession, question, explanation, askNow, model);
 		this.answerZero = answerZero;
 		this.answerOne = answerOne;
 	}

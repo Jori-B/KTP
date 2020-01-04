@@ -4,10 +4,12 @@ import com.model.Question;
 
 public class Shed implements VariableDefinitions {
 	public int hasShed;
-	public int curShedSize;
+	public int curShedSize; 
 	public double roomForShed; 
 	public int isAllowedToBuild;
+	public double shedHeight;
 	public int isTallerThan3;
+	public double pathWidth;
 	public int isPathWiderThan3;
 	public int widthShed;
 	public int lengthShed;
@@ -39,6 +41,19 @@ public class Shed implements VariableDefinitions {
 		} else {
 			this.shedTooSmall = false;
 		}
+	}
+	
+	public void setWidthAndLength(int width, int length) {
+    	int temp = width;
+    	/* Always set the long side as the length */
+    	if(width > length) {
+    		width = length;
+    		length = temp;
+    	}
+    	System.out.println("Width: " + width);
+    	System.out.println("Length: " + length);
+    	this.lengthShed = length;
+    	this.widthShed = width;
 	}
 	
 	public boolean getShedTooSmall() {
@@ -84,6 +99,7 @@ public class Shed implements VariableDefinitions {
 	}
 
 	public void setIsTallerThan3(Question height) {
+		this.shedHeight = height.getAnswer();
 		if(height.getAnswer() >= 3) {
 			this.isTallerThan3 = YES;
 			System.out.println("this.tall = YES;");
@@ -97,8 +113,9 @@ public class Shed implements VariableDefinitions {
 		return isPathWiderThan3;
 	}
 
-	public void setIsPathWiderThan3(Question width) {
-		if(width.getAnswer() >= 3) {
+	public void setIsPathWiderThan3(Question pathWidth) {
+		this.pathWidth = pathWidth.getAnswer();
+		if(pathWidth.getAnswer() >= 3) {
 			System.out.println("this.isPathWiderThan3 = YES;");
 			this.isPathWiderThan3 = YES;
 		} else {
@@ -108,6 +125,14 @@ public class Shed implements VariableDefinitions {
 		
 	}
 
+	public double getPathWidth() {
+		return pathWidth;
+	}
+
+	public void setPathWidth(double pathWidth) {
+		this.pathWidth = pathWidth;
+	}
+	
 	public int getWidthShed() {
 		return widthShed;
 	}
