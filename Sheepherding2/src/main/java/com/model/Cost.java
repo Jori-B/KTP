@@ -7,6 +7,7 @@ public class Cost implements VariableDefinitions {
 	public int shakerCost;
 	public int rakerCost;
 	public int fertilizerSpreaderCost;
+	public int shaverCost;
 	//public int haypackerRentCost;
 	
 	/* Land */
@@ -35,9 +36,11 @@ public class Cost implements VariableDefinitions {
 	
 	/* Shed */
 	public double shedCost;
-	/* Bouwkosten Stal voor vleeskalveren (traditioneel metselwerk) 350,90 per m2 
-	 * http://decentrale.regelgeving.overheid.nl/cvdr/Images/Haaren/i263531.pdf */
-	public int fertilizerPlateCost = 20000;
+	public int fertilizerPlateCost;
+	public double eatingFenceCost;
+		public double lengthEatFencesNeeded;
+	public double adjustableFenceCost;
+		public double lengthAdjFencesNeeded;
 	
 	public int totalCost;
 	public int totalEarnings;
@@ -86,6 +89,16 @@ public class Cost implements VariableDefinitions {
 		}
 	}
 	
+	public void setShaverCost(int hasShaver) {
+		if(hasShaver == YES) {
+			this.shaverCost = 0;
+		} else { this.shaverCost = 400; }
+	}
+	
+	public int getShaverCost() {
+		return shaverCost;
+	}
+	
 	public void setLandNeededCost(double landNeeded) {
 		if (landNeeded > 0) {
 			this.landNeededCost = landNeeded * 600;
@@ -117,6 +130,8 @@ public class Cost implements VariableDefinitions {
 	public void setShedCost(double goalCurSizeDiff) {
 		if (goalCurSizeDiff > 0) {
 			/* Building a shed costs roughly 350 euros per square meter */
+			/* Bouwkosten Stal voor vleeskalveren (traditioneel metselwerk) 350,90 per m2 
+			 * http://decentrale.regelgeving.overheid.nl/cvdr/Images/Haaren/i263531.pdf */
 			this.shedCost = goalCurSizeDiff * 350;
 		} else { this.shedCost = 0; }
 	}
@@ -136,6 +151,71 @@ public class Cost implements VariableDefinitions {
 		this.sheepBoughtCost = (totalNSheepWanted - ownsNSheep) * 95;
 	}
 	
+	public void setEatingFenceCost(double lengthShed, boolean shedTooSmall, double curSize, double goalSizeShed, int hasEatingFences) {
+		if(!shedTooSmall) {
+			if(hasEatingFences == YES) {
+				this.lengthEatFencesNeeded = 0;
+				this.eatingFenceCost = 0;
+			/* https://www.venostal.nl/product/zelfsluitend-voerhek-1-mtr-h-x-402-l/
+			 * This site sells 4 meters with eating tray for 360€, which means 90€/meter
+			 * On both sides of the path in the length of the shed there needs to be food fences (so length * 2 * cost per meter)
+			 */
+			} else { 
+				this.lengthEatFencesNeeded = lengthShed * 2; 
+				this.eatingFenceCost = lengthEatFencesNeeded * 90; 
+			}
+		/*Shed not big enough */
+		} else {
+			/*Goal size is always assumed to have a width of 11 meters so divide area by 11*/
+			double lengthGoal = goalSizeShed / 11;
+			/*
+			 * Too small shed has fences, so calculate cost for new goal shed - current
+			 * length
+			 */
+			if(hasEatingFences == YES) {
+				/* If you use the length of the fences for the user it can sometimes yield negative answers
+				 * So we divide the current size by 11 like the goal size */
+				double lengthDiff = lengthGoal - (curSize / 11);
+				this.lengthEatFencesNeeded = lengthDiff * 2;
+				this.eatingFenceCost = lengthEatFencesNeeded * 90;
+			/* No fences in shed so length of goal is length (*2) needed for fences */
+			} else {
+				this.lengthEatFencesNeeded = lengthGoal * 2;
+				this.eatingFenceCost = lengthEatFencesNeeded * 90;
+			}
+		}
+	}
+	
+	public double getEatFenceCost() {
+		return eatingFenceCost;
+	}
+	
+	public double getLengthEat() {
+		return lengthEatFencesNeeded;
+	}
+	
+	public void setAdjFenceCost(int totalNSheepWanted, int hasAdjustableFences) {
+		if(hasAdjustableFences == YES) {
+			this.lengthAdjFencesNeeded = 0;
+			this.adjustableFenceCost = 0;
+		} else {
+			/* https://www.landbouwwinkel.nl/webshop/weidetechniek/paneelhekken/koppelhekken-schapen/schapen-koppelhek-1-37-m.html
+			 * per fence it is 50€. Since you build against a wall in your shed, and fences attach to each other 
+			 * you need roughly 1 fence per sheep. So roughly 50€ per sheep.
+			 */
+			this.lengthAdjFencesNeeded = 1.37 * totalNSheepWanted;
+			this.adjustableFenceCost = totalNSheepWanted * 50;
+		}
+	}
+	
+	public double getLengthAdj() {
+		return lengthAdjFencesNeeded;
+	}
+	
+	public double getAdjFenceCost() {
+		return adjustableFenceCost;
+	}
+	
 	public void setTotalEarnings() {
 		this.totalEarnings = (int)woolEarnings + sheepSoldEarnings + (int)toeslagrechtEarnings;
 	}
@@ -145,8 +225,8 @@ public class Cost implements VariableDefinitions {
 	}
 	
 	public void setTotalCost() {
-		this.totalCost = tractorCost + mowerCost + shakerCost + rakerCost + (int)landNeededCost + (int)shaveOtherCost + (int)myasTreatmentCost + (int)wormCost + earMarkCost 
-				+ (int)RVOAdminCost + (int)slaughterCost + sheepBoughtCost + (int)shedCost;
+		this.totalCost = tractorCost + mowerCost + shakerCost + rakerCost + shaverCost + (int)landNeededCost + (int)shaveOtherCost + (int)myasTreatmentCost + (int)wormCost + earMarkCost 
+				+ (int)RVOAdminCost + (int)slaughterCost + sheepBoughtCost + (int)shedCost + (int)eatingFenceCost + (int)adjustableFenceCost;
 	}
 	
 	public int getTotalCost() {
@@ -303,8 +383,12 @@ public class Cost implements VariableDefinitions {
 		return fertilizerPlateCost;
 	}
 	
-	public void setFertilizerPlateCost(int fertilizerPlateCost) {
-		this.fertilizerPlateCost = fertilizerPlateCost;
+	public void setFertilizerPlateCost(int hasFertilizerPlate) {
+		if(hasFertilizerPlate == YES) {
+			this.fertilizerPlateCost = 0;
+		} else {
+			this.fertilizerPlateCost = 20000;
+		}
 	}
 	
 }

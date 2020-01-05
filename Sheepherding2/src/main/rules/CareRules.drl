@@ -11,6 +11,8 @@ import com.model.Land;
 import com.model.Care;
 import com.model.Sheep;
 
+import com.model.Cost;
+
 import com.model.Main; 
 import function com.model.Utility.help;
 
@@ -19,8 +21,10 @@ dialect "java"
 rule "Wants self birth"
 	when 
 		$care : Care(wantsSelfBirth == SELF);
+		Cost($sheepSoldEarnings : sheepSoldEarnings);
 	then
-		$care.setAdvice("Birthing yourself saves you + costBirthing + euros. You can expect to gain + sheepSoldEarnings");
+		$care.setAdvice("Birthing yourself is essential as a herder, otherwise the vet needs to come everytime. You can expect to gain " 
+		+ $sheepSoldEarnings + " euros from selling sheep.");
 end
 
 rule "Hobby, wants other birth"
@@ -28,7 +32,7 @@ rule "Hobby, wants other birth"
 		$care : Care(wantsSelfBirth == OTHER);
 		Business(hobSemiPro == HOBBY);
 	then
-		$care.setAdvice("Letting birthing be done costs you + costBirthing + euros. Races like the Soay lamb unassisted, " + 
+		$care.setAdvice("Letting birthing be done is not viable, so you should learn how to do it. Races like the Soay lamb unassisted, " + 
 		"so herding those could be considered as well.");
 end
 
@@ -37,15 +41,20 @@ rule "Pro, wants other birth"
 		$care : Care(wantsSelfBirth == OTHER);
 		Business(hobSemiPro == PRO);
 	then
-		$care.setAdvice("As a professional it is recommended that you birth yourself. Birthing by someone else costs you + costBirthing + euros");
+		$care.setAdvice("As a professional it is recommended that you birth yourself. Letting birthing be done is not viable, " + 
+		" so you should learn how to do it.");
 end
 
 rule "Pro doesn't want lambs"
 	when
 		$care : Care(wantsLambs == NO);
 		Business(hobSemiPro == PRO);
+		Sheep($nSheep : totalNSheepWanted);
+		Cost($sheepSoldEarnings : sheepSoldEarnings);
 	then
-		$care.setAdvice("As a professional it is recommended that you breed sheep. It is your main earning. You would gain + sheepSoldEarnings");
+		$care.setAdvice("As a professional it is recommended that you breed sheep. It is your main earning. Every sheep get roughly 2 lambs " +
+		"and sells for 95€. Therefore, with " + $nSheep + " you're expected to gain " + $sheepSoldEarnings +
+		" euros from selling lambs.");
 end
 
 rule "Shave self"
@@ -54,7 +63,7 @@ rule "Shave self"
 		Sheep($totalNSheepWanted : totalNSheepWanted); 
 	then
 		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50€. In your case you want " + 
-		$totalNSheepWanted + "Therefore, this will earn you about " + $woolEarnings + " euros.");
+		$totalNSheepWanted + "sheep. Therefore, this will earn you about " + $woolEarnings + " euros. ");
 		$care.setAdvice("One can also hire someone to do it for them. Per sheep it costs roughly 3.50 euros. Therefore this would cost you around " +
 		$shaveOtherCost + " euros.");
 end

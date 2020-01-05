@@ -252,7 +252,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
 		setTitle("Sheep Herder System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 974, 773);
+		setBounds(100, 100, 974, 833);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -322,7 +322,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		lblInformationText.setForeground(Color.BLACK);
 		lblInformationText.setOpaque(true);
 		lblInformationText.setBackground(new Color(119, 136, 153));
-		lblInformationText.setVisible(false);
+		lblInformationText.setVisible(true);
 		setLblInformationText(lblInformationText);
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");

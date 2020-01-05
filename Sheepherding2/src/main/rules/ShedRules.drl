@@ -22,8 +22,9 @@ rule "Mention shed size needed"
 		Sheep( $nSheep : totalNSheepWanted > 0);
 		$shed : Shed($shedSize : curShedSize, $goalSize : goalSize); 
 	then
+	// Converting to an int because else the thing gives lots of digits behind the dot.
 		$shed.setAdvice("Rougly 2.5 meters per sheep is needed in a shed. Since you want " + $nSheep + " sheep, " +
-		"your shed should be " + $goalSize + " meters big");
+		"your shed should be " + (int)$goalSize + " meters big");
 end
 
 rule "Great shed"
@@ -167,14 +168,14 @@ rule "No fertilizer plate"
 	when
 		$shed : Shed( hasShed == YES, hasFertilizerPlate == NO);
 	then
-		$shed.setAdvice("A fertilizer plate is needed for not letting the defication get below the shed floor. This costs roughly 20.000€.");
+		$shed.setAdvice("A mest plate is needed for not letting the defication get below the shed floor. This costs roughly 20.000€.");
 end
 
 rule "No fences"
 	when
 		$shed : Shed( hasShed == YES, hasAdjustableFences == NO);
 	then
-		$shed.setAdvice("Adjustable fences are handy for separating sheep in the shed. This is also handy for administration purposes.");
+		$shed.setAdvice("Movable fences are handy for separating sheep in the shed when they have lambs. This is also handy for administration purposes.");
 end
 
 rule "No lamps"

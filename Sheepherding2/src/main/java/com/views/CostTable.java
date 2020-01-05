@@ -59,32 +59,23 @@ public class CostTable implements VariableDefinitions {
 		int getShaker = 1 - materials.getHasShaker();
 		int getRaker = 1 - materials.getHasRaker();
 		int getFertilizerSpreader = 1 - materials.getHasFertilizerSpreader();
-//		if(materials.getHasMower() == YES) {
-//			getMower = 0;
-//		} 
-//		if(materials.getHasShaker() == YES) {
-//			getShaker = 0;
-//		} 
-//		if(materials.getHasRaker() == YES) {
-//			getRaker = 0;
-//		} 
-//		if(materials.getHasFertilizerSpreader() == YES) {
-//			getFertilizerSpreader = 0;
-//		} 
+		int getShaver = 1 - materials.getHasShaver();
 		double shaveCost = 0;
 		if(model.getCare().getWantsSelfShave() == NO) {
 			shaveCost = costs.getShaveOtherCost();
 		}
 		int getFertilizerPlate = 1 - model.getShed().getHasFertilizerPlate();
-//		if(model.getShed().getHasFertilizerPlate() == YES) {
-//			getFertilizerPlate = 0;
-//		}
+
 		double shedDiff = model.getShed().getGoalCurSizeDiff();
 		if(shedDiff <= 0) {
 			shedDiff = 0;
 		}
 		
+		
 		double landNeeded = model.getLand().getLandNeeded();
+		if(landNeeded < 0) {
+			landNeeded = 0;
+		}
 		int totalNSheepWanted = model.getSheep().getTotalNSheepWanted();
 		int desiresNMoreSheep = model.getSheep().getDesiresNMoreSheep();
 		
@@ -101,20 +92,23 @@ public class CostTable implements VariableDefinitions {
 						{"Shaker",	 					getShaker+" shaker",					"€"+twoDigits.format(costs.getShakerCost())},
 						{"Raker",	 					getRaker+" raker",						"€"+twoDigits.format(costs.getRakerCost())},
 						{"Fertilizer spreader",			getFertilizerSpreader+" spreader",		"€"+twoDigits.format(costs.getFertilizerSpreaderCost())},
-						{"Land needed", 				twoDigits.format(landNeeded)+" hectares leased",			"€"+twoDigits.format(costs.getLandNeededCost())},
+						{"Land needed", 				twoDigits.format(landNeeded)+" hectares leased",	"€"+twoDigits.format(costs.getLandNeededCost())},
 						{"Shave other", 				totalNSheepWanted+" sheep",				"€"+twoDigits.format(shaveCost)},
+						{"Shaving machine",				getShaver+" shaving machine",			"€"+twoDigits.format(costs.getShaverCost())},
 						{"Myas Treatment", 				(totalNSheepWanted*3)+" treatments",	"€"+twoDigits.format(costs.getMyasTreatmentCost())},
 						{"Worming",		 				totalNSheepWanted+" treatments",		"€"+twoDigits.format(costs.getWormCost())},
 						{"Ear marks",	 				desiresNMoreSheep+" ear marks",			"€"+twoDigits.format(costs.getEarMarkCost())},
 						{"RVO administration",			desiresNMoreSheep+" sheep",				"€"+twoDigits.format(costs.getRVOAdminCost())},
 						{"Slaughter registration",		slaughterSheep+" sheep",				"€"+twoDigits.format(costs.getSlaughterCost())},
 						{"Buying sheep",				desiresNMoreSheep+" sheep",				"€"+twoDigits.format(costs.getSheepBoughtCost())},
-						{"Shed building",				twoDigits.format(shedDiff)+" square meters",	"€"+twoDigits.format(costs.getShedCost())},
-						{"Shed fertilizer plate",		getFertilizerPlate+" plate",			"€"+twoDigits.format(costs.getFertilizerPlateCost())},
+						{"Shed building",				twoDigits.format(shedDiff)+" square meters",		"€"+twoDigits.format(costs.getShedCost())},
+						{"Movable fences",				twoDigits.format(costs.getLengthAdj())+" meters",	"€"+twoDigits.format(costs.getAdjFenceCost())},
+						{"Eating fences",				twoDigits.format(costs.getLengthEat())+" meters",	"€"+twoDigits.format(costs.getEatFenceCost())},
+						{"Mest plate",					getFertilizerPlate+" plate",			"€"+twoDigits.format(costs.getFertilizerPlateCost())},
 						{"--------------- EARNINGS -------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Sheep sold",					(totalNSheepWanted*2)+" lambs",			"€"+twoDigits.format(costs.getSheepSoldEarnings())},
 						{"Wool Sold",					totalNSheepWanted+" coats of fur",		"€"+twoDigits.format(costs.getWoolEarnings())},
-						{"Toeslagrechten", 				model.getLand().getLandSizeToeslag()+" hectares",		"€"+twoDigits.format(costs.getToeslagrechtEarnings())},
+						{"Toeslagrechten", 				model.getLand().getLandSizeToeslag()+" hectares",	"€"+twoDigits.format(costs.getToeslagrechtEarnings())},
 						{"---------------- TOTALS ---------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Total costs",					"",										"€"+twoDigits.format(costs.getTotalCost())},
 						{"Total earnings this year",	"",										"€"+twoDigits.format(costs.getTotalEarnings())},
@@ -132,10 +126,10 @@ public class CostTable implements VariableDefinitions {
 		frame.getContentPane().add(table);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 56, 772, 466);
+		scrollPane.setBounds(10, 56, 772, 510);
 		frame.getContentPane().add(scrollPane);
 //		frame.getContentPane().add(table.getTableHeader(), BorderLayout.PAGE_START);
-		frame.setBounds(100, 100, 814, 582);
+		frame.setBounds(100, 100, 814, 626);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

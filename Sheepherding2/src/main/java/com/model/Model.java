@@ -170,11 +170,13 @@ public class Model implements VariableDefinitions {
         			"<html>&emsp;The shed needs to be high enough for a tractor to go through (3m).<html>", DONTASK, model));
         	questions.add(new Question("pathWidthShed", NUMB, ksession, "How wide is the path in your shed (in meters)?", 
         			"<html>&emsp;The path needs to be wide enough for a tractor to go through (3m).<html>", DONTASK, model));
-        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a fertilizer plate outside your shed?", 
-        			"<html>&emsp;It is mandatory to have a fertilizer plate.<html>", DONTASK, model));
-        	questions.add(new Question("hasAdjustableFences", YESNO, ksession, "Does your shed have fences already?", 
-        			"<html>&emsp;Sheep need to be divided in small pens. <br>&emsp;Also fences for eating are necessary.<html>", DONTASK, model));
-    		questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your shed have a flat floor?", 
+        	questions.add(new Question("hasFertilizer", YESNO, ksession, "Do you have a mest plate outside your shed?", 
+        			"<html>&emsp;It is mandatory to have a mest plate.<html>", DONTASK, model));
+        	questions.add(new Question("hasAdjustableFences", YESNO, ksession, "Does your shed have enough movable fences already?", 
+        			"<html>&emsp;Sheep need to be divided in small pens when they have lambs. <br>&emsp;This system assumes roughly one movable fence (1.5m) per sheep.<html>", DONTASK, model));
+        	questions.add(new Question("hasEatingFences", YESNO, ksession, "Does your shed have fences for feeding with food trays?", 
+        			"<html>&emsp;Sheep stick their head through the feeding fences to eat orderly.<html>", DONTASK, model));
+        	questions.add(new Question("hasFlatFloor", YESNO, ksession, "Does your shed have a flat floor?", 
     				"<html>&emsp;Flat floors are handy.<html>", DONTASK, model));
     		questions.add(new Question("hasElectricity", YESNO, ksession, "Does your shed have electricity?", 
     				"<html>&emsp;Lamps should be hung in the shed, for you and lambs.<html>", DONTASK, model));
@@ -203,21 +205,21 @@ public class Model implements VariableDefinitions {
         			"<html>&emsp;Expensive, but nice to have. <br>&emsp;One can hire someone to do this for them.<html>", DONTASK, model));
         	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have a fertilizer spreader?", 
         			"<html>&emsp;To spread fertilizer on the land for the grass to grow a fertilizer spreader is used. <br>&emsp;It is one of the essential materials for working the grassland", DONTASK, model));
-        	questions.add(new Question("hasMestSpreader", YESNO, ksession, "Do you have a mest spreader and/or mestwagon?", 
-        			"<html>&emsp;Very expensive and needs a tractor with 200 hp. <br>&emsp;One should hire someone to do this for them.<html>", DONTASK, model));
         	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have a mest gatherer?", 
         			"<html>&emsp;Expensive, but nice to have. <br>&emsp;One can hire someone to do this for them.<html>", DONTASK, model));
-       
+        	questions.add(new Question("hasMestSpreader", YESNO, ksession, "Do you have a mest spreader and/or mestwagon?", 
+        			"<html>&emsp;Very expensive and needs a tractor with 200 hp. <br>&emsp;One should hire someone to do this for them.<html>", DONTASK, model));
+        questions.add(new Question("hasShaver", YESNO, ksession, "Do you have a shaving machine?", 
+        			"<html>&emsp;A shaving machine is only 400€ (with three knives for a year). <br>&emsp;It is adviced that everyone should get one for when there are <br>&emsp;for example worms and the area of skin needs cleaning.<html>", ASK, model));
 		/* Care questions */
+        questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave the sheep yourself?", 
+    		"<html>&emsp;Shaving doesn't earn you much money. <br>&emsp;One can hire someone to do this for them.<html>", ASK, model)); 
         questions.add(new Question("wantsSlaughter", YESNO, ksession, "Do you want to sell sheep for slaughter?", 
         			"<html>&emsp;Selling the sheep for slaughter is a main source of income.<html>", ASK, model));
         questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", 
     			"<html>&emsp;Lambing is the main source of income for sheep herders.<html>", ASK, model));
     		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing yourself or let someone else do it?", 
     				"<html>&emsp;Every sheep herder should learn this.<html>", DONTASK, model, "Self", "Someone else"));
-        	/* How much time does it cost to shave yourself? */
-        questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave the sheep yourself?", 
-        		"<html>&emsp;Shaving doesn't earn you much money. <br>&emsp;One can hire someone to do this for them.<html>", ASK, model)); 
         
         enterFactsInHash();
     }
@@ -248,6 +250,7 @@ public class Model implements VariableDefinitions {
 		shed.setIsPathWiderThan3(getSelectedQuestion("pathWidthShed"));
 		shed.setHasFertilizerPlate(getSelectedQuestion("hasFertilizer"));
 		shed.setHasAdjustableFences(getSelectedQuestion("hasAdjustableFences"));
+		shed.setHasEatingFences(getSelectedQuestion("hasEatingFences"));
 		shed.setHasCementFloor(getSelectedQuestion("hasFlatFloor"));
 		shed.setHasElectricity(getSelectedQuestion("hasElectricity"));
 		shed.setHasWater(getSelectedQuestion("hasWater"));
@@ -262,6 +265,7 @@ public class Model implements VariableDefinitions {
 		materials.setHasHayPacker(getSelectedQuestion("hasHayPacker"));
 		materials.setHasMestSpreader(getSelectedQuestion("hasMestSpreader"));
 		materials.setHasFertilizerSpreader(getSelectedQuestion("hasFertilizerSpreader"));
+		materials.setHasShaver(getSelectedQuestion("hasShaver"));
 		care.setWantsSlaughter(getSelectedQuestion("wantsSlaughter"));
 		care.setWantsLambs(getSelectedQuestion("wantsLambs"));
 		care.setWantsSelfBirth(getSelectedQuestion("Self Birth"));
@@ -274,6 +278,7 @@ public class Model implements VariableDefinitions {
     	/* Materials */
     	costs.setTractorCost(materials.getNeedsNewTractor(), materials.getNeedsBigTractor());
     	costs.setGrassMaterialCost(materials.hasMower, materials.hasShaker, materials.hasRaker, materials.hasFertilizerSpreader);
+    	costs.setShaverCost(materials.getHasShaver());
     	/* Land */
     	costs.setToeslagrechtEarnings(land.toeslagrecht);
     	costs.setLandNeededCost(land.landNeeded); 
@@ -282,6 +287,9 @@ public class Model implements VariableDefinitions {
     	costs.setWoolEarnings(care.woolEarnings);
     	/* Sheep */
     	costs.setShedCost(shed.getGoalCurSizeDiff());
+    	costs.setFertilizerPlateCost(shed.getHasFertilizerPlate());
+    	costs.setEatingFenceCost(shed.getLengthShed(), shed.getShedTooSmall(), shed.getCurShedSize(), shed.getGoalSize(), shed.getHasEatingFences());
+    	costs.setAdjFenceCost(sheep.getTotalNSheepWanted(), shed.getHasAdjustableFences());
     	/* Calculate totals */
     	costs.setTotalCost();
     	costs.setTotalEarnings();

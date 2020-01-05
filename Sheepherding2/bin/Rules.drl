@@ -128,6 +128,7 @@ rule "Has shed"
         pathWidthShed: Question(Question.Name == "pathWidthShed");
         hasFertilizer: Question(Question.Name == "hasFertilizer"); 
         hasAdjustableFences : Question(Question.Name == "hasAdjustableFences"); 
+        hasEatingFences : Question(Question.Name == "hasEatingFences");
     	hasFlatFloor: Question(Question.Name == "hasFlatFloor");
     	hasElectricity: Question(Question.Name == "hasElectricity");
 	then
@@ -137,6 +138,7 @@ rule "Has shed"
         modify(pathWidthShed) { askQuestion(true) }
         modify(hasFertilizer) { askQuestion(true) }
         modify(hasAdjustableFences) { askQuestion(true) }
+        modify(hasEatingFences) { askQuestion(true) }
     	modify(hasFlatFloor) { askQuestion(true) }
     	modify(hasElectricity) { askQuestion(true) }
 end

@@ -16,6 +16,7 @@ public class Shed implements VariableDefinitions {
 	public int hasCementFloor;
 	public int hasFertilizerPlate;
 	public int hasAdjustableFences;
+	public int hasEatingFences;
 	public int hasElectricity;
 	public int hasWater;
 	public double goalSize; 
@@ -184,6 +185,14 @@ public class Shed implements VariableDefinitions {
 
 	public void setHasAdjustableFences(Question hasAdjustableFences) {
 		this.hasAdjustableFences = hasAdjustableFences.getAnswer();
+	}
+	
+	public int getHasEatingFences() {
+		return hasEatingFences;
+	}
+	
+	public void setHasEatingFences(Question hasEatingFences) {
+		this.hasEatingFences = hasEatingFences.getAnswer();
 	}
 
 	public int getHasElectricity() {
