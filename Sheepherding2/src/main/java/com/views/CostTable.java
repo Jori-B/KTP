@@ -27,7 +27,6 @@ public class CostTable implements VariableDefinitions {
 
 	private JFrame frame;
 	private JTable table;
-	DecimalFormat twoDigits = new DecimalFormat("##.00");
 
 	/**
 	 * Create the application.
@@ -56,34 +55,43 @@ public class CostTable implements VariableDefinitions {
 		if(materials.getNeedsNewTractor()) {
 			getTractor = 1;
 		}
-		int getMower = 1;
-		int getShaker = 1;
-		int getRaker = 1;
-		int getFertilizerSpreader = 1;
-		if(materials.getHasMower() == YES) {
-			getMower = 0;
-		} 
-		if(materials.getHasShaker() == YES) {
-			getShaker = 0;
-		} 
-		if(materials.getHasRaker() == YES) {
-			getRaker = 0;
-		} 
-		if(materials.getHasFertilizerSpreader() == YES) {
-			getFertilizerSpreader = 0;
-		} 
+		int getMower = 1 - materials.getHasMower();
+		int getShaker = 1 - materials.getHasShaker();
+		int getRaker = 1 - materials.getHasRaker();
+		int getFertilizerSpreader = 1 - materials.getHasFertilizerSpreader();
+//		if(materials.getHasMower() == YES) {
+//			getMower = 0;
+//		} 
+//		if(materials.getHasShaker() == YES) {
+//			getShaker = 0;
+//		} 
+//		if(materials.getHasRaker() == YES) {
+//			getRaker = 0;
+//		} 
+//		if(materials.getHasFertilizerSpreader() == YES) {
+//			getFertilizerSpreader = 0;
+//		} 
 		double shaveCost = 0;
 		if(model.getCare().getWantsSelfShave() == NO) {
 			shaveCost = costs.getShaveOtherCost();
 		}
-		int getFertilizerPlate = 1;
-		if(model.getShed().getHasFertilizerPlate() == YES) {
-			getFertilizerPlate = 0;
+		int getFertilizerPlate = 1 - model.getShed().getHasFertilizerPlate();
+//		if(model.getShed().getHasFertilizerPlate() == YES) {
+//			getFertilizerPlate = 0;
+//		}
+		double shedDiff = model.getShed().getGoalCurSizeDiff();
+		if(shedDiff <= 0) {
+			shedDiff = 0;
 		}
 		
 		double landNeeded = model.getLand().getLandNeeded();
 		int totalNSheepWanted = model.getSheep().getTotalNSheepWanted();
 		int desiresNMoreSheep = model.getSheep().getDesiresNMoreSheep();
+		
+		int slaughterSheep = 0;
+		if(model.getCare().getWantsSlaughter()) {
+			slaughterSheep = totalNSheepWanted;
+		}
 		
 		String[] colNames = {"Item",		"Count", 	"Price"};
 		Object[][] costsArray = {
@@ -93,20 +101,20 @@ public class CostTable implements VariableDefinitions {
 						{"Shaker",	 					getShaker+" shaker",					"€"+twoDigits.format(costs.getShakerCost())},
 						{"Raker",	 					getRaker+" raker",						"€"+twoDigits.format(costs.getRakerCost())},
 						{"Fertilizer spreader",			getFertilizerSpreader+" spreader",		"€"+twoDigits.format(costs.getFertilizerSpreaderCost())},
-						{"Land needed", 				twoDigits.format(landNeeded)+" acres leased",			"€"+twoDigits.format(costs.getLandNeededCost())},
+						{"Land needed", 				twoDigits.format(landNeeded)+" hectares leased",			"€"+twoDigits.format(costs.getLandNeededCost())},
 						{"Shave other", 				totalNSheepWanted+" sheep",				"€"+twoDigits.format(shaveCost)},
 						{"Myas Treatment", 				(totalNSheepWanted*3)+" treatments",	"€"+twoDigits.format(costs.getMyasTreatmentCost())},
 						{"Worming",		 				totalNSheepWanted+" treatments",		"€"+twoDigits.format(costs.getWormCost())},
 						{"Ear marks",	 				desiresNMoreSheep+" ear marks",			"€"+twoDigits.format(costs.getEarMarkCost())},
 						{"RVO administration",			desiresNMoreSheep+" sheep",				"€"+twoDigits.format(costs.getRVOAdminCost())},
-						{"Slaughter registration",		totalNSheepWanted+" sheep",				"€"+twoDigits.format(costs.getSlaughterCost())},
+						{"Slaughter registration",		slaughterSheep+" sheep",				"€"+twoDigits.format(costs.getSlaughterCost())},
 						{"Buying sheep",				desiresNMoreSheep+" sheep",				"€"+twoDigits.format(costs.getSheepBoughtCost())},
-						{"Shed building",				model.getShed().getGoalCurSizeDiff()+" square meters",	"€"+twoDigits.format(costs.getShedCost())},
+						{"Shed building",				twoDigits.format(shedDiff)+" square meters",	"€"+twoDigits.format(costs.getShedCost())},
 						{"Shed fertilizer plate",		getFertilizerPlate+" plate",			"€"+twoDigits.format(costs.getFertilizerPlateCost())},
 						{"--------------- EARNINGS -------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Sheep sold",					(totalNSheepWanted*2)+" lambs",			"€"+twoDigits.format(costs.getSheepSoldEarnings())},
 						{"Wool Sold",					totalNSheepWanted+" coats of fur",		"€"+twoDigits.format(costs.getWoolEarnings())},
-						{"Toeslagrechten", 				twoDigits.format(landNeeded)+" acres",	"€"+twoDigits.format(costs.getToeslagrechtEarnings())},
+						{"Toeslagrechten", 				model.getLand().getLandSizeToeslag()+" hectares",		"€"+twoDigits.format(costs.getToeslagrechtEarnings())},
 						{"---------------- TOTALS ---------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Total costs",					"",										"€"+twoDigits.format(costs.getTotalCost())},
 						{"Total earnings this year",	"",										"€"+twoDigits.format(costs.getTotalEarnings())},

@@ -1,19 +1,22 @@
 package com.model;
 
+import java.text.DecimalFormat;
+
 import com.model.Question;
 
 public class Land implements VariableDefinitions {
 	public int hasLand;
-	public int ownedLandSize;
+	public double ownedLandSize;
 	public int hasLeasedLand;
-	public int leasedLandSize;
-	public int totalLandSize;
-	public int landSizeToeslag;
-	public int toeslagrecht;
+	public double leasedLandSize;
+	public double totalLandSize;
+	public double landSizeToeslag;
+	public double toeslagrecht;
 	public double landNeeded;
 	public double costLandNeeded; /* This is the cost when you buy instead of lease */
 	public boolean landIsBigEnough;
 	public String advice = "<html>&emsp;";
+	DecimalFormat twoDigits = new DecimalFormat("##.00");
 	
 	public Land() {
 		
@@ -33,7 +36,9 @@ public class Land implements VariableDefinitions {
 	}
 	
 	public void calcLandNeeded(int totalNSheepWanted) { 
-		this.landNeeded = (totalNSheepWanted * 2.85 - totalLandSize);
+		/* https://toverleven.cultu.be/hoeveel-dieren-m2-grasland 
+		 * 10 to 15 sheep (with lambs) per hectare. Therefore one needs 1/12.5 = 0.08 hectare per sheep */ 
+		this.landNeeded = (totalNSheepWanted * 0.08 - totalLandSize);
 		if(landNeeded < 0) {
 			this.landIsBigEnough = true;
 		} else {
@@ -45,12 +50,6 @@ public class Land implements VariableDefinitions {
 	public void calcCostLandNeeded() { 
 		this.costLandNeeded = 50000 * landNeeded; 
 	} 
-	
-//	public void calcToeslagRecht() {
-//		/* One can expect to gain 350€ a year per acre of land with toeslagrechten */
-//		this.toeslagrecht = (int)landSizeToeslag * 350;
-//		
-//	}
 
 	/* Getters and setters */
 	public int getHasLand() {
@@ -61,7 +60,7 @@ public class Land implements VariableDefinitions {
 		this.hasLand = hasLand.getAnswer();
 	}
 
-	public int getOwnedLandSize() {
+	public double getOwnedLandSize() {
 		return ownedLandSize;
 	}
 
@@ -69,7 +68,7 @@ public class Land implements VariableDefinitions {
 		this.ownedLandSize = ownedLandSize.getAnswer();
 	}
 	
-	public int getLandSizeToeslag() {
+	public double getLandSizeToeslag() {
 		return landSizeToeslag;
 	}
 
@@ -87,7 +86,7 @@ public class Land implements VariableDefinitions {
 		this.hasLeasedLand = hasLeasedLand.getAnswer();
 	}
 
-	public int getLeasedLandSize() {
+	public double getLeasedLandSize() {
 		return leasedLandSize;
 	}
 
@@ -95,7 +94,7 @@ public class Land implements VariableDefinitions {
 		this.leasedLandSize = leasedLandSize.getAnswer();
 	}
 
-	public int getTotalLandSize() {
+	public double getTotalLandSize() {
 		return totalLandSize;
 	}
 
@@ -119,7 +118,7 @@ public class Land implements VariableDefinitions {
 		this.costLandNeeded = costLandNeeded;
 	}
 	
-	public int getToeslagrecht() {
+	public double getToeslagrecht() {
 		return toeslagrecht;
 	}
 

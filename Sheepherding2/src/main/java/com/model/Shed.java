@@ -4,15 +4,15 @@ import com.model.Question;
 
 public class Shed implements VariableDefinitions {
 	public int hasShed;
-	public int curShedSize; 
+	public double curShedSize; 
 	public double roomForShed; 
 	public int isAllowedToBuild;
 	public double shedHeight;
 	public int isTallerThan3;
 	public double pathWidth;
 	public int isPathWiderThan3;
-	public int widthShed;
-	public int lengthShed;
+	public double widthShed;
+	public double lengthShed;
 	public int hasCementFloor;
 	public int hasFertilizerPlate;
 	public int hasAdjustableFences;
@@ -56,8 +56,8 @@ public class Shed implements VariableDefinitions {
 		}
 	}
 	
-	public void setWidthAndLength(int width, int length) {
-    	int temp = width;
+	public void setWidthAndLength(double width, double length) {
+    	double temp = width;
     	/* Always set the long side as the length */
     	if(width > length) {
     		width = length;
@@ -82,7 +82,7 @@ public class Shed implements VariableDefinitions {
 		this.hasShed = hasShed.getAnswer();
 	}
 
-	public int getCurShedSize() {
+	public double getCurShedSize() {
 		return curShedSize;
 	}
 
@@ -146,7 +146,7 @@ public class Shed implements VariableDefinitions {
 		this.pathWidth = pathWidth;
 	}
 	
-	public int getWidthShed() {
+	public double getWidthShed() {
 		return widthShed;
 	}
 
@@ -154,7 +154,7 @@ public class Shed implements VariableDefinitions {
 		this.widthShed = widthShed;
 	}
 	
-	public int getLengthShed() {
+	public double getLengthShed() {
 		return lengthShed;
 	}
 

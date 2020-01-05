@@ -10,7 +10,7 @@ public class Cost implements VariableDefinitions {
 	//public int haypackerRentCost;
 	
 	/* Land */
-	public int toeslagrechtEarnings;
+	public double toeslagrechtEarnings;
 	public double landNeededCost; 
 	/* Pachtovereenkomsten. Regionorm is 600 euros / acre on average 
 	 * https://www.rvo.nl/onderwerpen/agrarisch-ondernemen/grond/pachten-en-verpachten/pachtnormen-en-pachtprijzen-berekenen */
@@ -34,7 +34,7 @@ public class Cost implements VariableDefinitions {
 	public int phosphateRightsCost;
 	
 	/* Shed */
-	public int shedCost;
+	public double shedCost;
 	/* Bouwkosten Stal voor vleeskalveren (traditioneel metselwerk) 350,90 per m2 
 	 * http://decentrale.regelgeving.overheid.nl/cvdr/Images/Haaren/i263531.pdf */
 	public int fertilizerPlateCost = 20000;
@@ -44,24 +44,24 @@ public class Cost implements VariableDefinitions {
 	public int moneyNeeded;
 	public int moneyToSpend;
 	
-	public Cost(int totalNSheepWanted, int ownsNSheep) {
+	public Cost(int totalNSheepWanted, int ownsNSheep, boolean wantsSlaugter) {
     	setMyasTreatmentCost(totalNSheepWanted, true);
     	/* Business */
-    	setAdminastrativeCost(totalNSheepWanted, ownsNSheep, true); 
+    	setAdminastrativeCost(totalNSheepWanted, ownsNSheep, wantsSlaugter); 
     	/* Sheep */
     	setSheepBoughtCost(totalNSheepWanted, ownsNSheep);
     	setSheepSoldEarnings(totalNSheepWanted);
-    	/* Shed */
-    	setShedCost(totalNSheepWanted);
+    	/* Care */
     	setWormCost(totalNSheepWanted);
 	}
 	
 	public void setTractorCost(boolean needsNewTractor, boolean needsBigTractor) {
+		/* In both cases a small tractor and big tractor will cost roughly the same */
 		if (needsNewTractor) {
 			if (needsBigTractor) {
 				System.out.println("Needs a big tractor ");
 				this.tractorCost = 20000;
-			} else { this.tractorCost = 10000; System.out.println("Needs a small tractor ");}
+			} else { this.tractorCost = 20000; System.out.println("Needs a small tractor ");}
 		} else { this.tractorCost = 0; System.out.println("Needs no tractor ");}
 	}
 	
@@ -114,8 +114,9 @@ public class Cost implements VariableDefinitions {
 		} else { this.slaughterCost = 0; }
 	}
 	
-	public void setShedCost(int goalCurSizeDiff) {
+	public void setShedCost(double goalCurSizeDiff) {
 		if (goalCurSizeDiff > 0) {
+			/* Building a shed costs roughly 350 euros per square meter */
 			this.shedCost = goalCurSizeDiff * 350;
 		} else { this.shedCost = 0; }
 	}
@@ -136,7 +137,7 @@ public class Cost implements VariableDefinitions {
 	}
 	
 	public void setTotalEarnings() {
-		this.totalEarnings = (int)woolEarnings + sheepSoldEarnings + toeslagrechtEarnings;
+		this.totalEarnings = (int)woolEarnings + sheepSoldEarnings + (int)toeslagrechtEarnings;
 	}
 	
 	public int getTotalEarnings() {
@@ -145,7 +146,7 @@ public class Cost implements VariableDefinitions {
 	
 	public void setTotalCost() {
 		this.totalCost = tractorCost + mowerCost + shakerCost + rakerCost + (int)landNeededCost + (int)shaveOtherCost + (int)myasTreatmentCost + (int)wormCost + earMarkCost 
-				+ (int)RVOAdminCost + (int)slaughterCost + sheepBoughtCost + shedCost;
+				+ (int)RVOAdminCost + (int)slaughterCost + sheepBoughtCost + (int)shedCost;
 	}
 	
 	public int getTotalCost() {
@@ -196,11 +197,11 @@ public class Cost implements VariableDefinitions {
 		this.rakerCost = rakerCost;
 	}
 
-	public int getToeslagrechtEarnings() {
+	public double getToeslagrechtEarnings() {
 		return toeslagrechtEarnings;
 	}
 
-	public void setToeslagrechtEarnings(int toeslagrechtEarnings) {
+	public void setToeslagrechtEarnings(double toeslagrechtEarnings) {
 		this.toeslagrechtEarnings = toeslagrechtEarnings;
 	}
 
@@ -294,7 +295,7 @@ public class Cost implements VariableDefinitions {
 		return sheepSoldEarnings;
 	}
 
-	public int getShedCost() {
+	public double getShedCost() {
 		return shedCost;
 	}
 	

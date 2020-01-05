@@ -8,6 +8,7 @@ public class Care implements VariableDefinitions {
 	public int wantsSelfBirth;
 	public double shaveOtherCost;
 	public double woolEarnings;
+	public boolean wantsSlaughter;
 	// public int sheepBorn;
 	// public int sheepSoldEarnings;
 	// public int costOtherBirth;
@@ -47,6 +48,19 @@ public class Care implements VariableDefinitions {
 
 	public void setWantsSelfBirth(Question wantsSelfBirth) {
 		this.wantsSelfBirth = wantsSelfBirth.getAnswer();
+	}
+	
+	public void setWantsSlaughter(Question wantsSlaughter) {
+		if(wantsSlaughter.getAnswer() == YES) {
+			this.wantsSlaughter = true;
+		} else {
+			this.wantsSlaughter = false;
+		}
+		
+	}
+	
+	public boolean getWantsSlaughter() {
+		return wantsSlaughter;
 	}
 
 	public double getShaveOtherCost() {

@@ -24,7 +24,7 @@ public class Sheep implements VariableDefinitions {
 	}
 	
 	/* Getters and setters */
-	public void calcNumberOfSheepMore(int totalLandSize) {
+	public void calcNumberOfSheepMore(double totalLandSize) {
 		this.maxAmountOfSheep = (int)(totalLandSize / 2.85);
 		this.nSheepMore = (maxAmountOfSheep - totalNSheepWanted); // I think this is correct, but haven't checked
 	}

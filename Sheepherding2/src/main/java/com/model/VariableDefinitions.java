@@ -1,5 +1,7 @@
 package com.model;
 
+import java.text.DecimalFormat;
+
 public interface VariableDefinitions {
 	/* All question types have a name. As of right now we don't really use these */ 
 	public static final int YESNO = 0;
@@ -23,4 +25,6 @@ public interface VariableDefinitions {
     
     public static final boolean ASK = true;
     public static final boolean DONTASK = false;
+    
+    DecimalFormat twoDigits = new DecimalFormat("##.00");
 }

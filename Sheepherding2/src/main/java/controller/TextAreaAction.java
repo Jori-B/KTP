@@ -41,7 +41,7 @@ public class TextAreaAction {
 			String input = textArea.getText().replace("\n", "");
 			/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
 			try {       
-	        	int numbUserIn = Integer.parseInt(input); 
+	        	int numbUserIn = (int)Double.parseDouble(input); 
 	        	current.setAnswer(numbUserIn);
 	    		frame.prepareNextQuestion(current);
 	        } catch (NumberFormatException e) {
@@ -90,12 +90,12 @@ public class TextAreaAction {
 		String inputLength = lengthArea.getText().replace("\n", "");
 		/* Replacing the \n since sometimes, after 2 text area questions, the \n is inserted */ 
 		try {       
-        	int width = (int)Double.parseDouble(inputWidth); 
-        	int length = (int)Double.parseDouble(inputLength); 
+        	double width = Double.parseDouble(inputWidth); 
+        	double length = Double.parseDouble(inputLength); 
         	Shed shed = model.getShed();
         	shed.setWidthAndLength(width, length);
         	/* current question in this case is size of shed */
-        	current.setAnswer(width * length);
+        	current.setAnswer((int)(width * length));
         	frame.setLengthAreaVisible(false);
     		frame.prepareNextQuestion(current);
         } catch (NumberFormatException e) {

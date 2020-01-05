@@ -10,6 +10,8 @@ import com.model.Business;
 import com.model.Land;
 import com.model.Care;
 import com.model.Sheep;
+import com.model.Cost;
+
 
 import com.model.Main; 
 import function com.model.Utility.help;
@@ -32,7 +34,7 @@ rule "Not enough land"
 		help(drools,"info");
 		$land.setAdvice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
 		$nSheep + " sheep, and you have " + $landSize + " acres of land (incl. lease) you need " + $landNeeded + " acres more land.");
-		$land.setAdvice("An acre of land costs rougly 50.000 euros. Therefore you'd need " + $cost + "euros for buying land.");
+		$land.setAdvice("An acre of land costs rougly 50.000 euros. Therefore you'd need " + (int)$cost + " euros for buying land.");
 end
 
 rule "Not enough land, no lease"
@@ -61,12 +63,21 @@ rule "Hobby, has (too) small land"
 		"sizes like the Skudde, Soay, Quessant or English races like the Hampsindown, Suffock and Kerry Hill.");
 end
 
-rule "Toeslagrechten"
+rule "Toeslagrechten non-zero"
 	when
-		$land : Land($cost : toeslagrecht > 0); 
+		$land : Land($earnings : toeslagrecht > 0); 
+		//Cost($earnings : toeslagrechtEarnings);
 	then
-		$land.setAdvice("One needs to keep in mind that 300 euros entitlement (i.e. toeslagrechten) need to be paid per used acre of land. " +
-		"In your case this will cost you " + $cost + " euros");	
+		$land.setAdvice("For every hectare of used land with entitlements (i.e. toeslagrechten) one recieves 350 euros a year. " +
+		"In your case this will earn you " + $earnings + " euros");	
+end	
+
+rule "Toeslagrechten zero hectares"
+	when
+		$land : Land(toeslagrecht == 0); 
+	then
+		$land.setAdvice("For every hectare of used land with entitlements (i.e. toeslagrechten) one recieves 350 euros a year. " +
+		"So, when getting more land it is recommended to check wheter it has these, since they cannot be bought anymore.");	
 end	
 
 		

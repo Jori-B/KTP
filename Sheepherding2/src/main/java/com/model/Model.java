@@ -138,8 +138,9 @@ public class Model implements VariableDefinitions {
     			// If yes
         		questions.add(new Question("Owned number of sheep", NUMB, ksession, "How many sheep do you own?", 
         				"<html>&emsp;If you already own sheep it is interesting for this system to know how many.<html>", DONTASK, model));
-        questions.add(new Question("Number of Sheep", NUMB, ksession, "How many sheep would you like to have in total?", 
-        		"<html>&emsp;Someone who works 7 days on the farm and wants to make money would <br>&emsp;be recommended to get at least 200 sheep.<html>", ASK, model));
+        /* TOTAL SHOULD BE BIGGER THAN OWNED (JUST LIKE TOESLAGRECHTEN)*/
+        questions.add(new Question("Number of Sheep", NUMB, ksession, "How many grown up sheep would you like to have in total?", 
+        		"<html>&emsp;Someone who works 7 days on the farm and wants to make money would <br>&emsp;be recommended to get at least 200 female sheep; ewes.<br>&emsp;Ewes get two lambs on average, but these are sold quickly after birth.<html>", ASK, model));
     		// if professional OR if hobby and Number of Sheep wanted > 10
     		questions.add(new Question("Is KVK registered", YESNO, ksession, "Are you registered at the Kamer van Koophandel?", 
     				"<html>&emsp;Every business needs to be registered at the KvK.<html>", DONTASK, model));
@@ -149,22 +150,22 @@ public class Model implements VariableDefinitions {
         questions.add(new Question("Has Land", YESNO, ksession, "Do you own any land (excluding land you lease)?", 
         		"<html>&emsp;Some people lease land. Here we are first only interested in owned land.<html>", ASK, model));
         	// If yes
-        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in acres)?", 
+        	questions.add(new Question("Land Size", NUMB, ksession, "How big is your land (in hectares)?", 
         			"<html>&emsp;If you don't know exactly, then answer an estimation.", DONTASK, model));
-        	questions.add(new Question("Toeslagrechten", NUMB, ksession, "<html>How many acres of land have <br>payment entitlements (\"toeslagrechten\")?<html>", 
-        			"<html>&emsp;Toeslagrechten cannot be bought anymore. <br>&emsp;However, some people still own land with toeslagrechten. <br>&emsp;The system will calculate how much you get for you payment entitlements <br>&emsp;per year, based on the estimate of 350 euros per acre.<html>", DONTASK, model));
+        	questions.add(new Question("Toeslagrechten", NUMB, ksession, "<html>How many hectares of land have <br>payment entitlements (\"toeslagrechten\")?<html>", 
+        			"<html>&emsp;Toeslagrechten cannot be bought anymore. <br>&emsp;However, some people still own land with toeslagrechten. <br>&emsp;The system will calculate how much you get for you payment entitlements <br>&emsp;per year, based on the estimate of 350 euros per hectare.<html>", DONTASK, model));
         questions.add(new Question("Has leased land", YESNO, ksession, "Are you leasing land?", 
         		"<html>&emsp;Leasing land is much cheaper than buying it.<html>", ASK, model));  
     		// If yes
-        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in acres)?", 
+        	questions.add(new Question("leasedLandSize", NUMB, ksession, "How big is the land you lease (in hectares)?", 
         			"<html>&emsp;Leasing land is much cheaper than buying it.<html>", DONTASK, model));
         
         /*Shed questions*/	
         questions.add(new Question("Has Shed", YESNO, ksession, "Do you have a shed?", 
         		"<html>&emsp;A shed is essential for sheep when they are birthing.", ASK, model));    
         	// If yes
-        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed (in meters squared)?", 
-        			"<html>&emsp;2.5 squared meters per sheep is recommended.<html>", DONTASK, model));
+        	questions.add(new Question("Shed Size", NUMB, ksession, "How big is your shed in length and width?", 
+        			"<html>&emsp;2.5 squared meters per sheep is recommended. <br>&emsp;It doesn't matter which side you enter as length or width.<html>", DONTASK, model));
         	questions.add(new Question("heightShed", NUMB, ksession, "How high is your shed (in meters)?", 
         			"<html>&emsp;The shed needs to be high enough for a tractor to go through (3m).<html>", DONTASK, model));
         	questions.add(new Question("pathWidthShed", NUMB, ksession, "How wide is the path in your shed (in meters)?", 
@@ -193,22 +194,25 @@ public class Model implements VariableDefinitions {
         			"<html>&emsp;Between 50 and 70 horsepower is enough.<html>", DONTASK, model));
         	// If more than 10 sheep
         	questions.add(new Question("hasMower", YESNO, ksession, "Do you have a mower?", 
-        			"<html>&emsp;One of the essential materials for working the grassland<html>", DONTASK, model));
+        			"<html>&emsp;A mower mows the grass that will be converted to bales of hay.<br>&emsp;It is one of the essential materials for working the grassland<html>", DONTASK, model));
         	questions.add(new Question("hasShaker", YESNO, ksession, "Do you have a shaker?", 
-        			"<html>&emsp;One of the essential materials for working the grassland<html>", DONTASK, model));
+        			"<html>&emsp;A shaker spreads the mown grass accross the land so it can dry.<br>&emsp;It is one of the essential materials for working the grassland<html>", DONTASK, model));
         	questions.add(new Question("hasRaker", YESNO, ksession, "Do you have a raker?", 
-        			"<html>&emsp;One of the essential materials for working the grassland<html>", DONTASK, model));
+        			"<html>&emsp;A raker is used for piling the grass for easy packaging. <br>&emsp;It is one of the essential materials for working the grassland<html>", DONTASK, model));
         	questions.add(new Question("hasHayPacker", YESNO, ksession, "Do you have a hay packer?", 
         			"<html>&emsp;Expensive, but nice to have. <br>&emsp;One can hire someone to do this for them.<html>", DONTASK, model));
         	questions.add(new Question("hasFertilizerSpreader", YESNO, ksession, "Do you have a fertilizer spreader?", 
-        			"<html>&emsp;One of the essential materials for working the grassland", DONTASK, model));
+        			"<html>&emsp;To spread fertilizer on the land for the grass to grow a fertilizer spreader is used. <br>&emsp;It is one of the essential materials for working the grassland", DONTASK, model));
+        	questions.add(new Question("hasMestSpreader", YESNO, ksession, "Do you have a mest spreader and/or mestwagon?", 
+        			"<html>&emsp;Very expensive and needs a tractor with 200 hp. <br>&emsp;One should hire someone to do this for them.<html>", DONTASK, model));
         	questions.add(new Question("hasMestGatherer", YESNO, ksession, "Do you have a mest gatherer?", 
         			"<html>&emsp;Expensive, but nice to have. <br>&emsp;One can hire someone to do this for them.<html>", DONTASK, model));
        
 		/* Care questions */
-    	questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", 
+        questions.add(new Question("wantsSlaughter", YESNO, ksession, "Do you want to sell sheep for slaughter?", 
+        			"<html>&emsp;Selling the sheep for slaughter is a main source of income.<html>", ASK, model));
+        questions.add(new Question("wantsLambs", YESNO, ksession, "Do you want the sheep to get lambs?", 
     			"<html>&emsp;Lambing is the main source of income for sheep herders.<html>", ASK, model));
-    	//factListMap.put("wantsLambs", 29);
     		questions.add(new MCQuestion("Self Birth", MC, ksession, "Do you want do birthing yourself or let someone else do it?", 
     				"<html>&emsp;Every sheep herder should learn this.<html>", DONTASK, model, "Self", "Someone else"));
         	/* How much time does it cost to shave yourself? */
@@ -256,7 +260,9 @@ public class Model implements VariableDefinitions {
 		materials.setHasMower(getSelectedQuestion("hasMower"));
 		materials.setHasMestGatherer(getSelectedQuestion("hasMestGatherer"));
 		materials.setHasHayPacker(getSelectedQuestion("hasHayPacker"));
+		materials.setHasMestSpreader(getSelectedQuestion("hasMestSpreader"));
 		materials.setHasFertilizerSpreader(getSelectedQuestion("hasFertilizerSpreader"));
+		care.setWantsSlaughter(getSelectedQuestion("wantsSlaughter"));
 		care.setWantsLambs(getSelectedQuestion("wantsLambs"));
 		care.setWantsSelfBirth(getSelectedQuestion("Self Birth"));
 		care.setWantsSelfShave(getSelectedQuestion("wantsSelfShave"));
@@ -264,7 +270,7 @@ public class Model implements VariableDefinitions {
 	}
     
     public void enterCosts() {
-    	this.costs = new Cost(sheep.totalNSheepWanted, sheep.ownsNSheep);
+    	costs = new Cost(sheep.totalNSheepWanted, sheep.ownsNSheep, care.getWantsSlaughter());
     	/* Materials */
     	costs.setTractorCost(materials.getNeedsNewTractor(), materials.getNeedsBigTractor());
     	costs.setGrassMaterialCost(materials.hasMower, materials.hasShaker, materials.hasRaker, materials.hasFertilizerSpreader);
@@ -275,13 +281,15 @@ public class Model implements VariableDefinitions {
     	costs.setShaveOtherCost(care.shaveOtherCost);
     	costs.setWoolEarnings(care.woolEarnings);
     	/* Sheep */
-    	//costs.setPhosphateRightsCost(sheep.costPhosphateRights);
+    	costs.setShedCost(shed.getGoalCurSizeDiff());
     	/* Calculate totals */
     	costs.setTotalCost();
     	costs.setTotalEarnings();
     	costs.setMoneyNeeded();
     	business.setMoneyNeeded(costs.getMoneyNeeded());
     	costs.setMoneyToSpend(business.getMoneyToSpend());
+    	setCost(costs); 
+    	ksession.insert(costs);
     }
     
     public void giveAdviceAndTable() {
@@ -405,7 +413,12 @@ public class Model implements VariableDefinitions {
     	ksession.insert(this);
     	ksession.fireAllRules();
     }
-    
+    public void setCost(Cost costs) {
+    	this.costs = costs;
+    }
+    public Cost getCost() {
+    	return costs;
+    }
 	public Land getLand() {
 		return land;
 	}

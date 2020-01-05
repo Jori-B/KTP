@@ -59,6 +59,7 @@ public class Question implements VariableDefinitions {
 		ksession.fireAllRules();
 	}
 	
+	
 	public int getAnswer() {
 		return answer;
 	}

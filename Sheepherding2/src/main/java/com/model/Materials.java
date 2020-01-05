@@ -12,6 +12,7 @@ public class Materials implements VariableDefinitions {
 	public int hasRaker;
 	public int hasHayPacker;
 	public int hasFertilizerSpreader;
+	public int hasMestSpreader;
 	public int hasMestGatherer;
 	public String advice = "<html>&emsp;";
 	
@@ -113,6 +114,15 @@ public class Materials implements VariableDefinitions {
 	public int getHasMestGatherer() {
 		return hasMestGatherer;
 	}
+	
+	public void setHasMestSpreader(Question hasMestSpreader) {
+		this.hasMestSpreader = hasMestSpreader.getAnswer();
+	}
+	
+	public int getHasMestSpreader() {
+		return hasMestSpreader;
+	}
+	
 
 	public void setHasMestGatherer(Question hasMestGatherer) {
 		this.hasMestGatherer = hasMestGatherer.getAnswer();
