@@ -71,13 +71,19 @@ public class CostTable implements VariableDefinitions {
 			shedDiff = 0;
 		}
 		
+		int totalNSheepWanted = model.getSheep().getTotalNSheepWanted();
+		int desiresNMoreSheep = model.getSheep().getDesiresNMoreSheep();
+		
+		int shaveCount = 0;
+		if(costs.shaveOtherCost != 0) {
+			shaveCount = totalNSheepWanted;
+		} 
 		
 		double landNeeded = model.getLand().getLandNeeded();
 		if(landNeeded < 0) {
 			landNeeded = 0;
 		}
-		int totalNSheepWanted = model.getSheep().getTotalNSheepWanted();
-		int desiresNMoreSheep = model.getSheep().getDesiresNMoreSheep();
+
 		
 		int slaughterSheep = 0;
 		if(model.getCare().getWantsSlaughter()) {
@@ -93,7 +99,7 @@ public class CostTable implements VariableDefinitions {
 						{"Raker",	 					getRaker+" raker",						"€"+twoDigits.format(costs.getRakerCost())},
 						{"Fertilizer spreader",			getFertilizerSpreader+" spreader",		"€"+twoDigits.format(costs.getFertilizerSpreaderCost())},
 						{"Land needed", 				twoDigits.format(landNeeded)+" hectares leased",	"€"+twoDigits.format(costs.getLandNeededCost())},
-						{"Shave other", 				totalNSheepWanted+" sheep",				"€"+twoDigits.format(shaveCost)},
+						{"Shave other", 				shaveCount+" sheep",					"€"+twoDigits.format(shaveCost)},
 						{"Shaving machine",				getShaver+" shaving machine",			"€"+twoDigits.format(costs.getShaverCost())},
 						{"Myas Treatment", 				(totalNSheepWanted*3)+" treatments",	"€"+twoDigits.format(costs.getMyasTreatmentCost())},
 						{"Worming",		 				totalNSheepWanted+" treatments",		"€"+twoDigits.format(costs.getWormCost())},

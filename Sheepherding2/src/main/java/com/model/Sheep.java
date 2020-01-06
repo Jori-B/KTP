@@ -7,7 +7,6 @@ public class Sheep implements VariableDefinitions {
 	public int ownsNSheep;
 	public int desiresNMoreSheep;
 	public int totalNSheepWanted; 
-//	public int costPhosphateRights;
 	public int sheepCost;
 	public int maxAmountOfSheep; 
 	public int nSheepMore;
@@ -23,16 +22,14 @@ public class Sheep implements VariableDefinitions {
 		this.sheepCost = desiresNMoreSheep * 100;
 	}
 	
-	/* Getters and setters */
 	public void calcNumberOfSheepMore(double totalLandSize) {
-		this.maxAmountOfSheep = (int)(totalLandSize / 2.85);
+		/* https://toverleven.cultu.be/hoeveel-dieren-m2-grasland 
+		 * 10 to 15 sheep (with lambs) per hectare. Therefore one needs 1/12.5 = 0.08 hectare per sheep */ 
+		this.maxAmountOfSheep = (int)(totalLandSize / 0.08);
 		this.nSheepMore = (maxAmountOfSheep - totalNSheepWanted); // I think this is correct, but haven't checked
 	}
 	
-//	public void calcPhosphateRights() { 
-//		this.costPhosphateRights = 90 * totalNSheepWanted; 
-//	} 
-
+	/* Getters and setters */
 	public int getHasSheep() {
 		return hasSheep;
 	}
@@ -88,15 +85,6 @@ public class Sheep implements VariableDefinitions {
 	public void setnSheepMore(int nSheepMore) {
 		this.nSheepMore = nSheepMore;
 	}
-
-//	public int getCostPhosphateRights() {
-//		return costPhosphateRights;
-//	}
-//
-//	public void setCostPhosphateRights(int costPhosphateRights) {
-//		this.costPhosphateRights = costPhosphateRights;
-//	}
-
 	
 	public String getAdvice() {
 		return advice;

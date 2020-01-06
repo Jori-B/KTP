@@ -201,7 +201,7 @@ public class Cost implements VariableDefinitions {
 		} else {
 			/* https://www.landbouwwinkel.nl/webshop/weidetechniek/paneelhekken/koppelhekken-schapen/schapen-koppelhek-1-37-m.html
 			 * per fence it is 50€. Since you build against a wall in your shed, and fences attach to each other 
-			 * you need roughly 1 fence per sheep. So roughly 50€ per sheep.
+			 * you need roughly 2 fence per sheep. But, half of your sheep go in the shed at a time. So roughly 50€ per sheep.
 			 */
 			this.lengthAdjFencesNeeded = 1.37 * totalNSheepWanted;
 			this.adjustableFenceCost = totalNSheepWanted * 50;
