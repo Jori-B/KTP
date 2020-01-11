@@ -41,6 +41,9 @@ import java.awt.Component;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+
 public class MainView extends JFrame implements VariableDefinitions {
 
 	/**
@@ -236,13 +239,16 @@ public class MainView extends JFrame implements VariableDefinitions {
 	}
 	
 	private void initComponents() {
+		Border loweredbevel, raisedbevel;
+		loweredbevel = BorderFactory.createLoweredBevelBorder();
+		raisedbevel = BorderFactory.createRaisedBevelBorder();
 		//SETTING UP FRAME
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
 		setTitle("Sheep Herder System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 974, 833);
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.activeCaption);
+		contentPane.setBackground(new Color(217, 217, 217));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		
 		setResizable(true);
@@ -251,22 +257,25 @@ public class MainView extends JFrame implements VariableDefinitions {
 		lblQuestion = new JLabel(model.getCurrentQuestion().getQuestion()); // THIS IS NOT THE BEST WAY TO DO IT BUT IT WORKS
 		lblQuestion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblQuestion.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblQuestion.setBackground(new Color(47, 79, 79));
+		lblQuestion.setBackground(new Color(203, 215, 191));
 		lblQuestion.setForeground(Color.BLACK);
 		lblQuestion.setFont(new Font("Verdana", Font.PLAIN, 20));		
 		
 		JButton btnLeft = new JButton("Yes");
 		setYesBtn(btnLeft);
 		btnLeft.setFont(new Font("Verdana", Font.PLAIN, 20));
+		btnLeft.setBorder(raisedbevel);
 		
 		JButton btnRight = new JButton("No");
 		setNoBtn(btnRight);
 		btnRight.setFont(new Font("Verdana", Font.PLAIN, 20));
+		btnRight.setBorder(raisedbevel);
 		
 		//BELOW THIS BELONGS TO THE RIGHTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
-		panel.setBackground(new Color(47, 79, 79));
+		panel.setBackground(new Color(149, 172, 191));
+		panel.setBorder(raisedbevel);
 		
 		JTextField textArea = new JTextField();
 		setTextArea(textArea);
@@ -276,12 +285,15 @@ public class MainView extends JFrame implements VariableDefinitions {
 		JButton btnEnterInput = new JButton("Enter");
 		setInputBtn(btnEnterInput);
 		btnEnterInput.setFont(new Font("Dialog", Font.PLAIN, 20));
+		btnEnterInput.setBorder(raisedbevel);
 		
 		JButton btnPrevious = new JButton("Previous");
 		setPrevBtn(btnPrevious);
+		btnPrevious.setBorder(raisedbevel);
 		
 		JButton btnNext = new JButton("Next");
 		setNextBtn(btnNext);
+		btnNext.setBorder(raisedbevel);
 		
 		/* Tried to import an image here. It did not work to get the size small.
 		 * This should be a way to enter a scaled down image, however I can't get it to work */
@@ -309,8 +321,9 @@ public class MainView extends JFrame implements VariableDefinitions {
 		
 		lblInformationText.setForeground(Color.BLACK);
 		lblInformationText.setOpaque(true);
-		lblInformationText.setBackground(new Color(119, 136, 153));
+		lblInformationText.setBackground(new Color(242, 242, 242));
 		lblInformationText.setVisible(true);
+		lblInformationText.setBorder(loweredbevel);
 		setLblInformationText(lblInformationText);
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
@@ -392,14 +405,17 @@ public class MainView extends JFrame implements VariableDefinitions {
 		gl_contentPane.setAutoCreateGaps(true);
 		
 		JLabel lblAnsweredQuestions = new JLabel("Questions:");
-		lblAnsweredQuestions.setForeground(new Color(255, 255, 255));
+		lblAnsweredQuestions.setBackground(new Color(0, 0, 0));
+		lblAnsweredQuestions.setForeground(new Color(0, 0, 0));
 		lblAnsweredQuestions.setFont(new Font("Verdana", Font.PLAIN, 15));
+				
 
 		DefaultListModel<String> answeredQs = new DefaultListModel<String>();
 		setAnsweredQs(answeredQs);
 		JList<String> list_1 = new JList<String>(answeredQs);
 		list_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		list_1.setBackground(new Color(112, 128, 144));
+		list_1.setBackground(new Color(242, 242, 242));
+		list_1.setBorder(loweredbevel);
 		setList(list_1);
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
