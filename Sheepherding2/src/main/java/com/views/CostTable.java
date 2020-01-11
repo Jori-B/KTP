@@ -1,7 +1,9 @@
 package com.views;
 
+import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -9,6 +11,7 @@ import java.awt.SystemColor;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 import com.model.Cost;
 import com.model.Materials;
@@ -18,10 +21,11 @@ import com.model.VariableDefinitions;
 import com.views.FrameLocationSetter;
 
 import javax.swing.JScrollPane;
+import java.awt.Toolkit;
 
 public class CostTable implements VariableDefinitions {
 
-	private JFrame frame;
+	private JFrame frmCosts;
 	private JTable table;
 
 	/**
@@ -44,17 +48,24 @@ public class CostTable implements VariableDefinitions {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Cost costs, Model model) {
-		frame = new JFrame();
-		frame.setVisible(true);
-		frame.getContentPane().setBackground(SystemColor.activeCaption);
-		frame.getContentPane().setLayout(null);
+		frmCosts = new JFrame();
+		frmCosts.setIconImage(Toolkit.getDefaultToolkit().getImage(CostTable.class.getResource("/com/resources/icon_sheep.png")));
+		frmCosts.setTitle("Costs");
+		frmCosts.setVisible(true);
+		frmCosts.getContentPane().setBackground(new Color(149, 172, 191));
+		frmCosts.getContentPane().setLayout(null);
+		
+		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 		
 		JLabel lblCosts = new JLabel("Cost table");
-		lblCosts.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCosts.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCosts.setVerticalAlignment(SwingConstants.TOP);
 		lblCosts.setFont(new Font("Arial Black", Font.BOLD, 16));
-		lblCosts.setBounds(10, 13, 965, 30);
-		frame.getContentPane().add(lblCosts);
+		lblCosts.setBounds(10, 13, 114, 30);
+		lblCosts.setBorder(raisedbevel);
+		lblCosts.setOpaque(true);
+		lblCosts.setBackground(new Color(217, 217, 217));
+		frmCosts.getContentPane().add(lblCosts);
 		Materials materials = model.getMaterials();
 		int getTractor = 0;
 		if(materials.getNeedsNewTractor()) {
@@ -134,16 +145,16 @@ public class CostTable implements VariableDefinitions {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 //		table.setBounds(12, 24, 816, 293);
 		
-		frame.getContentPane().add(table);
+		frmCosts.getContentPane().add(table);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(10, 56, 772, 510);
-		frame.getContentPane().add(scrollPane);
+		frmCosts.getContentPane().add(scrollPane);
 //		frame.getContentPane().add(table.getTableHeader(), BorderLayout.PAGE_START);
-		frame.setBounds(100, 100, 814, 626);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCosts.setBounds(100, 100, 814, 626);
+		frmCosts.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		FrameLocationSetter.setLocationToRight(frame);
-		FrameLocationSetter.setLocationToTop(frame);
+		FrameLocationSetter.setLocationToRight(frmCosts);
+		FrameLocationSetter.setLocationToTop(frmCosts);
 	}
 }

@@ -43,6 +43,7 @@ import javax.swing.SwingConstants;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 
 public class MainView extends JFrame implements VariableDefinitions {
 
@@ -265,14 +266,14 @@ public class MainView extends JFrame implements VariableDefinitions {
 		JButton btnLeft = new JButton("Yes");
 		setYesBtn(btnLeft);
 		btnLeft.setFont(new Font("Verdana", Font.PLAIN, 20));
-		btnLeft.setBorder(raisedbevel);
+		btnLeft.setBorder(raisedbevel);		
 		
 		JButton btnRight = new JButton("No");
 		setNoBtn(btnRight);
 		btnRight.setFont(new Font("Verdana", Font.PLAIN, 20));
 		btnRight.setBorder(raisedbevel);
 		
-		//BELOW THIS BELONGS TO THE RIGHTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
+		//BELOW THIS BELONGS TO THE LEFTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
 		panel.setBackground(new Color(149, 172, 191));
@@ -324,7 +325,8 @@ public class MainView extends JFrame implements VariableDefinitions {
 		lblInformationText.setOpaque(true);
 		lblInformationText.setBackground(new Color(242, 242, 242));
 		lblInformationText.setVisible(true);
-		lblInformationText.setBorder(loweredbevel);
+		Border margin = new EmptyBorder(10,10,10,10);
+		lblInformationText.setBorder(new CompoundBorder(loweredbevel, margin));
 		setLblInformationText(lblInformationText);
 //		lblSheepimg.setBounds(20,20,330, 204);
 //		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
@@ -415,7 +417,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		JList<String> list_1 = new JList<String>(answeredQs);
 		list_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		list_1.setBackground(new Color(242, 242, 242));
-		list_1.setBorder(loweredbevel);
+		list_1.setBorder(new CompoundBorder(loweredbevel, margin));
 		setList(list_1);
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
