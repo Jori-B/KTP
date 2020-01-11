@@ -45,15 +45,15 @@ rule "Not enough money"
 	when
 		$business : Business(moneyToSpend < moneyNeeded);
 	then
-		$business.setAdvice("You currently do not have enough funds to start the sheepfarm that you would prefer. Attend the " + 
-		"table below to see what expenses you currently have, try to economize on some of the expendetures or increment your starting capital.");
+		$business.setAdvice("You currently do not have enough funds to start the sheep farm that you would prefer. Attend the " + 
+		"table below to see what expenses you currently have, try to economize on some of the expenditures or increment your starting capital.");
 end
 
 rule "Enough money"
 	when
 		$business : Business(moneyToSpend >= moneyNeeded);
 	then
-		$business.setAdvice("You have a large enough starting capital to cover all the costs of starting your prefered sheepfarm." + 
+		$business.setAdvice("You have a large enough starting capital to cover all the costs of starting your preferred sheep farm." + 
 		"See the table below for information about this.");
 end
 
@@ -64,7 +64,7 @@ rule "Does't have enough time"
 	then
 		$business.setAdvice("You declared that you would like to spend +timeWillingToSpend+ hours per week on your sheep. " +
 		"However this might not be enough time to tend to all " + $totalNSheepWanted + " sheep.");
-		$business.setAdvice("Therefore, delibirate whether you would be okay with having less sheep and/or spending more time.");
+		$business.setAdvice("Therefore, deliberate whether you would be okay with having less sheep and/or spending more time.");
 end
 
 // In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
