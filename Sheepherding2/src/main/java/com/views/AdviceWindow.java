@@ -10,10 +10,13 @@ import javax.swing.border.EmptyBorder;
 import com.model.Cost;
 import com.model.Model;
 
+import com.views.FrameLocationSetter;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
 
@@ -42,7 +45,9 @@ public class AdviceWindow extends JFrame {
 		contentPane.add(layeredPane);
 		
 		// Centre the window
-		this.setLocationRelativeTo(null);
+//		this.setLocationRelativeTo(null);
+		FrameLocationSetter.setLocationToLeft(this);
+		FrameLocationSetter.setLocationToTop(this);
 		
 		createCostTable(costs, model);
 		
@@ -151,6 +156,30 @@ public class AdviceWindow extends JFrame {
 		layeredPane.add(lblCareAdvice);
 		
 	}
+	
+//    static Rectangle getMaxWindowBounds(JFrame frame) {
+//        GraphicsConfiguration config = frame.getGraphicsConfiguration();
+//        Rectangle bounds = config.getBounds();
+//        Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(config);
+//        bounds.x += insets.left;
+//        bounds.y += insets.top;
+//        bounds.width -= insets.left + insets.right;
+//        bounds.height -= insets.top + insets.bottom;
+//        return bounds;
+//    }
+//    
+//    static void setLocationToTop(JFrame frame) {
+//        frame.setLocation(frame.getX(), getMaxWindowBounds(frame).y);
+//    }
+//    
+//    static void setLocationToRight(JFrame frame) {
+//        Rectangle bounds = getMaxWindowBounds(frame);
+//        frame.setLocation(bounds.x + bounds.width - frame.getWidth(), frame.getY());
+//    }
+//	
+//    static void setLocationToLeft(JFrame frame) {
+//        frame.setLocation(getMaxWindowBounds(frame).x, frame.getY());
+//    }
 	
 	private void createCostTable(Cost costs, Model model) {
 		EventQueue.invokeLater(new Runnable() {
