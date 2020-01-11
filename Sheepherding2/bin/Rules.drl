@@ -170,7 +170,7 @@ rule "Calc goal current shed size difference"
 		Question(Question.Name == "Number of Sheep", $nSheep : answer > 0);
 		$nmShedSize: Question(Question.Name =="Shed Size", answer > 0, $shed : model.getShed());
 	then 
-		insert (new Question("goalSize", $shed.calcGoalSize($nSheep)));
+		insert (new Question("goalSize", $shed.calcGoalSize((int)$nSheep)));
 		//help(drools,"calculating shed goal size");
 		
 end

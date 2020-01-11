@@ -31,6 +31,15 @@ public class CostTable implements VariableDefinitions {
 		initialize(costs, model);
 	}
 
+	private int booleanToInt(boolean answer) {
+		if(answer == true) {
+			return 1;
+		} else {
+			return 0;
+		}
+		
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -51,16 +60,16 @@ public class CostTable implements VariableDefinitions {
 		if(materials.getNeedsNewTractor()) {
 			getTractor = 1;
 		}
-		int getMower = 1 - materials.getHasMower();
-		int getShaker = 1 - materials.getHasShaker();
-		int getRaker = 1 - materials.getHasRaker();
-		int getFertilizerSpreader = 1 - materials.getHasFertilizerSpreader();
-		int getShaver = 1 - materials.getHasShaver();
+		int getMower = 1 - booleanToInt(materials.getHasMower());
+		int getShaker = 1 - booleanToInt(materials.getHasShaker());
+		int getRaker = 1 - booleanToInt(materials.getHasRaker());
+		int getFertilizerSpreader = 1 - booleanToInt(materials.getHasFertilizerSpreader());
+		int getShaver = 1 - booleanToInt(materials.getHasShaver());
 		double shaveCost = 0;
-		if(model.getCare().getWantsSelfShave() == NO) {
+		if(!model.getCare().getWantsSelfShave()) {
 			shaveCost = costs.getShaveOtherCost();
 		}
-		int getFertilizerPlate = 1 - model.getShed().getHasFertilizerPlate();
+		int getFertilizerPlate = 1 - booleanToInt(model.getShed().getHasFertilizerPlate());
 
 		double shedDiff = model.getShed().getGoalCurSizeDiff();
 		if(shedDiff <= 0) {

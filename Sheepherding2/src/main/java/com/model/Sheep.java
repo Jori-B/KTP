@@ -2,15 +2,14 @@ package com.model;
 
 import com.model.Question;
 
-public class Sheep implements VariableDefinitions {
-	public int hasSheep;
+public class Sheep extends Category implements VariableDefinitions {
+	public boolean hasSheep;
 	public int ownsNSheep;
 	public int desiresNMoreSheep;
 	public int totalNSheepWanted; 
-	public int sheepCost;
+	public double sheepCost;
 	public int maxAmountOfSheep; 
 	public int nSheepMore;
-	public String advice = "<html>&emsp;";
 	
 	public Sheep() {
 		
@@ -30,12 +29,12 @@ public class Sheep implements VariableDefinitions {
 	}
 	
 	/* Getters and setters */
-	public int getHasSheep() {
+	public boolean getHasSheep() {
 		return hasSheep;
 	}
 
 	public void setHasSheep(Question hasSheep) {
-		this.hasSheep = hasSheep.getAnswer();
+		this.hasSheep = doubleToBoolean(hasSheep.getAnswer());
 	}
 
 	public int getOwnsNSheep() {
@@ -43,7 +42,7 @@ public class Sheep implements VariableDefinitions {
 	}
 
 	public void setOwnsNSheep(Question ownsNSheep) {
-		this.ownsNSheep = ownsNSheep.getAnswer();
+		this.ownsNSheep = (int) ownsNSheep.getAnswer();
 	}
 
 	public int getDesiresNMoreSheep() {
@@ -51,7 +50,7 @@ public class Sheep implements VariableDefinitions {
 	}
 
 	public void setDesiresNMoreSheep(Question desiresNMoreSheep) {
-		this.desiresNMoreSheep = desiresNMoreSheep.getAnswer();
+		this.desiresNMoreSheep = (int) desiresNMoreSheep.getAnswer();
 	}
 
 	public int getTotalNSheepWanted() {
@@ -59,10 +58,10 @@ public class Sheep implements VariableDefinitions {
 	}
 
 	public void setTotalNSheepWanted(Question totalNSheepWanted) {
-		this.totalNSheepWanted = totalNSheepWanted.getAnswer();
+		this.totalNSheepWanted = (int) totalNSheepWanted.getAnswer();
 	}
 
-	public int getSheepCost() {
+	public double getSheepCost() {
 		return sheepCost;
 	}
 
@@ -75,7 +74,7 @@ public class Sheep implements VariableDefinitions {
 	}
 
 	public void setMaxAmountOfSheep(Question maxAmountOfSheep) {
-		this.maxAmountOfSheep = maxAmountOfSheep.getAnswer();
+		this.maxAmountOfSheep = (int) maxAmountOfSheep.getAnswer();
 	}
 
 	public int getnSheepMore() {
@@ -85,19 +84,5 @@ public class Sheep implements VariableDefinitions {
 	public void setnSheepMore(int nSheepMore) {
 		this.nSheepMore = nSheepMore;
 	}
-	
-	public String getAdvice() {
-		return advice;
-	}
-
-	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>&emsp;")) {
-			this.advice = this.advice + advice;
-		} else {
-			this.advice = this.advice + "<br>&emsp;" + advice;
-		}
-	}
-	
-	
 	
 }

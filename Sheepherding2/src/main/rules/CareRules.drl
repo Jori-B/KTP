@@ -20,7 +20,7 @@ dialect "java"
 
 rule "Wants self birth"
 	when 
-		$care : Care(wantsSelfBirth == SELF);
+		$care : Care(wantsSelfBirth == SELF); // We should make this true and false
 		Cost($sheepSoldEarnings : sheepSoldEarnings);
 	then
 		$care.setAdvice("Birthing yourself is essential as a herder, otherwise the vet needs to come everytime. You can expect to gain " 
@@ -47,7 +47,7 @@ end
 
 rule "Pro doesn't want lambs"
 	when
-		$care : Care(wantsLambs == NO);
+		$care : Care(wantsLambs == false);
 		Business(hobSemiPro == PRO);
 		Sheep($nSheep : totalNSheepWanted);
 		Cost($sheepSoldEarnings : sheepSoldEarnings);
@@ -59,7 +59,7 @@ end
 
 rule "Shave self"
 	when 
-		$care : Care(wantsSelfShave == YES, $woolEarnings : woolEarnings, $shaveOtherCost : shaveOtherCost);
+		$care : Care(wantsSelfShave, $woolEarnings : woolEarnings, $shaveOtherCost : shaveOtherCost);
 		Sheep($totalNSheepWanted : totalNSheepWanted); 
 	then
 		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50€. In your case you want " + 
@@ -70,7 +70,7 @@ end
 
 rule "Shave other"
 	when 
-		$care : Care(wantsSelfShave == NO, $shaveOtherCost : shaveOtherCost);
+		$care : Care(wantsSelfShave == false, $shaveOtherCost : shaveOtherCost);
 		Sheep($totalNSheepWanted : totalNSheepWanted); 
 	then
 		$care.setAdvice("Shaving is not profitable. However, shaving your sheep needs to happen roughly one time per year." +
@@ -80,7 +80,7 @@ end
 
 rule "Hobby, shave other"
 	when 
-		$care : Care(wantsSelfShave == NO);
+		$care : Care(wantsSelfShave == false);
 		Business(hobSemiPro == HOBBY);
 	then
 		$care.setAdvice("As a hobby herder you could choose a race of sheep that doesn't need shaving, like the Soay.");

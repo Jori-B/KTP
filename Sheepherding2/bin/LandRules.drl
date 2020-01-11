@@ -39,7 +39,7 @@ end
 
 rule "Not enough land, no lease"
 	when
-		$land : Land(landNeeded > 0, hasLeasedLand == NO);
+		$land : Land(landNeeded > 0, hasLeasedLand == false);
 	then
 		$land.setAdvice("Try to increment your available land by checking for leasing options in your area."); 
 end     
@@ -47,8 +47,8 @@ end
 rule "Hobby, land too small, no shed"
 	when
 		$land : Land(landNeeded > 0);
-		Shed(hasShed == NO);
-		Shed(isAllowedToBuild == NO || roomForShed < goalCurSizeDiff);
+		Shed(hasShed == false);
+		Shed(isAllowedToBuild == false || roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == HOBBY);
 	then 
 		$land.setAdvice("You have little land and no shed. You could go for the dutch land goat, which needs little land and doesn't need a shed.");
@@ -56,7 +56,7 @@ end
 
 rule "Hobby, has (too) small land"
 	when
-		$land : Land(hasLand == YES, landNeeded > 0);
+		$land : Land(hasLand, landNeeded > 0);
 		Business(hobSemiPro == HOBBY);
 	then
 		$land.setAdvice("Since you don't have enough land, instead of buying or leasing more, you could choose sheep that need smaller land " +

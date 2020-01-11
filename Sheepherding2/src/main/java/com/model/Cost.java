@@ -45,7 +45,7 @@ public class Cost implements VariableDefinitions {
 	public int totalCost;
 	public int totalEarnings;
 	public int moneyNeeded;
-	public int moneyToSpend;
+	public double moneyToSpend;
 	
 	public Cost(int totalNSheepWanted, int ownsNSheep, boolean wantsSlaugter) {
     	setMyasTreatmentCost(totalNSheepWanted, true);
@@ -68,29 +68,29 @@ public class Cost implements VariableDefinitions {
 		} else { this.tractorCost = 0; System.out.println("Needs no tractor ");}
 	}
 	
-	public void setGrassMaterialCost(int hasMower, int hasShaker, int hasRaker, int hasFertilizerSpreader) {
+	public void setGrassMaterialCost(boolean hasMower, boolean hasShaker, boolean hasRaker, boolean hasFertilizerSpreader) {
 		/*
 		 * All of these materials together cost roughly 20000 secondhand. So one of them
 		 * is 20000/3
 		 */
 		int costOne = 20000 / 3;
-		if(hasMower == NO) {
+		if(!hasMower) {
 			this.mowerCost = costOne;
 		}
-		if(hasShaker == NO) {
+		if(!hasShaker) {
 			this.shakerCost = costOne;
 		}
-		if(hasRaker == NO) {
+		if(!hasRaker) {
 			this.rakerCost = costOne;
 		}
 		/* spreader costs roughly 1000€*/
-		if(hasFertilizerSpreader == NO) {
+		if(!hasFertilizerSpreader) {
 			this.fertilizerSpreaderCost = 1000;
 		}
 	}
 	
-	public void setShaverCost(int hasShaver) {
-		if(hasShaver == YES) {
+	public void setShaverCost(boolean hasShaver) {
+		if(hasShaver) {
 			this.shaverCost = 0;
 		} else { this.shaverCost = 400; }
 	}
@@ -151,9 +151,9 @@ public class Cost implements VariableDefinitions {
 		this.sheepBoughtCost = (totalNSheepWanted - ownsNSheep) * 95;
 	}
 	
-	public void setEatingFenceCost(double lengthShed, boolean shedTooSmall, double curSize, double goalSizeShed, int hasEatingFences) {
+	public void setEatingFenceCost(double lengthShed, boolean shedTooSmall, double curSize, double goalSizeShed, boolean hasEatingFences) {
 		if(!shedTooSmall) {
-			if(hasEatingFences == YES) {
+			if(hasEatingFences) {
 				this.lengthEatFencesNeeded = 0;
 				this.eatingFenceCost = 0;
 			/* https://www.venostal.nl/product/zelfsluitend-voerhek-1-mtr-h-x-402-l/
@@ -172,7 +172,7 @@ public class Cost implements VariableDefinitions {
 			 * Too small shed has fences, so calculate cost for new goal shed - current
 			 * length
 			 */
-			if(hasEatingFences == YES) {
+			if(hasEatingFences) {
 				/* If you use the length of the fences for the user it can sometimes yield negative answers
 				 * So we divide the current size by 11 like the goal size */
 				double lengthDiff = lengthGoal - (curSize / 11);
@@ -194,8 +194,8 @@ public class Cost implements VariableDefinitions {
 		return lengthEatFencesNeeded;
 	}
 	
-	public void setAdjFenceCost(int totalNSheepWanted, int hasAdjustableFences) {
-		if(hasAdjustableFences == YES) {
+	public void setAdjFenceCost(int totalNSheepWanted, boolean hasAdjustableFences) {
+		if(hasAdjustableFences) {
 			this.lengthAdjFencesNeeded = 0;
 			this.adjustableFenceCost = 0;
 		} else {
@@ -241,11 +241,11 @@ public class Cost implements VariableDefinitions {
 		return moneyNeeded;
 	}
 	
-	public void setMoneyToSpend(int moneyToSpend) {
+	public void setMoneyToSpend(double moneyToSpend) {
 		this.moneyToSpend = moneyToSpend;
 	}
 
-	public int getMoneyToSpend() {
+	public double getMoneyToSpend() {
 		return moneyToSpend;
 	}
 	
@@ -292,14 +292,6 @@ public class Cost implements VariableDefinitions {
 	public void setShaveOtherCost(double shaveOtherCost) {
 		this.shaveOtherCost = shaveOtherCost;
 	}
-
-//	public int getBirthOtherCost() {
-//		return birthOtherCost;
-//	}
-
-//	public void setBirthOtherCost(int birthOtherCost) {
-//		this.birthOtherCost = birthOtherCost;
-//	}
 
 	public double getWoolEarnings() {
 		return woolEarnings;
@@ -383,8 +375,8 @@ public class Cost implements VariableDefinitions {
 		return fertilizerPlateCost;
 	}
 	
-	public void setFertilizerPlateCost(int hasFertilizerPlate) {
-		if(hasFertilizerPlate == YES) {
+	public void setFertilizerPlateCost(boolean hasFertilizerPlate) {
+		if(hasFertilizerPlate) {
 			this.fertilizerPlateCost = 0;
 		} else {
 			this.fertilizerPlateCost = 20000;

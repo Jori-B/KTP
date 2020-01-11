@@ -26,7 +26,7 @@ end
 
 rule "Not KvK registered"
 	when
-		$business : Business(isKvKRegistered == NO); 
+		$business : Business(isKvKRegistered == false); 
 		Sheep(totalNSheepWanted > 10);
 	then
 		$business.setAdvice("To herd sheep more than ten sheep you need to be registered at the KVK. For more information about " +
@@ -35,7 +35,7 @@ end
 
 rule "Not UBN registered"
 	when
-		$business : Business(isUBNRegistered == NO); 
+		$business : Business(isUBNRegistered == false); 
 	then
 		$business.setAdvice("You do not have a unique business number (UBN) yet, which you do need if you want to herd sheep. " +
 		"Namely, every sheep needs to be registered to your UBN. You can find more information about getting an UBN <here>.");
@@ -71,7 +71,7 @@ end
 rule "All good"
 	when
 		$business : Business();
-		tractor : Materials(hasTractor == YES, horsePowerTractor >= 50, hasRaker == YES, hasShaker == YES, hasMower == YES);
+		tractor : Materials(hasTractor, horsePowerTractor >= 50, hasRaker, hasShaker, hasMower);
 		sheep : Sheep(totalNSheepWanted > 200);
 		Land(landIsBigEnough);
 		not Shed(shedTooSmall);

@@ -2,20 +2,19 @@ package com.model;
 
 import com.model.Question;
 
-public class Materials implements VariableDefinitions {
-	public int hasTractor;
+public class Materials extends Category implements VariableDefinitions {
+	public boolean hasTractor;
 	public int horsePowerTractor;
 	public boolean needsBigTractor;
 	public boolean needsNewTractor;
-	public int hasMower;
-	public int hasShaker;
-	public int hasRaker;
-	public int hasHayPacker;
-	public int hasFertilizerSpreader;
-	public int hasMestSpreader;
-	public int hasMestGatherer;
-	public int hasShaver;
-	public String advice = "<html>&emsp;";
+	public boolean hasMower;
+	public boolean hasShaker;
+	public boolean hasRaker;
+	public boolean hasHayPacker;
+	public boolean hasFertilizerSpreader;
+	public boolean hasMestSpreader;
+	public boolean hasMestGatherer;
+	public boolean hasShaver;
 	
 	public Materials() {
 		
@@ -31,7 +30,7 @@ public class Materials implements VariableDefinitions {
 	}
 	
 	public void setNeedsNewTractor(int totalNSheepWanted) {
-		if (hasTractor == YES) {
+		if (hasTractor) {
 			if (needsBigTractor && horsePowerTractor < 50) {
 				System.out.println("Needs a tractor less than 50 hp ");
 				this.needsNewTractor = true;
@@ -56,12 +55,12 @@ public class Materials implements VariableDefinitions {
 		return needsBigTractor;
 	}
 	
-	public int getHasTractor() {
+	public boolean getHasTractor() {
 		return hasTractor;
 	}
 
 	public void setHasTractor(Question hasTractor) {
-		this.hasTractor = hasTractor.getAnswer();
+		this.hasTractor = doubleToBoolean(hasTractor.getAnswer());
 	}
 
 	public int getHorsePowerTractor() {
@@ -69,85 +68,71 @@ public class Materials implements VariableDefinitions {
 	}
 
 	public void setHorsePowerTractor(Question horsePowerTractor) {
-		this.horsePowerTractor = horsePowerTractor.getAnswer();
+		this.horsePowerTractor = (int) horsePowerTractor.getAnswer();
 	}
 
-	public int getHasMower() {
+	public boolean getHasMower() {
 		return hasMower;
 	}
 
 	public void setHasMower(Question hasMower) {
-		this.hasMower = hasMower.getAnswer();
+		this.hasMower = doubleToBoolean(hasMower.getAnswer());
 	}
 
-	public int getHasShaker() {
+	public boolean getHasShaker() {
 		return hasShaker;
 	}
 
 	public void setHasShaker(Question hasShaker) {
-		this.hasShaker = hasShaker.getAnswer();
+		this.hasShaker = doubleToBoolean(hasShaker.getAnswer());
 	}
 
-	public int getHasRaker() {
+	public boolean getHasRaker() {
 		return hasRaker;
 	}
 
 	public void setHasRaker(Question hasRaker) {
-		this.hasRaker = hasRaker.getAnswer();
+		this.hasRaker = doubleToBoolean(hasRaker.getAnswer());
 	}
 
-	public int getHasHayPacker() {
+	public boolean getHasHayPacker() {
 		return hasHayPacker;
 	}
 
 	public void setHasHayPacker(Question hasHayPacker) {
-		this.hasHayPacker = hasHayPacker.getAnswer();
+		this.hasHayPacker = doubleToBoolean(hasHayPacker.getAnswer());
 	}
 
-	public int getHasFertilizerSpreader() {
+	public boolean getHasFertilizerSpreader() {
 		return hasFertilizerSpreader;
 	}
 
 	public void setHasFertilizerSpreader(Question hasFertilizerSpreader) {
-		this.hasFertilizerSpreader = hasFertilizerSpreader.getAnswer();
+		this.hasFertilizerSpreader = doubleToBoolean(hasFertilizerSpreader.getAnswer());
 	}
 
-	public int getHasMestGatherer() {
+	public boolean getHasMestGatherer() {
 		return hasMestGatherer;
 	}
 	
 	public void setHasMestSpreader(Question hasMestSpreader) {
-		this.hasMestSpreader = hasMestSpreader.getAnswer();
+		this.hasMestSpreader = doubleToBoolean(hasMestSpreader.getAnswer());
 	}
 	
-	public int getHasMestSpreader() {
+	public boolean getHasMestSpreader() {
 		return hasMestSpreader;
 	}
 	
 	public void setHasShaver(Question hasShaver) {
-		this.hasShaver = hasShaver.getAnswer();
+		this.hasShaver = doubleToBoolean(hasShaver.getAnswer());
 	}
 	
-	public int getHasShaver() {
+	public boolean getHasShaver() {
 		return hasShaver;
 	}
 
 	public void setHasMestGatherer(Question hasMestGatherer) {
-		this.hasMestGatherer = hasMestGatherer.getAnswer();
+		this.hasMestGatherer = doubleToBoolean(hasMestGatherer.getAnswer());
 	}
-
-	public String getAdvice() {
-		return advice;
-	}
-
-	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>&emsp;")) {
-			this.advice = this.advice + advice;
-		} else {
-			this.advice = this.advice + "<br>&emsp;" + advice;
-		}
-	}
-	
-	
 	
 }

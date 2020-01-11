@@ -2,28 +2,26 @@ package com.model;
 
 import com.model.Question;
 
-public class Shed implements VariableDefinitions {
-	public int hasShed;
+public class Shed extends Category implements VariableDefinitions {
+	public boolean hasShed;
 	public double curShedSize; 
 	public double roomForShed; 
-	public int isAllowedToBuild;
+	public boolean isAllowedToBuild;
 	public double shedHeight;
-	public int isTallerThan3;
+	public boolean isTallerThan3;
 	public double pathWidth;
-	public int isPathWiderThan3;
+	public boolean isPathWiderThan3;
 	public double widthShed;
 	public double lengthShed;
-	public int hasCementFloor;
-	public int hasFertilizerPlate;
-	public int hasAdjustableFences;
-	public int hasEatingFences;
-	public int hasElectricity;
-	public int hasWater;
+	public boolean hasCementFloor;
+	public boolean hasFertilizerPlate;
+	public boolean hasAdjustableFences;
+	public boolean hasEatingFences;
+	public boolean hasElectricity;
+	public boolean hasWater;
 	public double goalSize; 
 	public double goalCurSizeDiff;
 	public boolean shedTooSmall;
-	public int problem;
-	public String advice = "<html>&emsp;";
 	
 	public Shed() {
 		
@@ -75,12 +73,12 @@ public class Shed implements VariableDefinitions {
 	}
 	
 	/* Getters and setters */
-	public int getHasShed() {
+	public boolean getHasShed() {
 		return hasShed;
 	}
 
 	public void setHasShed(Question hasShed) {
-		this.hasShed = hasShed.getAnswer();
+		this.hasShed = doubleToBoolean(hasShed.getAnswer());
 	}
 
 	public double getCurShedSize() {
@@ -100,30 +98,30 @@ public class Shed implements VariableDefinitions {
 		this.roomForShed = (double)roomForShed.getAnswer();
 	}
 
-	public int getIsAllowedToBuild() {
+	public boolean getIsAllowedToBuild() {
 		return isAllowedToBuild;
 	}
 
 	public void setIsAllowedToBuild(Question isAllowedToBuild) {
-		this.isAllowedToBuild = isAllowedToBuild.getAnswer();
+		this.isAllowedToBuild = doubleToBoolean(isAllowedToBuild.getAnswer());
 	}
 
-	public int getIsTallerThan3() {
+	public boolean getIsTallerThan3() {
 		return isTallerThan3;
 	}
 
 	public void setIsTallerThan3(Question height) {
 		this.shedHeight = height.getAnswer();
 		if(height.getAnswer() >= 3) {
-			this.isTallerThan3 = YES;
+			this.isTallerThan3 = true;
 			System.out.println("this.tall = YES;");
 		} else {
-			this.isTallerThan3 = NO;
+			this.isTallerThan3 = false;
 			System.out.println("this.tall = NO;");
 		}
 	}
 
-	public int getisPathWiderThan3() {
+	public boolean getisPathWiderThan3() {
 		return isPathWiderThan3;
 	}
 
@@ -131,9 +129,9 @@ public class Shed implements VariableDefinitions {
 		this.pathWidth = pathWidth.getAnswer();
 		if(pathWidth.getAnswer() >= 3) {
 			System.out.println("this.isPathWiderThan3 = YES;");
-			this.isPathWiderThan3 = YES;
+			this.isPathWiderThan3 = true;
 		} else {
-			this.isPathWiderThan3 = NO;
+			this.isPathWiderThan3 = false;
 			System.out.println("this.isPathWiderThan3 = NO;");
 		}
 		
@@ -163,51 +161,51 @@ public class Shed implements VariableDefinitions {
 		this.lengthShed = lengthShed;
 	}
 
-	public int getHasFertilizerPlate() {
+	public boolean getHasFertilizerPlate() {
 		return hasFertilizerPlate;
 	}
 
 	public void setHasFertilizerPlate(Question hasFertilizerPlate) {
-		this.hasFertilizerPlate = hasFertilizerPlate.getAnswer();
+		this.hasFertilizerPlate = doubleToBoolean(hasFertilizerPlate.getAnswer());
 	}
 	
-	public int getHasCementFloor() {
+	public boolean getHasCementFloor() {
 		return hasCementFloor;
 	}
 
 	public void setHasCementFloor(Question hasCementFloor) {
-		this.hasCementFloor = hasCementFloor.getAnswer();
+		this.hasCementFloor = doubleToBoolean(hasCementFloor.getAnswer());
 	}
 
-	public int getHasAdjustableFences() {
+	public boolean getHasAdjustableFences() {
 		return hasAdjustableFences;
 	}
 
 	public void setHasAdjustableFences(Question hasAdjustableFences) {
-		this.hasAdjustableFences = hasAdjustableFences.getAnswer();
+		this.hasAdjustableFences = doubleToBoolean(hasAdjustableFences.getAnswer());
 	}
 	
-	public int getHasEatingFences() {
+	public boolean getHasEatingFences() {
 		return hasEatingFences;
 	}
 	
 	public void setHasEatingFences(Question hasEatingFences) {
-		this.hasEatingFences = hasEatingFences.getAnswer();
+		this.hasEatingFences = doubleToBoolean(hasEatingFences.getAnswer());
 	}
 
-	public int getHasElectricity() {
+	public boolean getHasElectricity() {
 		return hasElectricity;
 	}
 
 	public void setHasElectricity(Question hasElectricity) {
-		this.hasElectricity = hasElectricity.getAnswer();
+		this.hasElectricity = doubleToBoolean(hasElectricity.getAnswer());
 	}
 	
-	public int getHasWater() {
+	public boolean getHasWater() {
 		return hasWater;
 	}
 	public void setHasWater(Question hasWater) {
-		this.hasWater = hasWater.getAnswer();
+		this.hasWater = doubleToBoolean(hasWater.getAnswer());
 	}
 
 	public double getGoalSize() {
@@ -226,24 +224,8 @@ public class Shed implements VariableDefinitions {
 		this.goalCurSizeDiff = goalCurSizeDiff;
 	}
 
-	public int getProblem() {
-		return problem;
-	}
-
-	public void setProblem(Question problem) {
-		this.problem = problem.getAnswer();
-	}
-
 	public String getAdvice() {
 		return advice;
-	}
-
-	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>&emsp;")) {
-			this.advice = this.advice + advice;
-		} else {
-			this.advice = this.advice + "<br>&emsp;" + advice;
-		}
 	}
 	
 }

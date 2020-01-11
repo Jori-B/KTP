@@ -1,13 +1,11 @@
 package com.model;
 
-import java.text.DecimalFormat;
-
 import com.model.Question;
 
-public class Land implements VariableDefinitions {
-	public int hasLand;
+public class Land extends Category implements VariableDefinitions {
+	public boolean hasLand;
 	public double ownedLandSize;
-	public int hasLeasedLand;
+	public boolean hasLeasedLand;
 	public double leasedLandSize;
 	public double totalLandSize;
 	public double landSizeToeslag;
@@ -15,8 +13,6 @@ public class Land implements VariableDefinitions {
 	public double landNeeded;
 	public double costLandNeeded; /* This is the cost when you buy instead of lease */
 	public boolean landIsBigEnough;
-	public String advice = "<html>&emsp;";
-	DecimalFormat twoDigits = new DecimalFormat("##.00");
 	
 	public Land() {
 		
@@ -26,11 +22,11 @@ public class Land implements VariableDefinitions {
 	public void calcLandSize() { 
 		
 		this.totalLandSize = 0;
-		if(hasLand == YES) {
+		if(hasLand) {
 			this.totalLandSize += ownedLandSize;
 		} 
 		/* When these questions are in the system uncomment this ! */
-		if (hasLeasedLand == YES) {
+		if (hasLeasedLand) {
 			this.totalLandSize += leasedLandSize;
 		}
 	}
@@ -52,12 +48,12 @@ public class Land implements VariableDefinitions {
 	} 
 
 	/* Getters and setters */
-	public int getHasLand() {
+	public boolean getHasLand() {
 		return hasLand;
 	}
 
 	public void setHasLand(Question hasLand) {
-		this.hasLand = hasLand.getAnswer();
+		this.hasLand = doubleToBoolean(hasLand.getAnswer());
 	}
 
 	public double getOwnedLandSize() {
@@ -78,12 +74,12 @@ public class Land implements VariableDefinitions {
 		this.toeslagrecht = landSizeToeslag.getAnswer() * 350;
 	}
 
-	public int getHasLeasedLand() {
+	public boolean getHasLeasedLand() {
 		return hasLeasedLand;
 	}
 
 	public void setHasLeasedLand(Question hasLeasedLand) {
-		this.hasLeasedLand = hasLeasedLand.getAnswer();
+		this.hasLeasedLand = doubleToBoolean(hasLeasedLand.getAnswer());
 	}
 
 	public double getLeasedLandSize() {
@@ -125,19 +121,5 @@ public class Land implements VariableDefinitions {
 	public void setToeslagrecht(int toeslagrecht) {
 		this.toeslagrecht = toeslagrecht;
 	}
-
-
-	public String getAdvice() {
-		return advice;
-	}
-
-	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>&emsp;")) {
-			this.advice = this.advice + advice;
-		} else {
-			this.advice = this.advice + "<br>&emsp;" + advice;
-		}
-	}
-	
 	
 }

@@ -164,7 +164,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 	}
 	
 	private void setAnsweredButtonColors(Question current) {
-		int answer = current.getAnswer();
+		double answer = current.getAnswer();
 		// If the fact has an answer, color that answer green
 		if(current.getStatus() == HASANSWER) {
 			// If the current question has an answer, the user should be able to go to the next question
@@ -183,7 +183,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 			}
 			if(current.getQuestionType() == NUMB && answer > 0) {
 				btnEnterInput.setBackground(Color.RED);
-				textArea.setText(Integer.toString(current.getAnswer()));
+				textArea.setText(Double.toString(current.getAnswer()));
 				if(current.getName() == "Shed Size") {
 					setShedAnswers();
 				}

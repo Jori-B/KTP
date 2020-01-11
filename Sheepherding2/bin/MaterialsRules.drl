@@ -18,14 +18,14 @@ dialect "java"
 
 rule "Enough horsepower tractor"
 	when
-		$materials : Materials(hasTractor == YES, horsePowerTractor >= 50);
+		$materials : Materials(hasTractor, horsePowerTractor >= 50);
 	then
 		$materials.setAdvice("Your tractor has enough horsepower to use professionally for any amount of sheep.");
 end
 
 rule "Not enough horsepower tractor"
 	when
-		$materials : Materials(hasTractor == YES, horsePowerTractor < 50);
+		$materials : Materials(hasTractor, horsePowerTractor < 50);
 		Sheep(totalNSheepWanted >= 100);
 	then
 		$materials.setAdvice("It is recommended to have a tractor with more than 50 horsepower for working the land. " +
@@ -34,7 +34,7 @@ end
 
 rule "Enough horsepower 100 sheep"
 	when
-		$materials : Materials(hasTractor == YES, horsePowerTractor < 50);
+		$materials : Materials(hasTractor, horsePowerTractor < 50);
 		Sheep(totalNSheepWanted < 100);
 		Business(hobSemiPro == PRO);
 	then
@@ -45,7 +45,7 @@ end
 
 rule "No tractor less 10 sheep"
 	when
-		$materials : Materials(hasTractor == NO);
+		$materials : Materials(hasTractor == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted < 10);
 		Business(hobSemiPro == HOBBY);
 	then
@@ -55,7 +55,7 @@ end
 
 rule "No tractor between 10and100 sheep"
 	when
-		$materials : Materials(hasTractor == NO);
+		$materials : Materials(hasTractor == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10, totalNSheepWanted <= 100);
 	then
 		$materials.setAdvice("You should buy a tractor. Since you want to start herding with " + $totalNSheepWanted + 
@@ -65,7 +65,7 @@ end
 
 rule "No tractor, more than 100 sheep"
 	when
-		$materials : Materials(hasTractor == NO);
+		$materials : Materials(hasTractor == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 100);
 	then
 		$materials.setAdvice("You should buy a tractor. Since you want to start herding with " + $totalNSheepWanted + 
@@ -74,7 +74,7 @@ end
 
 rule "All grass materials"
 	when
-		$materials : Materials(hasMower == YES, hasRaker == YES, hasShaker == YES);
+		$materials : Materials(hasMower, hasRaker, hasShaker);
 	then
 		$materials.setAdvice("You have all the most essential materials for working the grass. Namely, a mower, raker and shaker.");
 end
@@ -83,7 +83,7 @@ rule "Grass material missing"
 	// Higher salience so that this sentence is printed before the sentences about which one is missing
 	salience 2
 	when
-		$materials : Materials(hasMower == NO || hasRaker == NO || hasShaker == NO);
+		$materials : Materials(hasMower == false || hasRaker == false || hasShaker == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
 		$materials.setAdvice("There are three essential tools for working the grass when you have a lot of sheep; a mower, shaker " + 
@@ -94,7 +94,7 @@ rule "Mower missing"
 	// Lower salience so that this sentence is printed after the sentences about which one is missing
 	salience 1
 	when
-		$materials : Materials(hasMower == NO);
+		$materials : Materials(hasMower == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
 		$materials.setAdvice("You should get a mower.");
@@ -104,7 +104,7 @@ rule "Shaker missing"
 	// Lower salience so that this sentence is printed after the sentences about which one is missing
 	salience 1
 	when
-		$materials : Materials(hasShaker == NO);
+		$materials : Materials(hasShaker == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
 		$materials.setAdvice("You should get a shaker.");
@@ -114,7 +114,7 @@ rule "Raker missing"
 	// Lower salience so that this sentence is printed after the sentences about which one is missing
 	salience 1
 	when
-		$materials : Materials(hasRaker == NO);
+		$materials : Materials(hasRaker == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
 		$materials.setAdvice("You should get a raker.");
@@ -122,7 +122,7 @@ end
 
 rule "Haypacker missing"
 	when
-		$materials : Materials(hasHayPacker == NO);
+		$materials : Materials(hasHayPacker == false);
 	then
 		$materials.setAdvice("A haypacker is expensive, so it's alright to not have one. These are better rented or someone " +
 		"can be hired to do the haypacking.");
@@ -130,14 +130,14 @@ end
 
 rule "Fertilizer spreader missing"
 	when
-		$materials : Materials(hasFertilizerSpreader == NO);
+		$materials : Materials(hasFertilizerSpreader == false);
 	then
 		$materials.setAdvice("A fertilizer spreader can be useful. However, when money is sparse one can get by without one.");
 end
 
 rule "Mest Gatherer missing"
 	when
-		$materials : Materials(hasMestGatherer == NO);
+		$materials : Materials(hasMestGatherer == false);
 	then
 		$materials.setAdvice("It is nice to have a mest gatherer. The mest from the sheep in the shed can be used as fertilizer " + 
 		"on the land. When you don't have a lot of money, you can get by without one.");

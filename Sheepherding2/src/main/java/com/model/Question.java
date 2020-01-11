@@ -15,7 +15,7 @@ public class Question implements VariableDefinitions {
 	private String explanation;
 	/* We don't use open answer, since it is hard to create rules for that */
 	private String openAnswer;
-	private int answer;
+	private double answer;
 	private String warning;
 	public boolean askNow;
 	public FactHandle factHandle;
@@ -47,7 +47,7 @@ public class Question implements VariableDefinitions {
 	}
    
 	/* These answers are used in the Rules.dlr file */
-	public void setAnswer(int numbUserIn) {
+	public void setAnswer(double numbUserIn) {
 		this.answer = numbUserIn;
 		this.setStatus(HASANSWER);
 		/* Updating here so that previous questions with changed answers update in the rules file */
@@ -60,7 +60,7 @@ public class Question implements VariableDefinitions {
 	}
 	
 	
-	public int getAnswer() {
+	public double getAnswer() {
 		return answer;
 	}
    
