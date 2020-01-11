@@ -239,8 +239,9 @@ public class MainView extends JFrame implements VariableDefinitions {
 	}
 	
 	private void initComponents() {
-		Border loweredbevel;
-		loweredbevel = BorderFactory.createLoweredBevelBorder();		
+		Border loweredbevel, raisedbevel;
+		loweredbevel = BorderFactory.createLoweredBevelBorder();
+		raisedbevel = BorderFactory.createRaisedBevelBorder();
 		//SETTING UP FRAME
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
 		setTitle("Sheep Herder System");
@@ -263,15 +264,18 @@ public class MainView extends JFrame implements VariableDefinitions {
 		JButton btnLeft = new JButton("Yes");
 		setYesBtn(btnLeft);
 		btnLeft.setFont(new Font("Verdana", Font.PLAIN, 20));
+		btnLeft.setBorder(raisedbevel);
 		
 		JButton btnRight = new JButton("No");
 		setNoBtn(btnRight);
 		btnRight.setFont(new Font("Verdana", Font.PLAIN, 20));
+		btnRight.setBorder(raisedbevel);
 		
 		//BELOW THIS BELONGS TO THE RIGHTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
 		panel.setBackground(new Color(149, 172, 191));
+		panel.setBorder(raisedbevel);
 		
 		JTextField textArea = new JTextField();
 		setTextArea(textArea);
@@ -281,13 +285,15 @@ public class MainView extends JFrame implements VariableDefinitions {
 		JButton btnEnterInput = new JButton("Enter");
 		setInputBtn(btnEnterInput);
 		btnEnterInput.setFont(new Font("Dialog", Font.PLAIN, 20));
-		btnEnterInput.setOpaque(true); 
+		btnEnterInput.setBorder(raisedbevel);
 		
 		JButton btnPrevious = new JButton("Previous");
 		setPrevBtn(btnPrevious);
+		btnPrevious.setBorder(raisedbevel);
 		
 		JButton btnNext = new JButton("Next");
 		setNextBtn(btnNext);
+		btnNext.setBorder(raisedbevel);
 		
 		/* Tried to import an image here. It did not work to get the size small.
 		 * This should be a way to enter a scaled down image, however I can't get it to work */
