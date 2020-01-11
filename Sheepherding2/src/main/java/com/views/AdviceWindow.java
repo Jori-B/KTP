@@ -1,8 +1,6 @@
 package com.views;
-
-import java.awt.BorderLayout;	
+	
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -18,10 +16,13 @@ import javax.swing.JLayeredPane;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
-import java.awt.Toolkit;
 
 public class AdviceWindow extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
 	/**
@@ -155,7 +156,7 @@ public class AdviceWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CostTable costWindow = new CostTable(costs, model);
+					new CostTable(costs, model);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

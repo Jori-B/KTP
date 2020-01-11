@@ -1,10 +1,9 @@
 package com.views;
 
-import com.model.MCQuestion;	
+import com.model.MCQuestion;		
 import com.model.Model;
 import com.model.Question;
 import com.model.VariableDefinitions;
-import com.sun.org.apache.xpath.internal.operations.Number;
 
 import controller.InfoClickAction;
 import controller.LeftBtnAction;
@@ -14,51 +13,40 @@ import controller.PreviousAction;
 import controller.RightBtnAction;
 import controller.TextAreaAction;
 
-import java.awt.BorderLayout;		
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import java.awt.Toolkit;
-import javax.swing.UIManager;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JTree;
+
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JProgressBar;
-import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
-import javax.swing.JTable;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 
-import java.awt.GridLayout;
-import java.awt.Image;
+import javax.swing.JLabel;
+
+import java.util.ArrayList;
+
+import java.awt.Font;
+
+import javax.swing.DefaultListModel;
 import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class MainView extends JFrame implements VariableDefinitions {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblQuestion;
 	public Model model;
@@ -462,53 +450,53 @@ public class MainView extends JFrame implements VariableDefinitions {
 		this.model = model;
 	}
 	
-	private Model getModel() {
-		return model;
-	}
-	
-	private JButton getYesBtn() {
-		return btnLeft;
-	}
+//	private Model getModel() {
+//		return model;
+//	}
+//	
+//	private JButton getYesBtn() {
+//		return btnLeft;
+//	}
 
 	private void setYesBtn(JButton btnLeft) {
 		this.btnLeft = btnLeft;
 	}
 	
-	private JButton getNoBtn() {
-		return btnRight;
-	}
+//	private JButton getNoBtn() {
+//		return btnRight;
+//	}
 
 	private void setNoBtn(JButton btnRight) {
 		this.btnRight = btnRight;
 	}
 	
-	private JButton getInputBtn() {
-		return btnEnterInput;
-	}
+//	private JButton getInputBtn() {
+//		return btnEnterInput;
+//	}
 
 	private void setInputBtn(JButton btnEnterInput) {
 		this.btnEnterInput = btnEnterInput;
 	}
 
-	private JTextField getTextArea() {
-		return textArea;
-	}
+//	private JTextField getTextArea() {
+//		return textArea;
+//	}
 
 	private void setTextArea(JTextField textArea) {
 		this.textArea = textArea;
 	}
 
-	private JButton getPrevBtn() {
-		return btnPrevious;
-	}
+//	private JButton getPrevBtn() {
+//		return btnPrevious;
+//	}
 
 	private void setPrevBtn(JButton btnPrevious) {
 		this.btnPrevious = btnPrevious;
 	}
 	
-	private JButton getNextBtn() {
-		return btnPrevious;
-	}
+//	private JButton getNextBtn() {
+//		return btnPrevious;
+//	}
 
 	private void setNextBtn(JButton btnNext) {
 		this.btnNext = btnNext;

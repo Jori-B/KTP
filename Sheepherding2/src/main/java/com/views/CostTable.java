@@ -1,26 +1,20 @@
 package com.views;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import java.awt.SystemColor;
-import java.text.DecimalFormat;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import com.model.Cost;
 import com.model.Materials;
 import com.model.Model;
-import com.model.Sheep;
 import com.model.VariableDefinitions;
 
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 public class CostTable implements VariableDefinitions {

@@ -14,7 +14,7 @@ import com.model.Cost;
 
 
 import com.model.Main; 
-import function com.model.Utility.help;
+//import function com.model.Utility.help;
 
 dialect "java"
 
@@ -31,7 +31,7 @@ rule "Not enough land"
 		$land : Land( $landSize : totalLandSize, $landNeeded : landNeeded > 0, $cost : costLandNeeded );		
 // Only talking about buying land. How much will leasing land cost rougly?
 	then
-		help(drools,"info");
+		//help(drools,"info");
 		$land.setAdvice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
 		$nSheep + " sheep, and you have " + $landSize + " acres of land (incl. lease) you need " + $landNeeded + " acres more land.");
 		$land.setAdvice("An acre of land costs rougly 50.000 euros. Therefore you'd need " + (int)$cost + " euros for buying land.");

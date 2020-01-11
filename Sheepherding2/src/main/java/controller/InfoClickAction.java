@@ -1,14 +1,11 @@
 package controller;
 
-import java.awt.Cursor;
+import java.awt.Cursor;	
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
-import javax.swing.JList;
-
 import com.model.Model;
-import com.model.Question;
 import com.views.MainView;
 
 public class InfoClickAction {
