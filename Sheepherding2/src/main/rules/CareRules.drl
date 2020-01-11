@@ -93,12 +93,6 @@ rule "No Slaughter, Enter Competition"
 	then
 		$care.setAdvice("Since you do not want to slaughter your sheep you might want to be part of a sheep herding competition. You can learn more about it on https://www.dagvanhetschaap.nl/.");
 end
-rule "Learn birthing"
-	when 
-		$care : Care(wantsSelfBirth == OTHER);
-	then
-		$care.setAdvice("Every sheep herder must learn birthing, so it is a good idea you learn as well");
-end
 
 
 
