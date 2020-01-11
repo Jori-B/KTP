@@ -26,7 +26,7 @@ rule "Wants self birth"
 		$care.setAdvice("Birthing yourself is essential as a herder, otherwise the vet needs to come everytime. You can expect to gain " 
 		+ $sheepSoldEarnings + " euros from selling sheep.");
 end
-
+ 
 rule "Hobby, wants other birth"
 	when 
 		$care : Care(wantsSelfBirth == OTHER);
@@ -53,7 +53,7 @@ rule "Pro doesn't want lambs"
 		Cost($sheepSoldEarnings : sheepSoldEarnings);
 	then
 		$care.setAdvice("As a professional it is recommended that you breed sheep. It is your main earning. Every sheep get roughly 2 lambs " +
-		"and sells for 95€. Therefore, with " + $nSheep + " you're expected to gain " + $sheepSoldEarnings +
+		"and sells for 95ï¿½. Therefore, with " + $nSheep + " you're expected to gain " + $sheepSoldEarnings +
 		" euros from selling lambs.");
 end
 
@@ -62,7 +62,7 @@ rule "Shave self"
 		$care : Care(wantsSelfShave, $woolEarnings : woolEarnings, $shaveOtherCost : shaveOtherCost);
 		Sheep($totalNSheepWanted : totalNSheepWanted); 
 	then
-		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50€. In your case you want " + 
+		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50ï¿½. In your case you want " + 
 		$totalNSheepWanted + "sheep. Therefore, this will earn you about " + $woolEarnings + " euros. ");
 		$care.setAdvice("One can also hire someone to do it for them. Per sheep it costs roughly 3.50 euros. Therefore this would cost you around " +
 		$shaveOtherCost + " euros.");
@@ -86,6 +86,19 @@ rule "Hobby, shave other"
 		$care.setAdvice("As a hobby herder you could choose a race of sheep that doesn't need shaving, like the Soay.");
 end
 
+rule "No Slaughter, Enter Competition"
+	when 
+		$business : Business(hobSemiPro == HOBBY);
+		$care : Care(wantsSlaughter == false);
+	then
+		$care.setAdvice("Since you do not want to slaughter your sheep you might want to be part of a sheep herding competition. You can learn more about it on https://www.dagvanhetschaap.nl/.");
+end
+rule "Learn birthing"
+	when 
+		$care : Care(wantsSelfBirth == OTHER);
+	then
+		$care.setAdvice("Every sheep herder must learn birthing, so it is a good idea you learn as well");
+end
 
 
 

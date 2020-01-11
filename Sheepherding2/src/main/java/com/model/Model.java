@@ -210,7 +210,7 @@ public class Model implements VariableDefinitions {
         	questions.add(new Question("hasMestSpreader", YESNO, ksession, "Do you have a mest spreader and/or mestwagon?", 
         			"<html>&emsp;Very expensive and needs a tractor with 200 hp. <br>&emsp;One should hire someone to do this for them.<html>", DONTASK, model));
         questions.add(new Question("hasShaver", YESNO, ksession, "Do you have a shaving machine?", 
-        			"<html>&emsp;A shaving machine is only 400€ (with three knives for a year). <br>&emsp;It is adviced that everyone should get one for when there are <br>&emsp;for example worms and the area of skin needs cleaning.<html>", ASK, model));
+        			"<html>&emsp;A shaving machine is only 400ï¿½ (with three knives for a year). <br>&emsp;It is adviced that everyone should get one for when there are <br>&emsp;for example worms and the area of skin needs cleaning.<html>", ASK, model));
 		/* Care questions */
         questions.add(new Question("wantsSelfShave", YESNO, ksession, "Do you want to shave the sheep yourself?", 
     		"<html>&emsp;Shaving doesn't earn you much money. <br>&emsp;One can hire someone to do this for them.<html>", ASK, model)); 
@@ -304,7 +304,7 @@ public class Model implements VariableDefinitions {
     	createAdviceWindow(costs, this);
     }
     
-    private void createAdviceWindow(Cost costs, Model model) {
+    private void createAdviceWindow(final Cost costs, final Model model) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -317,7 +317,7 @@ public class Model implements VariableDefinitions {
 		});
     }
 
-	private static void createWindow(Model model) {
+	private static void createWindow(final Model model) {
 		try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			} catch (Throwable e) {
@@ -339,7 +339,7 @@ public class Model implements VariableDefinitions {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		kbuilder.add(ResourceFactory.newClassPathResource("Rules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("ShedRules.drl"), ResourceType.DRL);
-		//kbuilder.add(ResourceFactory.newClassPathResource("SheepRules.drl"), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource("SheepRules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("BusinessRules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("CareRules.drl"), ResourceType.DRL);
 		kbuilder.add(ResourceFactory.newClassPathResource("LandRules.drl"), ResourceType.DRL);

@@ -21,7 +21,7 @@ rule "Enough horsepower tractor"
 		$materials : Materials(hasTractor, horsePowerTractor >= 50);
 	then
 		$materials.setAdvice("Your tractor has enough horsepower to use professionally for any amount of sheep.");
-end
+end 
 
 rule "Not enough horsepower tractor"
 	when
@@ -29,7 +29,7 @@ rule "Not enough horsepower tractor"
 		Sheep(totalNSheepWanted >= 100);
 	then
 		$materials.setAdvice("It is recommended to have a tractor with more than 50 horsepower for working the land. " +
-		"Thus you are advised to buy a tractor with more horsepower. Secondhand it will cost you roughly €20.000.");
+		"Thus you are advised to buy a tractor with more horsepower. Secondhand it will cost you roughly ï¿½20.000.");
 end
 
 rule "Enough horsepower 100 sheep"
@@ -40,7 +40,7 @@ rule "Enough horsepower 100 sheep"
 	then
 		$materials.setAdvice("When you're a professional, it is recommended to have a tractor with more than 50 horsepower " + 
 		"for working the land. Since you want to start with fewer than 100 sheep it's okay to have a smaller tractor for now. " +
-		"However, above 100 sheep it is recommended to buy a tractor with more horsepower. Secondhand it will cost you roughly €20.000.");
+		"However, above 100 sheep it is recommended to buy a tractor with more horsepower. Secondhand it will cost you roughly ï¿½20.000.");
 end
 
 rule "No tractor less 10 sheep"
@@ -141,4 +141,10 @@ rule "Mest Gatherer missing"
 	then
 		$materials.setAdvice("It is nice to have a mest gatherer. The mest from the sheep in the shed can be used as fertilizer " + 
 		"on the land. When you don't have a lot of money, you can get by without one.");
+end
+rule "No tractor no rent"
+	when
+		$materials : Materials(hasTractor == false);
+	then
+		$materials.setAdvice("If you do not have tractor renting one is not profitable in the long run, you should really consider buying one");
 end

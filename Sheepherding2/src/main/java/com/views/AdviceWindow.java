@@ -181,7 +181,7 @@ public class AdviceWindow extends JFrame {
 //        frame.setLocation(getMaxWindowBounds(frame).x, frame.getY());
 //    }
 	
-	private void createCostTable(Cost costs, Model model) {
+	private void createCostTable(final Cost costs, final Model model) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

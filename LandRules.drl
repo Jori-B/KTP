@@ -34,7 +34,7 @@ rule "Not enough land"
 		//help(drools,"info");
 		$land.setAdvice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
 		$nSheep + " sheep, and you have " + $landSize + " acres of land (incl. lease) you need " + $landNeeded + " acres more land.");
-		$land.setAdvice("An acre of land costs rougly 50.000 euro. Therefore you'd need " + (int)$cost + " euro for buying land.");
+		$land.setAdvice("An acre of land costs rougly 50.000 euros. Therefore you'd need " + (int)$cost + " euros for buying land.");
 end
 
 rule "Not enough land, no lease"
@@ -68,18 +68,31 @@ rule "Toeslagrechten non-zero"
 		$land : Land($earnings : toeslagrecht > 0); 
 		//Cost($earnings : toeslagrechtEarnings);
 	then
-		$land.setAdvice("For every hectare of used land with entitlements (i.e. toeslagrechten) one receives 350 euro a year. " +
-		"In your case this will earn you " + $earnings + " euro");	
+		$land.setAdvice("For every hectare of used land with entitlements (i.e. toeslagrechten) one recieves 350 euros a year. " +
+		"In your case this will earn you " + $earnings + " euros");	
 end	
 
 rule "Toeslagrechten zero hectares"
 	when
 		$land : Land(toeslagrecht == 0); 
 	then
-		$land.setAdvice("For every hectare of used land with entitlements (i.e. toeslagrechten) one recieves 350 euro a year. " +
+		$land.setAdvice("For every hectare of used land with entitlements (i.e. toeslagrechten) one recieves 350 euros a year. " +
 		"So, when getting more land it is recommended to check wheter it has these, since they cannot be bought anymore.");	
 end	
-
-		
+rule "hasEnough land for more sheep"
+	when
+		$sheep : Sheep($nSheep : totalNSheepWanted);
+		$land : Land(landIsBigEnough == true, $freeLand : (totalLandSize-landNeeded)/0.08 >= 1, $totalLandSize: totalLandSize); 
+	then
+		$land.setAdvice("It is best to use the land fully. Since you will have " + $totalLandSize + " hecatars of land you can fit" + $freeLand/0.08 + 
+		"more sheep. If you do not want to do that you can always work the land, create haybales for your sheep and sell the excess");	
+end	
+rule "Too much land needed"
+	when
+		$land : Land(landNeeded > 10, $landNeeded: landNeeded); 
+	then
+		$land.setAdvice("You need" + $landNeeded + " hectars. That much amount of land might be difficult to acqure next to your farm. You might want to move the another location" + 
+		"where this is possible or care for less sheep ");	
+end	
 		
 		
