@@ -63,7 +63,7 @@ rule "Hobby, has (too) small land"
 		"sizes like the Skudde, Soay, Quessant or English races like the Hampsindown, Suffock and Kerry Hill.");
 end
 
-rule "Toeslagrechten non-zero"
+rule "Toeslagrechten non-zero" 
 	when
 		$land : Land($earnings : toeslagrecht > 0); 
 		//Cost($earnings : toeslagrechtEarnings);
@@ -79,13 +79,13 @@ rule "Toeslagrechten zero hectares"
 		$land.setAdvice("For every hectare of used land with entitlements (i.e. toeslagrechten) one recieves 350 euros a year. " +
 		"So, when getting more land it is recommended to check wheter it has these, since they cannot be bought anymore.");	
 end	
-rule "hasEnough land for more sheep"
+rule "Has Enough land for more sheep"
 	when
 		$sheep : Sheep($nSheep : totalNSheepWanted);
-		$land : Land(landIsBigEnough == true, $freeLand : (totalLandSize-landNeeded)/0.08 >= 1, $totalLandSize: totalLandSize); 
+		$land : Land(landIsBigEnough == true,  totalLandSize -landNeeded >= 0.08 ,$freeLand : totalLandSize -landNeeded, $totalLandSize: totalLandSize); 
 	then
-		$land.setAdvice("It is best to use the land fully. Since you will have " + $totalLandSize + " hecatars of land you can fit" + $freeLand/0.08 + 
-		"more sheep. If you do not want to do that you can always work the land, create haybales for your sheep and sell the excess");	
+		$land.setAdvice("It is best to use your land fully. Since you will have " + $totalLandSize + " hecatars of land you can fit " + $freeLand/0.08 + 
+		" more sheep. If you do not want to do that you can always work the land, create haybales for your sheep and sell the excess");	
 end	
 rule "Too much land needed"
 	when
