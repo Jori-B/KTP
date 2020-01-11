@@ -29,7 +29,7 @@ rule "Not enough horsepower tractor"
 		Sheep(totalNSheepWanted >= 100);
 	then
 		$materials.setAdvice("It is recommended to have a tractor with more than 50 horsepower for working the land. " +
-		"So you are adviced to buy a tractor with more horsepower. Secondhand it will cost you roughly €20.000.");
+		"Thus you are advised to buy a tractor with more horsepower. Secondhand it will cost you roughly €20.000.");
 end
 
 rule "Enough horsepower 100 sheep"
