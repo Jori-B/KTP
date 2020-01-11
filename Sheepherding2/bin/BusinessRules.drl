@@ -79,10 +79,6 @@ rule "All good"
 		$business.setAdvice("You should be able to start a profitable sheep herding business");
 end
 
-
-
-
-
 		
 		
 		

@@ -23,7 +23,7 @@ rule "Land is big enough"
 		$land : Land(landIsBigEnough);
 	then
 		$land.setAdvice("You have enough land for the amount of sheep you would like to hold");
-end
+end 
 
 rule "Not enough land"
 	when
