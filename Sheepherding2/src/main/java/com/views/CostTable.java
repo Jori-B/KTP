@@ -15,6 +15,8 @@ import com.model.Materials;
 import com.model.Model;
 import com.model.VariableDefinitions;
 
+import com.views.FrameLocationSetter;
+
 import javax.swing.JScrollPane;
 
 public class CostTable implements VariableDefinitions {
@@ -131,5 +133,8 @@ public class CostTable implements VariableDefinitions {
 //		frame.getContentPane().add(table.getTableHeader(), BorderLayout.PAGE_START);
 		frame.setBounds(100, 100, 814, 626);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		FrameLocationSetter.setLocationToRight(frame);
+		FrameLocationSetter.setLocationToTop(frame);
 	}
 }
