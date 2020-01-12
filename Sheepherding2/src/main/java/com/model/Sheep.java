@@ -17,9 +17,11 @@ public class Sheep extends Category implements VariableDefinitions {
 	
 	/* Calculations */
 	public void setDesiresNMoreSheep() { //calcPriceSheep() {
+		if (totalNSheepWanted-ownsNSheep>0){
 		this.desiresNMoreSheep = totalNSheepWanted - ownsNSheep;
 		System.out.println("he wants " + desiresNMoreSheep);
 		//this.sheepCost = desiresNMoreSheep * 100;
+		} else this.desiresNMoreSheep = 0;
 	}
 	
 	public void calcNumberOfSheepMore(double totalLandSize) {
