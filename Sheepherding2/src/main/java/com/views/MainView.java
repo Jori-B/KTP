@@ -250,7 +250,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 974, 833);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(217, 217, 217));
+		contentPane.setBackground(new Color(208, 217, 209));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);		
 		setResizable(true);
@@ -276,7 +276,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		//BELOW THIS BELONGS TO THE LEFTHAND PANEL, FOR SELECTING PREVIOUS QUESTIONS
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
-		panel.setBackground(new Color(149, 172, 191));
+		panel.setBackground(new Color(168, 191, 174));
 		panel.setBorder(raisedbevel);
 		
 		JTextField textArea = new JTextField();
