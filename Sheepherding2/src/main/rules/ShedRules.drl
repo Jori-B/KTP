@@ -65,7 +65,7 @@ rule "Shed not tall"
 	when
 		$shed : Shed( hasShed, isPathWiderThan3, isTallerThan3 == false);
 	then
-		$shed.setAdvice("your shed is not high enough for a tractor to go through.");
+		$shed.setAdvice("your shed is not high enough for a tractor to go through.", true);
 end
 
 rule "Shed not wide"
@@ -73,7 +73,7 @@ rule "Shed not wide"
 	when
 		$shed : Shed( hasShed, isPathWiderThan3 == false, isTallerThan3);
 	then
-		$shed.setAdvice("your shed in not wide enough for a tractor to go through. Also, space is needed to store food (and materials).");
+		$shed.setAdvice("your shed in not wide enough for a tractor to go through. Also, space is needed to store food (and materials).", true);
 end
 
 rule "Shed not wide and tall"
@@ -81,7 +81,7 @@ rule "Shed not wide and tall"
 	when
 		$shed : Shed( hasShed, isPathWiderThan3 == false, isTallerThan3 == false);
 	then
-		$shed.setAdvice("your shed is not wide and high enough for a tractor to go through. Also, space in needed to store food (and materials).");
+		$shed.setAdvice("your shed is not wide and high enough for a tractor to go through. Also, space in needed to store food (and materials).", true);
 end
 
 rule "Shed not wide, but room"
@@ -93,6 +93,7 @@ rule "Shed not wide, but room"
 end
 
 rule "Hobby, small shed, no build"
+	salience 0.5
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild == false);
 		Business(hobSemiPro == HOBBY);
@@ -103,6 +104,7 @@ rule "Hobby, small shed, no build"
 end
 
 rule "Pro, small shed, no build"
+	salience 0.5
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild == false);
 		Business(hobSemiPro == PRO);
@@ -112,6 +114,7 @@ rule "Pro, small shed, no build"
 end
 
 rule "Small shed, room for expansion"
+	salience 0.5
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed >= goalCurSizeDiff);
 	then
@@ -119,6 +122,7 @@ rule "Small shed, room for expansion"
 end
 
 rule "Hobby, small shed, no room for expansion"
+	salience 0.5
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == HOBBY);
@@ -129,6 +133,7 @@ rule "Hobby, small shed, no room for expansion"
 end
 
 rule "Pro, small shed, not enough room for expansion"
+	salience 0.5
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == PRO);
@@ -140,6 +145,7 @@ rule "Pro, small shed, not enough room for expansion"
 end
 
 rule "Hobby, no shed, little room"
+	salience 0.5
 	when
 		$shed : Shed( hasShed == false, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == HOBBY);
@@ -150,12 +156,24 @@ rule "Hobby, no shed, little room"
 end
 
 rule "Pro, no shed, little room"
+	salience 0.5
 	when
 		$shed : Shed( hasShed == false, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == PRO);
 	then
 		$shed.setAdvice("You don't have enough room to build a shed for the amount of sheep you want. Therefore it is not recommended " + 
 		"to sheep herd professionally. It might be worth considering doing it semi professionally with fewer sheep");
+end
+
+rule "Explain Calculations ShedCost"
+	salience 0.3
+	when 
+		 Cost($shedCost : shedCost > 0);
+		 $shed : Shed();
+	then 
+		$shed.setAdvice("Building a shed costs 350.- euros per square meter. "+
+		" Rougly half of the cost is for the construction of the shed, quarter for installing the electrical system and  another quarter for installing the water system. "+
+		"This means that it will cost you "+ (int)$shedCost + ".- euros in total, from witch around "+ (int)$shedCost/2 +".- euros for installing water and electricity");
 end
 
 rule "No flat floor"
@@ -184,4 +202,43 @@ rule "No lamps"
 		$shed : Shed( hasShed, hasElectricity == false);
 	then
 		$shed.setAdvice("When the birthing takes place, lambs need light the entire night. So you should buy some lamps.");
+end
+
+rule "No adj fences"
+	salience -0.5
+	when
+		$shed : Shed( hasShed, hasAdjustableFences == false);
+	then
+		$shed.setAdvice("Movable fences are handy for separating sheep in the shed when they have lambs. This is also handy for administration purposes.");
+end
+
+rule "Explain Calculations adjustableFenceCost"
+	salience -1 
+	when 
+		$cost : Cost(adjustableFenceCost > 0);
+		$shed : Shed();
+	then
+		$shed.setAdvice("One movable fence costs 50.- euros. You need roughly 2 fences per sheep, but since half of your sheep enter the shed "+
+		" at the same time you need to spend only 50.- euros per sheep for the fences. "+
+		"This means that fences will cost you "+ (int)$cost.adjustableFenceCost + ".- euros in total");
+end
+
+rule "No eating fences"
+	salience -1.5
+	when
+		$shed : Shed( hasShed, hasEatingFences == false);
+	then
+		$shed.setAdvice("Of course, sheep need to eat when they are in the shed. The most convenient way is eating fences.");
+end
+
+rule "Explain Calculations eatingFenceCost"
+	salience -2
+	when 
+		$cost : Cost(eatingFenceCost > 0);
+		$shed : Shed();
+	then
+		$shed.setAdvice("Eating fences cost 90.- euros per meter. They have to be on both sides of the path. " +
+		"The goal lenght of your shed is " + (int)$shed.getLengthGoal() + " so you need " +
+		(int)$cost.getLengthEat() + " meters of eating fences. "+
+		"This means that eating fences will cost you "+ (int)$cost.eatingFenceCost+ ".- euros in total");
 end

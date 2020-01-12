@@ -91,5 +91,15 @@ rule "Recomend breed  Flevolander"
 		$business : Business(hobSemiPro == PRO); 
 	then
 		$sheep.setAdvice("The sheep breed Flevolander has the least slaughter quaility but they lamb 3 times in two years and have almost no issues when lambing.");
+end
 
+rule "Explain Calculations sheepBoughtCost"
+	salience -1
+	when 
+		Cost($sheepBoughtCost : sheepBoughtCost);
+		$sheep : Sheep();
+	then
+		$sheep.setAdvice("A sheep costs around 95.- euros. In total for all  "+
+		$sheep.desiresNMoreSheep + " sheep you have to buy that will cost you "+
+		(int)$sheepBoughtCost+".- euros in total.");
 end	

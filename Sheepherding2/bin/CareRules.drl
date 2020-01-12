@@ -24,7 +24,7 @@ rule "Wants self birth"
 		Cost($sheepSoldEarnings : sheepSoldEarnings);
 	then
 		$care.setAdvice("Birthing yourself is essential as a herder, otherwise the vet needs to come everytime. You can expect to gain " 
-		+ $sheepSoldEarnings + ".- euros from selling sheep.");
+		+ (int)$sheepSoldEarnings + ".- euros from selling sheep.");
 end
  
 rule "Hobby, wants other birth"
@@ -53,7 +53,7 @@ rule "Pro doesn't want lambs"
 		Cost($sheepSoldEarnings : sheepSoldEarnings);
 	then
 		$care.setAdvice("As a professional it is recommended that you breed sheep. It is your main earning. Every sheep get roughly 2 lambs " +
-		"and sells for 95.- euros. Therefore, with " + $nSheep + " you're expected to gain " + $sheepSoldEarnings +
+		"and sells for 95.- euros. Therefore, with " + $nSheep + " you're expected to gain " + (int)$sheepSoldEarnings +
 		".- euros from selling lambs.");
 end
 
@@ -64,9 +64,9 @@ rule "Shave self"
 		Sheep($totalNSheepWanted : totalNSheepWanted); 
 	then
 		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50.- euros. In your case you want " + 
-		$totalNSheepWanted + " sheep. Therefore, this will earn you about " + $woolEarnings + ".- euros. ");
+		$totalNSheepWanted + " sheep. Therefore, this will earn you about " + (int)$woolEarnings + ".- euros. ");
 		$care.setAdvice("One can also hire someone to do it for them. Per sheep it costs roughly 3.50.- euros. Therefore this would cost you around " +
-		$shaveOtherCost + ".- euros.");
+		(int)$shaveOtherCost + ".- euros.");
 end
 
 rule "Shave other"
@@ -77,7 +77,7 @@ rule "Shave other"
 	then
 		$care.setAdvice("Shaving is not profitable. However, shaving your sheep needs to happen roughly one time per year." +
 		"One can hire someone to do it for them. In your case you want " + $totalNSheepWanted + ", per sheep shaving costs" + 
-		"roughly 3.50.- euros. Therefore this will cost you around " + $shaveOtherCost + ".- euros.");
+		"roughly 3.50.- euros. Therefore this will cost you around " + (int)$shaveOtherCost + ".- euros.");
 end
 
 rule "Hobby, shave other"
@@ -103,6 +103,28 @@ rule "Sheep grazing on cow herders land"
 	then
 		$care.setAdvice("It is a good idea to let your sheep graze at the local cow herder land. This strenghtens the "+
 		"imunity of your sheep toward illness. While the sheep are grazing elsewhere the sheepherder has the opportunity to work the land and create hay for the sheep for the winter. ");
+end
+
+rule "Explain Calculations MyasTreatmentCost"
+	salience -1
+	when 
+		Cost($myasTreatmentCost : myasTreatmentCost)
+		$care : Care();
+	then
+		$care.setAdvice("You have to do Myas treatments for your sheep. You do the "+
+		"treatments 3 times per year costing 3.50.- euros per sheep. In total "+
+		"this will cost you "+ $myasTreatmentCost +".- euros.");
+end
+
+rule "Explain Calculations WormingCost"
+	salience -1
+	when 
+		Cost($wormCost : wormCost);
+		$care : Care();
+	then
+		$care.setAdvice("Ewes need to be wormed only once a year, "+
+		"while lambs need to be wormed 2-3 times a year, ewes get rougly two lambs. With 2.5 "+
+		"liters you can worm 250 lambs. 2.5 liters cost around 150.- euros. For the amount of sheep you have it will cost you " + (int)$wormCost + ".- euros.");
 end
 
 

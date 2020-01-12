@@ -90,6 +90,38 @@ rule "All good"
 		$business.setAdvice("You should be able to start a profitable sheep herding business");
 end
 
+rule "Explain Calculations RVOAdminCost"
+	salience -1
+	when 
+		Cost($RVOAdminCost : RVOAdminCost > 0);
+		$business : Business();
+	then
+		$business.setAdvice("Registering your sheep at RVO will cost you "+
+		"1.5.- euros per sheep. That would be  "+
+		(int)$RVOAdminCost+".- euros in total.");
+end
+
+rule "Explain Calculations slaughterCost"
+	salience -1
+	when 
+		Cost($slaughterCost : slaughterCost > 0);
+		$business : Business();
+	then
+		$business.setAdvice("Registering you sheep for slaughter will cost you "+
+		"0.5.- euros per sheep. That would be "+
+		(int)$slaughterCost+".- euros in total.");
+end
+
+rule "Explain Calculations earMarkCost"
+	salience -1
+	when 
+		Cost($earMarkCost : earMarkCost);
+		$business : Business();
+	then
+		$business.setAdvice("Sheep need earmarks when you register them. "+
+		"Ear marks cost around 1 euro per piece. For you that will cost "+
+		(int)$earMarkCost+".- euros in total.");
+end
 		
 		
 		

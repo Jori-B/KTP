@@ -89,6 +89,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		if(current != previous) {
 			updateGUI(current, true);
 		} else { 
+			btnNext.setEnabled(false);
 			setVisibilityBtns(false, false);
 			lblQuestion.setText("");
 			lblQuestion.setIcon(new ImageIcon(AdviceWindow.class.getResource("/com/resources/sheepImg.png")));

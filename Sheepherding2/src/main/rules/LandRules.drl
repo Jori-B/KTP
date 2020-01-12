@@ -34,7 +34,7 @@ rule "Not enough land"
 	then
 		//help(drools,"info");
 		$land.setAdvice("Buy or lease more land. Per acre you can hold roughly 3 sheep. Since you want " + 
-		$nSheep + " sheep, and you have " + $landSize + " acres of land (incl. lease) you need " + $landNeeded + " acres more land.");
+		$nSheep + " sheep, and you have " + $landSize + " hectares of land (incl. lease) you need " + $landNeeded + " hectares more land.");
 		$land.setAdvice("An acre of land costs rougly 50.000 euro. Therefore you'd need " + (int)$costBuyLand + ".- euros for buying land. " + 
 		"Therefore it's better to lease land if possible. This will only cost you " + (int)$costLeaseLand + ".- euros." );
 end
@@ -87,7 +87,7 @@ rule "Has Enough land for more sheep"
 		$sheep : Sheep($nSheep : totalNSheepWanted);
 		$land : Land(landIsBigEnough == true,  totalLandSize -landNeeded >= 0.08 ,$freeLand : totalLandSize -landNeeded, $totalLandSize: totalLandSize); 
 	then
-		$land.setAdvice("It is best to use your land fully. Since you will have " + $totalLandSize + " hecatars of land you can fit " + $freeLand/0.08 + 
+		$land.setAdvice("It is best to use your land fully. Since you will have " + $totalLandSize + " hectares of land you can fit " + $freeLand/0.08 + 
 		" more sheep. If you do not want to do that you can always work the land, create haybales for your sheep and sell the excess");	
 end	
 rule "Too much land needed"

@@ -22,4 +22,12 @@ public class Category implements VariableDefinitions {
 			this.advice = this.advice + "<br><br>" + advice;
 		}
 	}
+	
+	public void setAdvice(String advice, boolean noEnter) {
+		if(noEnter) {
+			this.advice = this.advice + advice;
+		} else {
+			this.advice = this.advice + "<br><br>" + advice;
+		}
+	}
 }
