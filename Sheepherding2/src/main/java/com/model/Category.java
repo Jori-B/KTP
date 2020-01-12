@@ -19,7 +19,7 @@ public class Category implements VariableDefinitions {
 		if(this.advice.equals("<html>")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br>" + advice;
+			this.advice = this.advice + "<br><br>" + advice;
 		}
 	}
 }

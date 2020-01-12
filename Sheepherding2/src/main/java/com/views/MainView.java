@@ -90,7 +90,10 @@ public class MainView extends JFrame implements VariableDefinitions {
 			updateGUI(current, true);
 		} else { 
 			setVisibilityBtns(false, false);
-			lblQuestion.setText("ALL QUESTIONS ASKED");
+			lblQuestion.setText("");
+			lblQuestion.setIcon(new ImageIcon(AdviceWindow.class.getResource("/com/resources/sheepImg.png")));
+			lblInformationText.setText("<html>All questions are asked. You can click on the previous and next buttons<br>or the questions on the " + 
+			"left hand side to look at your answers again.");
 		}
 	}
 	
@@ -206,6 +209,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 	}
 	
 	public void setQuestion(Question current) {
+		lblQuestion.setIcon(null);
 		lblQuestion.setText(current.getQuestion());
 	}
 	
@@ -240,6 +244,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 	}
 	
 	private void initComponents() {
+		
 		Border loweredbevel, raisedbevel;
 		loweredbevel = BorderFactory.createLoweredBevelBorder();
 		raisedbevel = BorderFactory.createRaisedBevelBorder();
