@@ -218,13 +218,15 @@ public class AdviceWindow extends JFrame implements VariableDefinitions {
 		lblCareAdvice.setBorder(new CompoundBorder(loweredbevel, margin));
 		layeredPane.add(lblCareAdvice);
 		
-		this.btnPrev = new JButton("Previous page");
-		btnPrev.setBounds(12, 452, 100, 100);
+		this.btnPrev = new JButton("<html>Previous <br>page<html>");
+		btnPrev.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnPrev.setBounds(12, 420, 100, 100);
 		btnPrev.setBorder(raisedbevel);
 		layeredPane.add(btnPrev);
 		
-		this.btnNext = new JButton("Next page");
-		btnNext.setBounds(982, 452, 100, 100);
+		this.btnNext = new JButton("<html>Next <br>page<html>");
+		btnNext.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnNext.setBounds(982, 420, 100, 100);
 		btnNext.setBorder(raisedbevel);
 		layeredPane.add(btnNext);
 		

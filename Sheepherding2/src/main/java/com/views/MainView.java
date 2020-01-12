@@ -122,10 +122,10 @@ public class MainView extends JFrame implements VariableDefinitions {
 	
 	private void setButtons(Question current) {
 		/* If it's the first question, there is no previous question, so button disabled */
-		if (model.getFacts().indexOf(current) == 0) {
+		if (model.getFacts().indexOf(current) == 0 || model.getFacts().indexOf(current) == 1) {
+
+			btnEnterInput.setText("Enter");
 			btnPrevious.setEnabled(false);
-			/* First list element is added when the first question is asked. The rest of them are added in setCurrentQuestion() */
-			addToList(current);
 		/* Else enable the button */
 		} else {
 			btnPrevious.setEnabled(true);
@@ -286,7 +286,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		emptyTextArea();
 		
-		JButton btnEnterInput = new JButton("Enter");
+		JButton btnEnterInput = new JButton("Start");
 		setInputBtn(btnEnterInput);
 		btnEnterInput.setFont(new Font("Dialog", Font.PLAIN, 20));
 		btnEnterInput.setBorder(raisedbevel);
@@ -454,6 +454,9 @@ public class MainView extends JFrame implements VariableDefinitions {
 		contentPane.setLayout(gl_contentPane);
 		
 		setButtons(model.getCurrentQuestion());	
+		textArea.setVisible(false);
+		textArea.setText("0");
+		lblQuestion.setIcon(new ImageIcon(AdviceWindow.class.getResource("/com/resources/sheepImg.png")));
 	}
 	
 	private void createEvents() {

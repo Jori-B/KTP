@@ -104,9 +104,27 @@ public class CostTable implements VariableDefinitions {
 			slaughterSheep = totalNSheepWanted;
 		}
 		
+		double moneyNeeded = costs.getMoneyNeeded();
+		String colMoneyNeeded;
+		if(moneyNeeded < 0) {
+			colMoneyNeeded = "<html><p style=\"background:#8FBC8F;\">" + "€"+twoDigits.format(-1 * moneyNeeded) +  "</p><html>";
+		} else {
+			colMoneyNeeded = "<html><p style=\"background:#FFC0CB;\">" + "€"+twoDigits.format(-1 * moneyNeeded) +  "</p><html>";
+		}
+		
+		double moneyDiff = costs.getMoneyToSpend() - moneyNeeded;
+		String spendMinNeed;
+		
+		if(moneyDiff >= 0) {
+			spendMinNeed = "<html><p style=\"background:#8FBC8F;\">" + "€"+twoDigits.format(moneyDiff) +  "</p><html>";
+		} else {
+			spendMinNeed = "<html><p style=\"background:#FFC0CB;\">" + "€"+twoDigits.format(moneyDiff) +  "</p><html>";
+		}
+		
 		String[] colNames = {"Item",		"Count", 	"Price"};
 		Object[][] costsArray = {
-						{"------------------ COSTS --------------------","-------------------------------------------------","-------------------------------------------------"},
+						{"<html><b>&emsp; COSTS <html>","",""},
+						//{"------------------ COSTS --------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Tractor", 					getTractor+" tractor",					"€"+twoDigits.format(costs.getTractorCost())},
 						{"Mower", 						getMower+" mower",						"€"+twoDigits.format(costs.getMowerCost())},
 						{"Shaker",	 					getShaker+" shaker",					"€"+twoDigits.format(costs.getShakerCost())},
@@ -125,17 +143,20 @@ public class CostTable implements VariableDefinitions {
 						{"Movable fences",				twoDigits.format(costs.getLengthAdj())+" meters",	"€"+twoDigits.format(costs.getAdjFenceCost())},
 						{"Eating fences",				twoDigits.format(costs.getLengthEat())+" meters",	"€"+twoDigits.format(costs.getEatFenceCost())},
 						{"Mest plate",					getFertilizerPlate+" plate",			"€"+twoDigits.format(costs.getFertilizerPlateCost())},
-						{"--------------- EARNINGS -------------------","-------------------------------------------------","-------------------------------------------------"},
+						{"<html><b>&emsp; EARNINGS <html>","",""},
+						//{"--------------- EARNINGS -------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Sheep sold",					(totalNSheepWanted*2)+" lambs",			"€"+twoDigits.format(costs.getSheepSoldEarnings())},
 						{"Wool Sold",					totalNSheepWanted+" coats of fur",		"€"+twoDigits.format(costs.getWoolEarnings())},
 						{"Toeslagrechten", 				model.getLand().getLandSizeToeslag()+" hectares",	"€"+twoDigits.format(costs.getToeslagrechtEarnings())},
-						{"---------------- TOTALS ---------------------","-------------------------------------------------","-------------------------------------------------"},
+						{"<html><b>&emsp; TOTALS <html>","",""},
+						//{"---------------- TOTALS ---------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Total costs",					"",										"€"+twoDigits.format(costs.getTotalCost())},
 						{"Total earnings this year",	"",										"€"+twoDigits.format(costs.getTotalEarnings())},
-						{"Costs minus earnings",		"",										"€"+twoDigits.format(costs.getMoneyNeeded())},
-						{"----------- YOUR BUSINESS ---------------","-------------------------------------------------","-------------------------------------------------"},
+						{"Projected earnings (Earnings minus cost)",	"",						colMoneyNeeded},
+						{"<html><b>&emsp; YOUR BUSINESS <html> ","",""},
+						//{"----------- YOUR BUSINESS ---------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Money to spend",				"",										"€"+twoDigits.format(costs.getMoneyToSpend())},
-						{"Your spending minus total needed",	"",								"€"+twoDigits.format((costs.getMoneyToSpend() - costs.getMoneyNeeded()))},
+						{"Your spending minus projected earnings",		"",								spendMinNeed},
 		};
 		
 

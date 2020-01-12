@@ -119,10 +119,14 @@ public class Model implements VariableDefinitions {
 	 * HashMap, for easy access based on their identifying name.
 	 */
     public void createQuestions(StatefulKnowledgeSession ksession, Model model) {		
-    	/*Business Questions*/ // is the tab character
-    	questions.add(new MCQuestion("Hobby or Professional", MC, ksession, "Do you want do farming as a hobby or professionally?", 
-    			"<html>This system considers someone a professional when they are trying <br>to make money doing sheep herding.<html>", ASK, model, "Hobby", "Professional"));
+    	
+    	questions.add(new Question("Welcome message", NUMB, ksession, "", 
+    			"<html>Welcome!<br>This is an expert system that gives advice on becoming a sheep herder.<br>You should answer all the questions. When you make and error you can press the previous button to adjust your answer or click on the question in the list.<br><b>PRESS START to begin answering questions.<html>", ASK, model));
         setCurrentQuestion(questions.get(0));
+    	
+        /*Business Questions*/ 
+        questions.add(new MCQuestion("Hobby or Professional", MC, ksession, "Do you want do farming as a hobby or professionally?", 
+    			"<html>This system considers someone a professional when they are trying <br>to make money doing sheep herding.<html>", ASK, model, "Hobby", "Professional"));
         questions.add(new Question("Time Willing To Spend", NUMB, ksession, "<html>How many days are you willing to spend per week <br> on sheep herding? <html>", 
         		"<html>Keep in mind that everyone who has animals needs to <br>check on those animals every day. However, in this case it is meant: <br>how many days would you fully want to spend on herding.<html>", 
         		ASK, model));
