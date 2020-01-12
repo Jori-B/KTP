@@ -59,26 +59,31 @@ end
 
 rule "Does't have enough time"
 	when
-		$business : Business(timeWillingToSpend < timeRequired);
+		$business : Business($timeWillingToSpend : timeWillingToSpend < timeRequired);
 		Sheep($totalNSheepWanted : totalNSheepWanted);
 	then
-		$business.setAdvice("You declared that you would like to spend +timeWillingToSpend+ hours per week on your sheep. " +
+		$business.setAdvice("You declared that you would like to spend " + $timeWillingToSpend + " days per week on your sheep. " +
 		"However this might not be enough time to tend to all " + $totalNSheepWanted + " sheep.");
-		$business.setAdvice("Therefore, deliberate whether you would be okay with having less sheep and/or spending more time.");
+		$business.setAdvice("Therefore, deliberate whether you would be okay with having less sheep and/or spending more time." +
+		"This system assumes you'd need to spend " + " days.");
 end
 
 rule "Has less than 10000 euro"
 	when
-		$business : Business(moneyToSpend < 10000);
+	// assuming 100 sheep get you 
+		$business : Business(moneyToSpend < 10000, moneyToSpend < moneyNeeded);
 	then
-		$business.setAdvice("In general starting sheepherding with 10000.- euros is not enough. You should be willing to spend atleast 20000.- euros.");
+		$business.setAdvice("In general starting sheepherding with 10000.- euros is not much. You should be willing to spend at least 20000.- euros." +
+		"The reason being that to make money as a semi pro (3 days/week), you'd want at least 100 sheep. 100 sheep give birth to 200 lambs, which " + 
+		"will yield 20000.- euros.");
 end
 
 rule "Has less than 20000 more than 10000 euro"
 	when
-		$business : Business(moneyToSpend > 10000,moneyToSpend < 10000 );
+		$business : Business(moneyToSpend > 10000, moneyToSpend < 10000, moneyToSpend < moneyNeeded );
+		Sheep(totalNSheepWanted > 100);
 	then
-		$business.setAdvice("Since you are starting with less than 20000.- euros it would be better to start with a little less sheep. This would also lead to spending a bit less days per week to attend to the animals");
+		$business.setAdvice("Since you are starting with less than 20000.- euros it would be better to start with a little less sheep. This would also lead to spending a bit less days per week to attend to the animals.");
 end
 
 // In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
@@ -90,7 +95,7 @@ rule "All good"
 		Land(landIsBigEnough);
 		not Shed(shedTooSmall);
 	then
-		$business.setAdvice("You should be able to start a profitable sheep herding business");
+		$business.setAdvice("You should be able to start a profitable sheep herding business.");
 end
 
 rule "Explain Calculations RVOAdminCost"
@@ -111,7 +116,7 @@ rule "Explain Calculations slaughterCost"
 		$business : Business();
 	then
 		$business.setAdvice("Registering you sheep for slaughter will cost you "+
-		"0.5.- euros per sheep. That would be "+
+		"0.50 euros per sheep. That would be "+
 		(int)$slaughterCost+".- euros in total.");
 end
 

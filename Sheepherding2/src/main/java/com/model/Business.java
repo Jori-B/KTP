@@ -9,7 +9,6 @@ public class Business extends Category implements VariableDefinitions {
 	public double moneyToSpend; // We still need a total calculation for if money to spend is smaller than money needed
 	public int timeWillingToSpend;
 	public int timeRequired; // This is not calculated yet
-	//public int slaugBreedBoth;
 	public double moneyNeeded; 
 	public boolean hasEnoughMoney;
 	
@@ -22,6 +21,22 @@ public class Business extends Category implements VariableDefinitions {
 		if (moneyNeeded >= moneyToSpend) {
 			this.hasEnoughMoney = true;
 		} else { this.hasEnoughMoney = false; }
+	}
+	
+	public void setTimeRequired(int totalNSheepWanted) {
+		/* Johan said with 200 sheep you'd need to spend 7 days a week, but you're a pro herder */
+		if (totalNSheepWanted < 200) {
+			/* For 100 sheep you'd roughly spend 4 days, which this calculation encompasses 
+			 * The system therefore assumes you need 1 day per 25 sheep. */
+			this.timeRequired = (int)(totalNSheepWanted / 25);
+			if(timeRequired < 1) {
+				this.timeRequired = 1;
+			}
+		} else {
+			this.timeRequired = 7;
+		}
+		System.out.println(timeRequired + " days ");
+		
 	}
 
 	public double getHobSemiPro() {
@@ -64,4 +79,7 @@ public class Business extends Category implements VariableDefinitions {
 		this.timeWillingToSpend = (int) timeWillingToSpend.getAnswer();
 	}
 	
+	public double getTimeRequired() {
+		return timeRequired;
+	}
 }

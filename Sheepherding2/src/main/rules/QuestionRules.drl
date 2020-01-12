@@ -305,18 +305,19 @@ end
 
 rule "All questions asked, land calculations"
 	salience 9
-	no-loop
+	no-loop // otherwise this loops endlessly
 	when
-		// the != 0 is used for endless loop problem
-		Model(allQuestionsAsked == true, $land : getLand(), $cost : getCost(), getCost().getSheepBoughtCost() == 0);
-		$sheep : Sheep($desiresNMoreSheep : desiresNMoreSheep);
+		Model(allQuestionsAsked == true, $land : getLand(), $cost : getCost(), getCost().getSheepBoughtCost() == 0, $business : getBusiness());
+		$sheep : Sheep($desiresNMoreSheep : desiresNMoreSheep, $totalNSheepWanted : totalNSheepWanted);
 	then 
-		//help(drools, "anything happenings??");
-		$cost.setSheepBoughtCost( $desiresNMoreSheep );
 		$land.calcLandSize();
-		$land.calcLandNeeded( $sheep.getTotalNSheepWanted() );
-		//$land.calcCostLandNeeded();
+		$land.calcLandNeeded( $totalNSheepWanted );
+		
+		$business.setTimeRequired( $totalNSheepWanted );
+		
+		$cost.setSheepBoughtCost( $desiresNMoreSheep );
 		$cost.setLandNeededCost( $land.getLandNeeded() );
+		
 		insert( $land );
 		// I think this modify works, but it needs to be tested
 		modify( $sheep ) { calcNumberOfSheepMore( $land.getTotalLandSize() ) };
@@ -330,7 +331,7 @@ rule "All questions asked, care calculations"
 	then 
 		$cost.setShaveOtherCost($nSheep);	
 		$cost.setWoolEarnings($nSheep);
-		//$care.calcWoolEarning($nSheep);
+
 		insert($care);
 		
 		$shed.calcGoalSize($nSheep);
@@ -350,6 +351,7 @@ rule "All questions asked"
 	then 
 		//advice(model.getSheep().getSheepCost());
 		//help(drools, "all q asked, sheep, land, care, shed inserted");
+		
 		model.enterCosts();
 		insert($business);
 		
