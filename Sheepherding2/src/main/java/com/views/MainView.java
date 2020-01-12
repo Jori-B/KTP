@@ -79,6 +79,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 	public MainView(Model model) {
 		setModel(model);
 		initComponents();
+		setWelcomeScreen();
 		createEvents();
 		this.setLocationRelativeTo(null);
 	}
@@ -452,8 +453,13 @@ public class MainView extends JFrame implements VariableDefinitions {
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
 		
+	}
+	
+	private void setWelcomeScreen() {
+		/* Set opening question */
 		setButtons(model.getCurrentQuestion());	
 		textArea.setVisible(false);
+		/* Set text to zero so the system accepts it as an answer, whithout the user needing to answer anything */
 		textArea.setText("0");
 		lblQuestion.setIcon(new ImageIcon(AdviceWindow.class.getResource("/com/resources/sheepImg.png")));
 	}

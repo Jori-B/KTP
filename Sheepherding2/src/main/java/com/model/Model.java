@@ -91,9 +91,13 @@ public class Model implements VariableDefinitions {
     		}
     	}
     	/* If no fact is found then return the current fact and inform the model all questions are asked */
-    	System.out.println("all asked");
     	setAllQuestionsAsked(true);
     }
+    
+	public Question getSelectedQuestion(String name) {
+	    int index = factListMap.get(name);
+	    return questions.get(index);
+	}
     
 	/*
 	 * Entering all the facts in a HashMap, so they can be accessed easily with
@@ -103,11 +107,6 @@ public class Model implements VariableDefinitions {
 		for (int i = 0; i < questions.size(); i++) {
 		    factListMap.put(questions.get(i).getName(), i);
 		}
-	}
-	
-	public Question getSelectedQuestion(String name) {
-	    int index = factListMap.get(name);
-	    return questions.get(index);
 	}
 	
 	/*

@@ -5,6 +5,8 @@ import org.drools.runtime.rule.FactHandle;
 
 public class Question implements VariableDefinitions {
 	public StatefulKnowledgeSession ksession;
+	public FactHandle factHandle;
+	
 	public Model model;
     
 	/* Name variable is very important for referencing the questions in the Rules.dlr file */
@@ -13,15 +15,12 @@ public class Question implements VariableDefinitions {
 	private int questionType;
 	private String question;
 	private String explanation;
-	/* We don't use open answer, since it is hard to create rules for that */
-	private String openAnswer;
 	private double answer;
-	private String warning;
+//	private String warning;
 	public boolean askNow;
-	public FactHandle factHandle;
 	
 	private int status = NOANSWER;
-	private boolean isModified = false;
+//	private boolean isModified = false;
    
 	/* This instantiation is used for questions that always need to be asked */
 	public Question(String name, int questionType, StatefulKnowledgeSession ksession, String question, String explanation, boolean askNow, Model model) {
@@ -52,9 +51,6 @@ public class Question implements VariableDefinitions {
 		this.setStatus(HASANSWER);
 		/* Updating here so that previous questions with changed answers update in the rules file */
 		this.factHandle = ksession.insert(this);
-		if(name == "shedLength") {
-			System.out.println("shed length is: " + numbUserIn);
-		}
 		ksession.update(factHandle, this);
 		ksession.fireAllRules();
 	}
@@ -132,31 +128,22 @@ public class Question implements VariableDefinitions {
 	public int getQuestionType() {
 		return questionType;
 	}
-   
-	/* There are no open questions yet. But in case there are any, this would be the way to deal with them*/
-	public void setOpenAnswer(String userInput) {
-		this.openAnswer = userInput;
-	}
-   
-	public String setOpenAnswer() {
-		return openAnswer;
-	}  
   
-	public void setWarning(String warning){
-		this.warning = warning;
-	}
+//	public void setWarning(String warning){
+//		this.warning = warning;
+//	}
+//	
+//	public String getWarning(){
+//		return warning;
+//	}
 	
-	public String getWarning(){
-		return warning;
-	}
-	
-	public boolean getIsModified() {
-		return isModified;
-	}
-	
-	public void setIsModified(boolean isModified) {
-		this.isModified = isModified;
-	}
+//	public boolean getIsModified() {
+//		return isModified;
+//	}
+//	
+//	public void setIsModified(boolean isModified) {
+//		this.isModified = isModified;
+//	}
 	
 	public Model getModel() {
 		return model;
