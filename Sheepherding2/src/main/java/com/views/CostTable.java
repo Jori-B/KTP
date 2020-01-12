@@ -157,7 +157,7 @@ public class CostTable implements VariableDefinitions {
 		frmCosts.getContentPane().add(lblBackground);
 
 		frmCosts.setBounds(100, 100, 814, 626);
-		frmCosts.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCosts.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
 		
 		FrameLocationSetter.setLocationToRight(frmCosts);
 		FrameLocationSetter.setLocationToTop(frmCosts);

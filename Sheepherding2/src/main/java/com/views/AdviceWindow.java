@@ -72,7 +72,7 @@ public class AdviceWindow extends JFrame implements VariableDefinitions {
 		setTitle("Advice");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AdviceWindow.class.getResource("/com/resources/icon_sheep.png")));
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
 		setBounds(100, 100, 1124, 998);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(168, 191, 174));
