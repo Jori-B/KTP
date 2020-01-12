@@ -17,7 +17,7 @@ import com.model.Main;
 dialect "java"
 
 rule "Mention shed size needed"
-	salience 10
+	salience 12
 	when
 		Sheep( $nSheep : totalNSheepWanted > 0);
 		$shed : Shed($shedSize : curShedSize, $goalSize : goalSize); 
@@ -43,25 +43,25 @@ rule "Correct dimensions shed"
 end
 
 rule "Shed is big enough, but dimensions off"
-	salience 9
+	salience 11
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff < 0);
 		Shed(isTallerThan3 == false || isPathWiderThan3 == false);
 	then
-		$shed.setAdvice("Your shed is big enough, but ");
+		$shed.setAdvice("Your shed is big enough, but the it is not tall enough and the path is too narrow.");
 end
 
 rule "Shed not big enough and dimensions off"
-	salience 9
+	salience 11
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff >= 0);
 		Shed(isTallerThan3 == false || isPathWiderThan3 == false);
 	then
-		$shed.setAdvice("Your shed is not big enough, and ");
+		$shed.setAdvice("Your shed is not big enough, and either it is no tall enough or the path is not wide enough.");
 end
 
 rule "Shed not tall"
-	salience 8
+	salience 10
 	when
 		$shed : Shed( hasShed, isPathWiderThan3, isTallerThan3 == false);
 	then
@@ -69,7 +69,7 @@ rule "Shed not tall"
 end
 
 rule "Shed not wide"
-	salience 8
+	salience 10
 	when
 		$shed : Shed( hasShed, isPathWiderThan3 == false, isTallerThan3);
 	then
@@ -77,7 +77,7 @@ rule "Shed not wide"
 end
 
 rule "Shed not wide and tall"
-	salience 8
+	salience 10
 	when
 		$shed : Shed( hasShed, isPathWiderThan3 == false, isTallerThan3 == false);
 	then
@@ -85,7 +85,7 @@ rule "Shed not wide and tall"
 end
 
 rule "Shed not wide, but room"
-	salience 7
+	salience 9
 	when
 		$shed : Shed( hasShed, isPathWiderThan3 == false, isAllowedToBuild, roomForShed > 0);
 	then
@@ -93,7 +93,7 @@ rule "Shed not wide, but room"
 end
 
 rule "Hobby, small shed, no build"
-	salience 6
+	salience 8
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild == false);
 		Business(hobSemiPro == HOBBY);
@@ -103,7 +103,7 @@ rule "Hobby, small shed, no build"
 end
 
 rule "Pro, small shed, no build"
-	salience 6
+	salience 8
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild == false);
 		Business(hobSemiPro == PRO);
@@ -113,17 +113,17 @@ rule "Pro, small shed, no build"
 end
 
 rule "Small shed, room for expansion"
-	salience 6
+	salience 8
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed >= goalCurSizeDiff);
-		Cost($costBuildShed : shedCost);
+		Cost($shedBuildCost : sheepBoughtCost); 
 	then
-		$shed.setAdvice("Your shed is too small, but you have enough room to expand your shed. This will roughly cost you 350.- euros " +
-		"per square meter. Which is: " + (int)$costBuildShed + ".- euros");
+		$shed.setAdvice("Your shed is too small, but you have enough room to expand your shed. This will cost you " + $shedBuildCost +
+		".- euros.");
 end
 
 rule "Hobby, small shed, no room for expansion"
-	salience 6
+	salience 8
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == HOBBY);
@@ -134,7 +134,7 @@ rule "Hobby, small shed, no room for expansion"
 end
 
 rule "Pro, small shed, not enough room for expansion"
-	salience 6
+	salience 8
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == PRO);
@@ -142,11 +142,11 @@ rule "Pro, small shed, not enough room for expansion"
 		// Maybe before saying it is worth doing it semi professionally we should look at the data
 		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you do not have enough room to expand to house the preferred amount of sheep. " + 
 		"Therefore it is not recommended to sheep herd professionally. It might be worth considering doing it semi " + 
-		"professionally with fewer sheep");
+		"professionally with fewer sheep.");
 end
 
 rule "Hobby, no shed, little room"
-	salience 6
+	salience 8
 	when
 		$shed : Shed( hasShed == false, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == HOBBY);
@@ -157,44 +157,41 @@ rule "Hobby, no shed, little room"
 end
 
 rule "Pro, no shed, little room"
-	salience 6
+	salience 8
 	when
 		$shed : Shed( hasShed == false, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == PRO);
 	then
 		$shed.setAdvice("You don't have enough room to build a shed for the amount of sheep you want. Therefore it is not recommended " + 
-		"to sheep herd professionally. It might be worth considering doing it semi professionally with fewer sheep");
+		"to sheep herd professionally. It might be worth considering doing it semi professionally with fewer sheep.");
 end
 
 rule "Explain Calculations ShedCost"
-	salience 5
+	salience 7
 	when 
 		 Cost($shedCost : shedCost > 0);
 		 $shed : Shed();
 	then 
 		$shed.setAdvice("Building a shed costs 350.- euros per square meter. "+
 		" Rougly half of the cost is for the construction of the shed, quarter for installing the electrical system and  another quarter for installing the water system. "+
-		"This means that it will cost you "+ (int)$shedCost + ".- euros in total, from witch around "+ (int)$shedCost/2 +".- euros for installing water and electricity");
+		"This means that it will cost you "+ (int)$shedCost + ".- euros in total, from witch around "+ (int)$shedCost/2 +".- euros for installing water and electricity.");
 end
 
 rule "No flat floor"
-	salience 4
 	when
 		$shed : Shed( hasShed, hasCementFloor == false);
 	then
-		$shed.setAdvice("The floor in your shed is not flat. A flat cement floor is recommended");
+		$shed.setAdvice("The floor in your shed is not flat. A flat cement floor is recommended.");
 end
 
 rule "No fertilizer plate"
-	salience 4
 	when
 		$shed : Shed( hasShed, hasFertilizerPlate == false);
 	then
-		$shed.setAdvice("A mest plate is needed for not letting the defecation get below the shed floor. Such a plate costs roughly 20.000 euro");
+		$shed.setAdvice("A mest plate is needed for not letting the defecation get below the shed floor. Such a plate costs roughly 20.000.- euros.");
 end
 
 rule "No electricity"
-	salience 4
 	when
 		$shed : Shed( hasShed, hasElectricity == false);
 	then
@@ -202,7 +199,7 @@ rule "No electricity"
 end
 
 rule "No adj fences"
-	salience 3
+	salience 6
 	when
 		$shed : Shed( hasShed, hasAdjustableFences == false);
 	then
@@ -210,7 +207,7 @@ rule "No adj fences"
 end
 
 rule "Explain Calculations adjustableFenceCost"
-	salience 2 
+	salience 5
 	when 
 		$cost : Cost(adjustableFenceCost > 0);
 		$shed : Shed();
@@ -221,7 +218,7 @@ rule "Explain Calculations adjustableFenceCost"
 end
 
 rule "No eating fences"
-	salience -3
+	salience 4
 	when
 		$shed : Shed( hasShed, hasEatingFences == false);
 	then
@@ -229,7 +226,7 @@ rule "No eating fences"
 end
 
 rule "Explain Calculations eatingFenceCost"
-	salience -4
+	salience 3
 	when 
 		$cost : Cost(eatingFenceCost > 0);
 		$shed : Shed();

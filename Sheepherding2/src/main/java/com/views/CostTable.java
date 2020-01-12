@@ -158,11 +158,11 @@ public class CostTable implements VariableDefinitions {
 						//{"---------------- TOTALS ---------------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Total costs",					"",										"€"+twoDigits.format(costs.getTotalCost())},
 						{"Total earnings this year",	"",										"€"+twoDigits.format(costs.getTotalEarnings())},
-						{"Projected earnings (Earnings minus cost)",	"",						colMoneyNeeded},
+						{"Projected earnings",			"",										colMoneyNeeded},
 						{"<html><b>&emsp; YOUR BUSINESS <html> ","",""},
 						//{"----------- YOUR BUSINESS ---------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Money to spend",				"",										"€"+twoDigits.format(costs.getMoneyToSpend())},
-						{"Your spending minus projected earnings",		"",						spendMinNeed},
+						{"Spending minus proj. earnings",	"",									spendMinNeed},
 		};
 		
 

@@ -28,7 +28,8 @@ rule "Recommend Breed Soay"
 		+" Soay might be a good option for you since it does not need help with lambing and does not need shaving.");
  
 end 
-rule "Recomend breed Hampsindown, Suffok and Kerry Hill" salience 1
+rule "Recomend breed Hampsindown, Suffok and Kerry Hill" 
+	salience 1
 	when
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == HOBBY); 
@@ -74,7 +75,7 @@ rule "Recomend breed Texelaar "
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == PRO); 
 	then
-		$sheep.setAdvice("Since you want to be a professional sheepherder, the sheep with best slaughter quaility is the Texelaar. Keep in mind the Texelaar has problems lambing.");
+		$sheep.setAdvice("Since you want to be a professional sheepherder, the sheep with best slaughter quality is the Texelaar. Keep in mind the Texelaar has problems lambing.");
 end	
 
 rule "Recomend slaughter Texelaar " 
@@ -93,7 +94,7 @@ rule "Recomend breed  Swifter, Noordhollander, Boerentexelaar "
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == PRO); 
 	then
-		$sheep.setAdvice("The sheep Swifter, Noordhollander, Boerentexelaar, have less slaughter quaility than Texelaar but less trouble lambing. If you are not experienced with lambing and you want to lamb them yourself this might be a good option");
+		$sheep.setAdvice("The sheep Swifter, Noordhollander, Boerentexelaar, have less slaughter quality than Texelaar but less trouble lambing. If you are not experienced with lambing and you want to lamb them yourself this might be a good option");
 end	
 
 rule "Recomend breed Swifter, Noordhollander, Boerentexelaar "
@@ -113,7 +114,7 @@ rule "Recomend breed Flevolander"
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == PRO); 
 	then
-		$sheep.setAdvice("Lastly, the sheep breed Flevolander has the least slaughter quaility but they lamb 3 times in two years and have almost no issues when lambing.");
+		$sheep.setAdvice("Lastly, the sheep breed Flevolander has the least slaughter quality but they lamb 3 times in two years and have almost no issues when lambing.");
 end
  
 rule "Explain Calculations sheepBoughtCost"

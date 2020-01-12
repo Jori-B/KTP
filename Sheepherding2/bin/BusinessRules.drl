@@ -21,7 +21,7 @@ rule "Hobby, wants more than 10 sheep"
 		$business : Business(hobSemiPro == HOBBY); 
 		Sheep(totalNSheepWanted > 10);
 	then
-		$business.setAdvice("If you want to hold more than 10 sheep you should consider doing this (semi)professionally.");
+		$business.setAdvice("If you want to hold more than 10 sheep you should consider doing this (semi)professionally. Since it takes time.");
 end
 
 rule "Not KvK registered"
@@ -104,7 +104,7 @@ rule "Explain Calculations RVOAdminCost"
 		Cost($RVOAdminCost : RVOAdminCost > 0);
 		$business : Business();
 	then
-		$business.setAdvice("Registering your sheep at RVO will cost you "+
+		$business.setAdvice("Registering your sheep at RVO is mandatory, and costs "+
 		"1.5.- euros per sheep. That would be  "+
 		(int)$RVOAdminCost+".- euros in total.");
 end
@@ -115,9 +115,8 @@ rule "Explain Calculations slaughterCost"
 		Cost($slaughterCost : slaughterCost > 0);
 		$business : Business();
 	then
-		$business.setAdvice("Registering you sheep for slaughter will cost you "+
-		"0.50 euros per sheep. That would be "+
-		(int)$slaughterCost+".- euros in total.");
+		$business.setAdvice("When you want to slaughter sheep, they need to be registered for that. Registering you sheep for slaughter will cost you "+
+		"0.50 euros per sheep. That would be "+ (int)$slaughterCost + ".- euros in total.");
 end
 
 rule "Explain Calculations earMarkCost"
@@ -126,9 +125,8 @@ rule "Explain Calculations earMarkCost"
 		Cost($earMarkCost : earMarkCost);
 		$business : Business();
 	then
-		$business.setAdvice("Sheep need earmarks when you register them. "+
-		"Ear marks cost around 1 euro per piece. For you that will cost "+
-		(int)$earMarkCost+".- euros in total.");
+		$business.setAdvice("Sheep need earmarks when you register them. Which are also useful for your own administration. "+
+		"Ear marks cost around 1 euro per piece. For you that will cost "+ (int)$earMarkCost + ".- euros in total.");
 end
 		
 		

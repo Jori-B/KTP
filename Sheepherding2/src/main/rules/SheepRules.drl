@@ -28,7 +28,8 @@ rule "Recommend Breed Soay"
 		+" Soay might be a good option for you since it does not need help with lambing and does not need shaving.");
  
 end 
-rule "Recomend breed Hampsindown, Suffok and Kerry Hill" salience 1
+rule "Recomend breed Hampsindown, Suffok and Kerry Hill" 
+	salience 1
 	when
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == HOBBY); 

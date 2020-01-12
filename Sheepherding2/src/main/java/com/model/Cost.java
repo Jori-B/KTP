@@ -348,14 +348,6 @@ public class Cost implements VariableDefinitions {
 		this.slaughterCost = slaughterCost;
 	}
 
-	public int getPhosphateRightsCost() {
-		return phosphateRightsCost;
-	}
-
-	public void setPhosphateRightsCost(int phosphateRightsCost) {
-		this.phosphateRightsCost = phosphateRightsCost;
-	}
-
 	public int getTractorCost() {
 		return tractorCost;
 	}
