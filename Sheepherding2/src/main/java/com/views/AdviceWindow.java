@@ -28,6 +28,9 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
@@ -61,6 +64,7 @@ public class AdviceWindow extends JFrame {
 	JLabel lblLandimg;
 	
 	public int pageNumber;
+	JLabel lblPage;
 	/**
 	 * Create the frame.
 	 */
@@ -74,7 +78,7 @@ public class AdviceWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1124, 998);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(149, 172, 191));
+		contentPane.setBackground(new Color(168, 191, 174));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
@@ -96,7 +100,7 @@ public class AdviceWindow extends JFrame {
 		lblBusiness.setBounds(130, 19, 110, 30);
 		lblBusiness.setBorder(raisedbevel);
 		lblBusiness.setOpaque(true);
-		lblBusiness.setBackground(new Color(217, 217, 217));
+		lblBusiness.setBackground(new Color(168, 191, 174));
 		layeredPane.add(lblBusiness);
 		
 		this.lblSheep = new JLabel("Sheep");
@@ -106,7 +110,7 @@ public class AdviceWindow extends JFrame {
 		lblSheep.setBounds(130, 19, 110, 30);
 		lblSheep.setBorder(raisedbevel);
 		lblSheep.setOpaque(true);
-		lblSheep.setBackground(new Color(217, 217, 217));
+		lblSheep.setBackground(new Color(168, 191, 174));
 		layeredPane.add(lblSheep);
 		
 		this.lblLand = new JLabel("Land");
@@ -116,7 +120,7 @@ public class AdviceWindow extends JFrame {
 		lblLand.setBounds(130, 19, 110, 30);
 		lblLand.setBorder(raisedbevel);
 		lblLand.setOpaque(true);
-		lblLand.setBackground(new Color(217, 217, 217));
+		lblLand.setBackground(new Color(168, 191, 174));
 		layeredPane.add(lblLand);
 		
 		this.lblShed = new JLabel("Shed");
@@ -126,7 +130,7 @@ public class AdviceWindow extends JFrame {
 		lblShed.setBounds(130, 496, 110, 30);
 		lblShed.setBorder(raisedbevel);
 		lblShed.setOpaque(true);
-		lblShed.setBackground(new Color(217, 217, 217));
+		lblShed.setBackground(new Color(168, 191, 174));
 		layeredPane.add(lblShed);
 		
 		this.lblMaterials = new JLabel("Materials");
@@ -136,7 +140,7 @@ public class AdviceWindow extends JFrame {
 		lblMaterials.setBounds(130, 496, 110, 30);
 		lblMaterials.setBorder(raisedbevel);
 		lblMaterials.setOpaque(true);
-		lblMaterials.setBackground(new Color(217, 217, 217));
+		lblMaterials.setBackground(new Color(168, 191, 174));
 		layeredPane.add(lblMaterials);
 		
 		this.lblCare = new JLabel("Care");
@@ -146,7 +150,7 @@ public class AdviceWindow extends JFrame {
 		lblCare.setBounds(130, 496, 110, 30);
 		lblCare.setBorder(raisedbevel);
 		lblCare.setOpaque(true);
-		lblCare.setBackground(new Color(217, 217, 217));
+		lblCare.setBackground(new Color(168, 191, 174));
 		layeredPane.add(lblCare);
 		
 		this.lblBusinessAdvice = new JLabel("Business advice");
@@ -155,7 +159,7 @@ public class AdviceWindow extends JFrame {
 		layeredPane.setLayer(lblBusinessAdvice, 0);
 		lblBusinessAdvice.setBounds(247, 13, 718, 438);
 		lblBusinessAdvice.setOpaque(true);
-		lblBusinessAdvice.setBackground(Color.WHITE);
+		lblBusinessAdvice.setBackground(new Color(242, 242, 242));
 		lblBusinessAdvice.setText(businessAdvice);
 
 		Border margin = new EmptyBorder(10,10,10,10);
@@ -167,7 +171,7 @@ public class AdviceWindow extends JFrame {
 		lblSheepAdvice.setVerticalAlignment(SwingConstants.TOP);
 		lblSheepAdvice.setBounds(247, 13, 718, 438);
 		lblSheepAdvice.setOpaque(true);
-		lblSheepAdvice.setBackground(Color.WHITE);
+		lblSheepAdvice.setBackground(new Color(242, 242, 242));
 		lblSheepAdvice.setText(sheepAdvice);
 		
 		lblSheepAdvice.setBorder(new CompoundBorder(loweredbevel, margin));
@@ -179,7 +183,7 @@ public class AdviceWindow extends JFrame {
 		lblLandAdvice.setVerticalAlignment(SwingConstants.TOP);
 		lblLandAdvice.setText("<html> hhhhhhhhhhhhhhhhhhhhh<br> h<br> h<br> h<br> h<br> h <html>");
 		lblLandAdvice.setOpaque(true);
-		lblLandAdvice.setBackground(Color.WHITE);
+		lblLandAdvice.setBackground(new Color(242, 242, 242));
 		lblLandAdvice.setText(landAdvice);
 		lblLandAdvice.setBounds(247, 13, 718, 438);
 
@@ -191,7 +195,7 @@ public class AdviceWindow extends JFrame {
 		lblShedAdvice.setVerticalAlignment(SwingConstants.TOP);
 		lblShedAdvice.setBounds(247, 490, 718, 438);
 		lblShedAdvice.setOpaque(true);
-		lblShedAdvice.setBackground(Color.WHITE);
+		lblShedAdvice.setBackground(new Color(242, 242, 242));
 		lblShedAdvice.setText(shedAdvice);
 
 		lblShedAdvice.setBorder(new CompoundBorder(loweredbevel, margin));
@@ -202,7 +206,7 @@ public class AdviceWindow extends JFrame {
 		lblMaterialsAdvice.setVerticalAlignment(SwingConstants.TOP);
 		lblMaterialsAdvice.setBounds(247, 488, 718, 440);
 		lblMaterialsAdvice.setOpaque(true);
-		lblMaterialsAdvice.setBackground(Color.WHITE);
+		lblMaterialsAdvice.setBackground(new Color(242, 242, 242));
 		lblMaterialsAdvice.setText(materialsAdvice);
 
 		lblMaterialsAdvice.setBorder(new CompoundBorder(loweredbevel, margin));
@@ -213,7 +217,7 @@ public class AdviceWindow extends JFrame {
 		lblCareAdvice.setVerticalAlignment(SwingConstants.TOP);
 		lblCareAdvice.setBounds(247, 488, 718, 440);
 		lblCareAdvice.setOpaque(true);
-		lblCareAdvice.setBackground(Color.WHITE);
+		lblCareAdvice.setBackground(new Color(242, 242, 242));
 		lblCareAdvice.setText(careAdvice);
 
 		lblCareAdvice.setBorder(new CompoundBorder(loweredbevel, margin));
@@ -221,10 +225,12 @@ public class AdviceWindow extends JFrame {
 		
 		this.btnPrev = new JButton("Previous");
 		btnPrev.setBounds(12, 452, 100, 100);
+		btnPrev.setBorder(raisedbevel);
 		layeredPane.add(btnPrev);
 		
 		this.btnNext = new JButton("Next");
 		btnNext.setBounds(982, 452, 100, 100);
+		btnNext.setBorder(raisedbevel);
 		layeredPane.add(btnNext);
 		
 		this.lblShedimg = new JLabel("shedImg");
@@ -257,17 +263,28 @@ public class AdviceWindow extends JFrame {
 		lblLandimg.setBounds(140, 62, 100, 100);
 		layeredPane.add(lblLandimg);
 		
-		JLabel lblBack2 = new JLabel("back2");
+		JLabel lblBack2 = new JLabel("");
 		lblBack2.setBounds(124, 490, 841, 438);
 		lblBack2.setOpaque(true);
-		lblBack2.setBackground(Color.LIGHT_GRAY);
+		lblBack2.setBackground(new Color(208, 217, 209));
+		lblBack2.setBorder(raisedbevel);
 		layeredPane.add(lblBack2);
 		
-		JLabel lblBack1 = new JLabel("back1");
+		JLabel lblBack1 = new JLabel("");
 		lblBack1.setOpaque(true);
-		lblBack1.setBackground(Color.LIGHT_GRAY);
+		lblBack1.setBackground(new Color(208, 217, 209));
 		lblBack1.setBounds(124, 13, 841, 438);
+		lblBack1.setBorder(raisedbevel);
 		layeredPane.add(lblBack1);
+		
+		JLabel lblNewLabel = new JLabel("Advice");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel.setBounds(12, 16, 100, 30);
+		layeredPane.add(lblNewLabel);
+		
+		this.lblPage = new JLabel("Page 1/3");
+		lblPage.setBounds(12, 46, 56, 16);
+		layeredPane.add(lblPage);
 		
 		setPage(0);
 		createEvents();
@@ -276,7 +293,7 @@ public class AdviceWindow extends JFrame {
 	
 	public void setPage(int pageNumber) {
 		this.pageNumber = pageNumber;
-		
+		setPageLbl();
 		/* PAGE NUMBER: 0		1				2
 		 * upper holds: land, 	materials 	and business
 		 * lower holds: shed, 	sheep 		and care */
@@ -360,6 +377,10 @@ public class AdviceWindow extends JFrame {
 		}
 		
 		
+	}
+	
+	public void setPageLbl() {
+		lblPage.setText("Page " + (pageNumber+1) + "/3");
 	}
 	
 	public int getPageNumber() {

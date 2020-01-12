@@ -210,7 +210,7 @@ public class Model implements VariableDefinitions {
         	questions.add(new Question("Has Mest Spreader", YESNO, ksession, "Do you have a mest spreader and/or mestwagon?", 
         			"<html>Very expensive and needs a tractor with 200 hp. <br>One should hire someone to do this for them.<html>", DONTASK, model));
         questions.add(new Question("Has Shaver", YESNO, ksession, "Do you have a shaving machine?", 
-        			"<html>A shaving machine is only 400� (with three knives for a year). <br>It is adviced that everyone should get one for when there are <br>for example worms and the area of skin needs cleaning.<html>", ASK, model));
+        			"<html>A shaving machine is only 400.- euros (with three knives for a year). <br>It is adviced that everyone should get one for when there are <br>for example worms and the area of skin needs cleaning.<html>", ASK, model));
 		/* Care questions */
         questions.add(new Question("Wants Self Shave", YESNO, ksession, "Do you want to shave the sheep yourself?", 
     		"<html>Shaving doesn't earn you much money. <br>One can hire someone to do this for them.<html>", ASK, model)); 
