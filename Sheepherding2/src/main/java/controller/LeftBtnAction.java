@@ -26,7 +26,7 @@ public class LeftBtnAction {
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Question current = model.getCurrentQuestion();
-				current.setAnswer(1); /* 1 is used as YES most often */
+				current.setAnswer(1); /* 1 means YES most often */
 				frame.prepareNextQuestion(current);
 			}
 		});

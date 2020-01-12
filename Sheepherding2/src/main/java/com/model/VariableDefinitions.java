@@ -10,7 +10,6 @@ public interface VariableDefinitions {
 	public static final int YESNO = 0;
     public static final int MC = 1;
     public static final int NUMB = 2;
-    public static final int OPEN = 3;
     
     /* This might be used for the status field */
     public static final int NOANSWER = 0;
