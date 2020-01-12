@@ -66,7 +66,18 @@ rule "Does't have enough time"
 		"However this might not be enough time to tend to all " + $totalNSheepWanted + " sheep.");
 		$business.setAdvice("Therefore, deliberate whether you would be okay with having less sheep and/or spending more time.");
 end
-
+rule "Has less than 10000 euro"
+	when
+		$business : Business(moneyToSpend < 10000);
+	then
+		$business.setAdvice("In general starting sheepherding with 10000 euros is not enough. You should be willing to spend atleast 20000 euros.");
+end
+rule "Has less than 20000 more than 10000 euro"
+	when
+		$business : Business(moneyToSpend > 10000,moneyToSpend < 10000 );
+	then
+		$business.setAdvice("Since you are starting with less than 20000 euros it would be better to start with a little less sheep. This would also lead to spending a bit less days per week to attend to the animals");
+end
 // In the end here there should probably be something of an overall advice. Total costs, is it a good idea to start this, when will you start making money, should you lease or buy land, etc.
 rule "All good"
 	when
