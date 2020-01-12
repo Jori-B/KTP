@@ -72,7 +72,7 @@ public class AdviceWindow extends JFrame {
 		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1137, 998);
+		setBounds(100, 100, 1124, 998);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(149, 172, 191));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -224,7 +224,7 @@ public class AdviceWindow extends JFrame {
 		layeredPane.add(btnPrev);
 		
 		this.btnNext = new JButton("Next");
-		btnNext.setBounds(997, 452, 100, 100);
+		btnNext.setBounds(982, 452, 100, 100);
 		layeredPane.add(btnNext);
 		
 		this.lblShedimg = new JLabel("shedImg");
