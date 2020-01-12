@@ -37,6 +37,7 @@ end
 rule "Correct dimensions shed"
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff < 0, isTallerThan3, isPathWiderThan3);
+		Shed(hasCementFloor == false || hasFertilizerPlate == false || hasAdjustableFences == false || hasElectricity == false);
 	then
 		$shed.setAdvice("Your shed has the correct dimensions for holding the amount of sheep you want.");
 end
@@ -98,7 +99,7 @@ rule "Hobby, small shed, no build"
 	then
 		// Which sheep to advice exactly???
 		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you cannot build. You could consider " +
-		"herding sheep that don't need a shed. Some of those only need a small shed on the land you have.");
+		"herding sheep that don't need a shed. Some of those only need a small shed on the land you have, like the dutch land goat ('landgeit').");
 end
 
 rule "Pro, small shed, no build"
@@ -127,14 +128,14 @@ rule "Hobby, small shed, no room for expansion"
 		"on the land you have, like the Soay.");
 end
 
-rule "Pro, small shed, no room for expansion"
+rule "Pro, small shed, not enough room for expansion"
 	when
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild, roomForShed < goalCurSizeDiff);
 		Business(hobSemiPro == PRO);
 	then
 		// Maybe before saying it is worth doing it semi professionally we should look at the data
-		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you aren't allowed to build. " + 
-		"Therefore it is not recommended to sheep herd professionally. It might be worth considerering doing it semi " + 
+		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you do not have enough room to expand to house the preferred amount of sheep. " + 
+		"Therefore it is not recommended to sheep herd professionally. It might be worth considering doing it semi " + 
 		"professionally with fewer sheep");
 end
 
@@ -154,7 +155,7 @@ rule "Pro, no shed, little room"
 		Business(hobSemiPro == PRO);
 	then
 		$shed.setAdvice("You don't have enough room to build a shed for the amount of sheep you want. Therefore it is not recommended " + 
-		"to sheep herd professionally. It might be worth considerering doing it semi professionally with fewer sheep");
+		"to sheep herd professionally. It might be worth considering doing it semi professionally with fewer sheep");
 end
 
 rule "No flat floor"
@@ -168,7 +169,7 @@ rule "No fertilizer plate"
 	when
 		$shed : Shed( hasShed, hasFertilizerPlate == false);
 	then
-		$shed.setAdvice("A mest plate is needed for not letting the defication get below the shed floor. This costs roughly 20.000�.");
+		$shed.setAdvice("A mest plate is needed for not letting the defecation get below the shed floor. Such a plate costs roughly 20.000 euro");
 end
 
 rule "No fences"
