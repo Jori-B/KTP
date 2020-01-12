@@ -96,6 +96,15 @@ rule "No Slaughter, Enter Competition"
 		$care.setAdvice("Since you do not want to slaughter your sheep you might want to be part of a sheep herding competition. You can learn more about it on https://www.dagvanhetschaap.nl/.");
 end
 
+rule "Sheep grazing on cow herders land"
+	when 
+		$business : Business(hobSemiPro == PRO);
+		$care : Care();
+	then
+		$care.setAdvice("It is a good idea to let your sheep graze at the local cow herder land. This strenghtens the "+
+		"imunity of your sheep toward illness. While the sheep are grazing elsewhere the sheepherder has the opportunity to work the land and create hay for the sheep for the winter. ");
+end
+
 
 
 
