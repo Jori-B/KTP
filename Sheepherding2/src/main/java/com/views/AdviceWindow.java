@@ -72,9 +72,6 @@ public class AdviceWindow extends JFrame implements VariableDefinitions {
 		setTitle("Advice");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AdviceWindow.class.getResource("/com/resources/icon_sheep.png")));
 		
-//		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
-//		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1124, 998);
 		contentPane = new JPanel();
@@ -86,8 +83,6 @@ public class AdviceWindow extends JFrame implements VariableDefinitions {
 		JLayeredPane layeredPane = new JLayeredPane();
 		contentPane.add(layeredPane);
 		
-		// Centre the window
-//		this.setLocationRelativeTo(null);
 		FrameLocationSetter.setLocationToLeft(this);
 		FrameLocationSetter.setLocationToTop(this);
 		
@@ -223,12 +218,12 @@ public class AdviceWindow extends JFrame implements VariableDefinitions {
 		lblCareAdvice.setBorder(new CompoundBorder(loweredbevel, margin));
 		layeredPane.add(lblCareAdvice);
 		
-		this.btnPrev = new JButton("Previous");
+		this.btnPrev = new JButton("Previous page");
 		btnPrev.setBounds(12, 452, 100, 100);
 		btnPrev.setBorder(raisedbevel);
 		layeredPane.add(btnPrev);
 		
-		this.btnNext = new JButton("Next");
+		this.btnNext = new JButton("Next page");
 		btnNext.setBounds(982, 452, 100, 100);
 		btnNext.setBorder(raisedbevel);
 		layeredPane.add(btnNext);
@@ -278,12 +273,16 @@ public class AdviceWindow extends JFrame implements VariableDefinitions {
 		layeredPane.add(lblBack1);
 		
 		JLabel lblNewLabel = new JLabel("Advice");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setBounds(12, 16, 100, 30);
+		lblNewLabel.setBounds(12, 16, 74, 30);
 		layeredPane.add(lblNewLabel);
 		
 		this.lblPage = new JLabel("Page 1/3");
-		lblPage.setBounds(12, 46, 56, 16);
+		lblPage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPage.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblPage.setBounds(12, 50, 74, 30);
+		lblPage.setBorder(loweredbevel);
 		layeredPane.add(lblPage);
 		
 		setPage(0);
