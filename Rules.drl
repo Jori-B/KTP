@@ -1,0 +1,463 @@
+#created on: Dec 7, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+import function com.model.Utility.help;
+
+dialect "java"
+
+// Second order questions, which need to be asked using the Question class. 
+rule "Wants more than 10 sheep"
+	when
+		Question(Question.Name == "Number of Sheep", answer > 10);
+		kvk : Question(Question.Name =="Is KVK registered", askNow == false); 
+	then
+		//help(drools,"he wants to be a pro");
+		modify(kvk) { askQuestion(true) }
+end
+
+// Sometimes the user goes back to the previous questions and changes the answer, therefore the rule model needs
+// to take into account that this second order questions aren't asked then!
+rule "Wants more than 10 sheep changed"
+	when
+		Question(Question.Name == "Number of Sheep", answer < 10);
+		kvk : Question(Question.Name =="Is KVK registered", askNow == true); 
+	then
+		//help(drools,"he has changed wanting more than 10 sheep");
+		modify(kvk) { setAskNow(false) }
+end
+
+rule "Has land"
+	when
+	// status is a variable that's not yet used, but I thought it might be useful to have such a variable to prevent rules from firing twice...
+		land : Question(Question.Name == "Has Land", answer == YES);
+		nmLandSize : Question(Question.Name == "Land Size", askNow == false);
+		toeslagrechten : Question(Question.Name == "Toeslagrechten");
+	then
+		//help(drools,"info");
+		modify(nmLandSize) { askQuestion(true) }
+		modify(toeslagrechten) { askQuestion(true) }
+		//gvalues.addAvailableLand(nmLandSize.getAnswer());	
+end
+
+rule "Has land has changed"
+	when
+		land : Question(Question.Name == "Has Land", answer == NO);
+		nmLandSize : Question(Question.Name == "Land Size", askNow == true);
+		toeslagrechten : Question(Question.Name == "Toeslagrechten");
+	then
+		//help(drools,"info");
+		modify(nmLandSize) { setAskNow(false) }
+		modify(toeslagrechten) { setAskNow(false) }
+end
+
+rule "Has leased land"
+	when
+		land : Question(Question.Name == "Has leased land", answer == YES);
+		nmLandSize : Question(Question.Name == "leasedLandSize", askNow == false);
+	then
+		//help(drools,"info");
+		modify(nmLandSize) { askQuestion(true) }
+end
+
+rule "Has leased land has changed"
+	when
+		land : Question(Question.Name == "Has leased land", answer == NO);
+		nmLandSize : Question(Question.Name == "leasedLandSize", askNow == true);
+	then
+		//help(drools,"info");
+		modify(nmLandSize) { setAskNow(false) }
+end
+
+// Only if someone is UBN registered can he have any sheep
+rule "Is UBN registered"
+	when
+		isUBNRegistered : Question(Question.Name == "Is UBN registered", answer == YES);
+		hasSheep : Question(Question.Name =="Has sheep", askNow == false); 
+	then
+		//help(drools,"he is UBN regis");
+		modify(hasSheep) { askQuestion(true) }
+end
+
+rule "Is UBN registered changed changed"
+	when
+		isUBNRegistered : Question(Question.Name == "Is UBN registered", answer == NO);
+		hasSheep : Question(Question.Name =="Has sheep", askNow == true); 
+		nSheepOwned : Question(Question.Name =="Owned number of sheep"); 
+	then
+		//help(drools,"he has changed having a sheep");
+		modify(hasSheep) { setAskNow(false) }
+		modify(hasSheep) { setAnswer(0) } // set answer to zero to prevent firing of "Has sheep"
+		modify(nSheepOwned) { setAskNow(false) }
+end
+
+rule "Has sheep"
+	when
+		ownsSheep : Question(Question.Name == "Has sheep", answer == YES);
+		nSheepOwned : Question(Question.Name =="Owned number of sheep", askNow == false); 
+	then
+		//help(drools,"he has sheep");
+		modify(nSheepOwned) { askQuestion(true) }
+end
+
+rule "Has sheep changed"
+	when
+		Question(Question.Name == "Has sheep", answer == NO);
+		nSheepOwned : Question(Question.Name =="Owned number of sheep", askNow == true); 
+	then
+		//help(drools,"he has changed having a sheep");
+		modify(nSheepOwned) { setAskNow(false) }
+end
+
+rule "Has shed"
+	when
+		ownsShed : Question(Question.Name == "Has Shed", answer == YES);
+		nmShedSize: Question(Question.Name =="Shed Size", askNow == false); 
+
+        heightShed: Question(Question.Name == "heightShed"); 
+        pathWidthShed: Question(Question.Name == "pathWidthShed");
+        hasFertilizer: Question(Question.Name == "hasFertilizer"); 
+        hasAdjustableFences : Question(Question.Name == "hasAdjustableFences"); 
+        hasEatingFences : Question(Question.Name == "hasEatingFences");
+    	hasFlatFloor: Question(Question.Name == "hasFlatFloor");
+    	hasElectricity: Question(Question.Name == "hasElectricity");
+	then
+		//help(drools,"he has a shed");
+		modify(nmShedSize) { askQuestion(true) }
+		modify(heightShed) { askQuestion(true) } 
+        modify(pathWidthShed) { askQuestion(true) }
+        modify(hasFertilizer) { askQuestion(true) }
+        modify(hasAdjustableFences) { askQuestion(true) }
+        modify(hasEatingFences) { askQuestion(true) }
+    	modify(hasFlatFloor) { askQuestion(true) }
+    	modify(hasElectricity) { askQuestion(true) }
+end
+
+rule "Has shed changed"
+	when
+		ownsShed : Question(Question.Name == "Has Shed", answer == NO);
+		nmShedSize: Question(Question.Name =="Shed Size", askNow == true);
+		
+		heightShed: Question(Question.Name == "heightShed"); 
+        pathWidthShed: Question(Question.Name == "pathWidthShed");
+        hasFertilizer: Question(Question.Name == "hasFertilizer"); 
+    	hasFlatFloor: Question(Question.Name == "hasFlatFloor");
+    	hasElectricity: Question(Question.Name == "hasElectricity");
+	then
+		//help(drools,"he has changed having a shed");
+		modify(nmShedSize) { setAskNow(false) }
+		modify(heightShed) { setAskNow(false) } 
+        modify(pathWidthShed) { setAskNow(false) }
+        modify(hasFertilizer) { setAskNow(false) }
+    	modify(hasFlatFloor) { setAskNow(false) }
+    	modify(hasElectricity) { setAskNow(false) }
+		// MAYBE THE SHEDSIZE ANSWER SHOULD BE SET TO 0 AS WELL???
+end
+
+rule "Calc goal current shed size difference"
+	salience 1
+	when
+		Question(Question.Name == "Number of Sheep", $nSheep : answer > 0);
+		$nmShedSize: Question(Question.Name =="Shed Size", answer > 0, $shed : model.getShed());
+	then 
+		insert (new Question("goalSize", $shed.calcGoalSize((int)$nSheep)));
+		//help(drools,"calculating shed goal size");
+		
+end
+
+rule "Shed too small" 
+	when
+		(Question(Question.Name == "Shed Size", $curSize : answer > 0) and Question(Question.Name == "goalSize", answer > $curSize)) or Question(Question.Name == "Has Shed", answer == NO);
+		isAllowedToBuild : Question(Question.Name == "isAllowedToBuild", askNow == false);
+		roomForShed : Question(Question.Name == "roomForShed", askNow == false);
+	then
+		//help(drools,"it recognizes shed too small");
+		modify(isAllowedToBuild) { askQuestion(true) }
+		
+end // THERE SHOULD ALSO BE A RULE FOR WHEN THE USER CHANGES HIS ANSWERS, i.e. when goalSize changed
+
+// The only third order question so far
+rule "Is allowed to build, ask how much room there is to build"
+	when
+		Question(Question.Name == "isAllowedToBuild", answer == YES);
+		roomForShed : Question(Question.Name == "roomForShed", askNow == false);
+	then	
+		modify(roomForShed) { askQuestion(true) }
+end
+
+rule "Is allowed to build changed"
+	when
+		Question(Question.Name == "isAllowedToBuild", answer == NO);
+		roomForShed : Question(Question.Name == "roomForShed", askNow == true);
+	then	
+		modify(roomForShed) { setAskNow(false) }
+end
+
+rule "Has tractor, ask horsepower"
+	when
+		hasTractor : Question(Question.Name == "Has Tractor", answer == YES);
+		horsePowerTractor : Question(Question.Name =="horsePowerTractor", askNow == false); 
+	then
+		//help(drools,"he has tractor");
+		modify(horsePowerTractor) { askQuestion(true) }
+end
+
+rule "Has tractor changed"
+	when
+		hasTractor : Question(Question.Name == "Has Tractor", answer == NO);
+		horsePowerTractor : Question(Question.Name =="horsePowerTractor", askNow == true); 
+	then
+		//help(drools,"he has changed having a tractor");
+		modify(horsePowerTractor) { setAskNow(false) }
+end
+
+// Probably needs to be adjusted to include the amount of owned sheep
+rule "Amount of sheep changed bigger than 10, ask machine questions"
+	when
+		nSheep : Question(Question.Name =="Number of Sheep", answer > 10); 
+		
+		hasShaker : Question(Question.Name == "hasShaker", askNow == false);
+		hasRaker : Question(Question.Name == "hasRaker", askNow == false);
+		hasMower : Question(Question.Name == "hasMower", askNow == false);
+		hasMestGatherer : Question(Question.Name == "hasMestGatherer", askNow == false);
+		hasHayPacker : Question(Question.Name == "hasHayPacker", askNow == false);
+		hasFertilizerSpreader : Question(Question.Name == "hasFertilizerSpreader", askNow == false);
+	then
+		//help(drools,"don't ask machine q's");
+		modify(hasShaker) { askQuestion(true) }
+		modify(hasRaker) { askQuestion(true) }
+		modify(hasMower) { askQuestion(true) }
+		modify(hasMestGatherer) { askQuestion(true) }
+		modify(hasHayPacker) { askQuestion(true) }
+		modify(hasFertilizerSpreader) { askQuestion(true) }
+		
+end
+
+rule "Amount of sheep changed, don't ask machine questions"
+	when
+		nSheep : Question(Question.Name =="Number of Sheep", answer < 10); 
+		
+		hasShaker : Question(Question.Name == "hasShaker", askNow == true);
+		hasRaker : Question(Question.Name == "hasRaker", askNow == true);
+		hasMower : Question(Question.Name == "hasMower", askNow == true);
+		hasMestGatherer : Question(Question.Name == "hasMestGatherer", askNow == true);
+		hasHayPacker : Question(Question.Name == "hasHayPacker", askNow == true);
+		hasFertilizerSpreader : Question(Question.Name == "hasFertilizerSpreader", askNow == true);
+	then
+		//help(drools,"don't ask machine q's");
+		modify(hasShaker) { setAskNow(false) }
+		modify(hasRaker) { setAskNow(false) }
+		modify(hasMower) { setAskNow(false) }
+		modify(hasMestGatherer) { setAskNow(false) }
+		modify(hasHayPacker) { setAskNow(false) }
+		modify(hasFertilizerSpreader) { setAskNow(false) }
+		
+end
+
+rule "Wants lambs"
+	when
+		wantsLambs : Question(Question.Name == "wantsLambs", answer == YES);
+		selfBirth : Question(Question.Name =="Self Birth", askNow == false); 
+	then
+		//help(drools,"He wants lambs");
+		modify(selfBirth) { askQuestion(true) }
+end
+
+rule "Wants lambs changed"
+	when
+		wantsLambs : Question(Question.Name == "wantsLambs", answer == NO);
+		selfBirth : Question(Question.Name =="Self Birth", askNow == true); 
+	then
+		//help(drools,"he has changed wanting lambs");
+		modify(selfBirth) { setAskNow(false) }
+end
+
+rule "All questions asked, enter all answers"
+	// salience is automatically set at 0
+	salience 20
+	when
+		$model : Model(allQuestionsAsked == true);
+	then 
+		$model.setAllAnswers();
+end
+
+// Sheep needs to have more salience than land, care and shed so that the functions for that can be used
+// numberOfSheepMore needs to be calculated after inserting land (so modify)
+rule "All questions asked, sheep calculations"
+	// salience is automatically set at 0
+	salience 10
+	when
+		Model(allQuestionsAsked == true, $sheep : getSheep());
+	then 
+		$sheep.setDesiresNMoreSheep();//calcPriceSheep();
+		insert( $sheep );
+end
+
+rule "All questions asked, land calculations"
+	salience 9
+	no-loop
+	when
+		// the != 0 is used for endless loop problem
+		Model(allQuestionsAsked == true, $land : getLand(), $cost : getCost(), getCost().getSheepBoughtCost() == 0);
+		$sheep : Sheep($desiresNMoreSheep : desiresNMoreSheep);
+	then 
+		//help(drools, "anything happenings??");
+		$cost.setSheepBoughtCost( $desiresNMoreSheep );
+		$land.calcLandSize();
+		$land.calcLandNeeded( $sheep.getTotalNSheepWanted() );
+		//$land.calcCostLandNeeded();
+		$cost.setLandNeededCost( $land.getLandNeeded() );
+		insert( $land );
+		// I think this modify works, but it needs to be tested
+		modify( $sheep ) { calcNumberOfSheepMore( $land.getTotalLandSize() ) };
+end
+
+rule "All questions asked, care calculations"
+	salience 8
+	when
+		Model(allQuestionsAsked == true, $care : getCare(), $shed : getShed(), $materials : getMaterials(), $cost : getCost());
+		Sheep( $nSheep : totalNSheepWanted );
+	then 
+		$cost.setShaveOtherCost($nSheep);	
+		$cost.setWoolEarnings($nSheep);
+		//$care.calcWoolEarning($nSheep);
+		insert($care);
+		
+		$shed.calcGoalSize($nSheep);
+		$shed.calcGoalCurSizeDiff();
+		insert($shed);
+		
+		$materials.setNeedsBigTractor($nSheep);
+		insert($materials);
+end
+
+
+// When all questions are asked we insert the classes that hold the answers      
+rule "All questions asked"
+	salience 1
+	when
+		model : Model(allQuestionsAsked == true, $business : getBusiness());
+	then 
+		//advice(model.getSheep().getSheepCost());
+		//help(drools, "all q asked, sheep, land, care, shed inserted");
+		model.enterCosts();
+		insert($business);
+		
+		model.giveAdviceAndTable();
+end 
+
+rule "Explain Calculations MyasTreatmentCost"
+	salience -1
+	when 
+		model : Model(allQuestionsAsked);
+		Cost($myasTreatmentCost : myasTreatmentCost)
+		$care : Care();
+	then
+		$care.setAdvice("You have to do Myas treatments for your sheep. You do the "+
+		"treatments 3 times per year costing 3.50 euros per sheep. In total "+
+		"this will cost you "+$myasTreatmentCost+" euros.");
+end
+
+rule "Explain Calculations WormingCost"
+	salience -1
+	when 
+		model : Model(allQuestionsAsked);
+		Cost($wormCost : wormCost);
+		$care : Care();
+	then
+		$care.setAdvice("Ewes need to be wormed only once a year, "+
+		"while lambs need to be wormed 2-3 times a year, ewes get rougly two lambs. With 2.5 "+
+		"liters you can worm 250 lambs. 2.5 liters cost around 150 euros. For the amount of sheep you have it will cost you  "+$wormCost+" euros.");
+end
+
+rule "Explain Calculations earMarkCost"
+	salience -1
+	when 
+		model : Model(allQuestionsAsked);
+		Cost($earMarkCost : earMarkCost);
+		$business : Business();
+	then
+		$business.setAdvice("Sheep need earmarks when you register them. "+
+		"Ear marks cost around 1 euro per piece. For you that will cost "+
+		$earMarkCost+" euros in total.");
+end
+rule "Explain Calculations slaughterCost"
+	salience -1
+	when 
+		model : Model(allQuestionsAsked);
+		Cost($slaughterCost : slaughterCost);
+		$business : Business();
+	then
+		$business.setAdvice("Registering you sheep for slaughter will cost you "+
+		"0.5 euros per sheep. That would be "+
+		$slaughterCost+" euros in total.");
+end
+rule "Explain Calculations RVOAdminCost"
+	salience -1
+	when 
+		model : Model(allQuestionsAsked);
+		Cost($RVOAdminCost : RVOAdminCost);
+		$business : Business();
+	then
+		$business.setAdvice("Registering your sheep at RVO will cost you "+
+		"1.5 euros per sheep. That would be  "+
+		$RVOAdminCost+" euros in total.");
+end
+
+rule "Explain Calculations sheepBoughtCost"
+	salience -1
+	when 
+		model : Model(allQuestionsAsked);
+		Cost($sheepBoughtCost : sheepBoughtCost);
+		$sheep : Sheep();
+	then
+		$sheep.setAdvice("A sheep costs around 95 euros. In total for all  "+
+		$sheep.desiresNMoreSheep + " sheep you have to buy that will cost you "+
+		$sheepBoughtCost+" euros in total.");
+end
+rule "Explain Calculations ShedCost"
+	salience -1
+	when 
+		model : Model(allQuestionsAsked);
+		 Cost($shedCost : shedCost);
+		 $shed : Shed();
+	then 
+		$shed.setAdvice("Building a shed costs 350 euros per square meter. "+
+		" Rougly half of the cost is for the construction of the shed, quarter for installing the electrical system and  another quarter for installing the water system. "+
+		"This means that it will cost you "+ $shedCost+ "  euros in total, from witch around "+$shedCost/2+" euros for installing water and electricity");
+end
+rule "Explain Calculations adjustableFenceCost"
+	salience -1 
+	when 
+		model : Model(allQuestionsAsked);
+		$cost : Cost();
+		$shed : Shed();
+	then
+		$shed.setAdvice("One movable fence costs 50 euros. You need roughly 2 fences per sheep, but since half of your sheep enter the shed "+
+		" at the same time you need to spend only 50 euros per sheep for the fences. "+
+		"This means that fences will cost you "+ $cost.adjustableFenceCost+ "  euros in total");
+end
+rule "Explain Calculations eatingFenceCost"
+	salience -1 
+	when 
+		model : Model(allQuestionsAsked);
+		$cost : Cost();
+		$shed : Shed();
+	then
+		$shed.setAdvice("Eating fences cost 90 euros per meter. They have to be on both sides of the path so you need" +
+		$shed.getLengthShed()*2+" meters of eating fences. "+
+		"This means that eating fences will cost you "+ $cost.eatingFenceCost+ "  euros in total");
+end
+		
+		
+		

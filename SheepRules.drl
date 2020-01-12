@@ -1,0 +1,95 @@
+#created on: Dec 30, 2019
+package sheeprules
+
+// list any import classes here.
+import com.model.Model;
+import com.model.Question;
+import com.model.Shed;
+import com.model.Materials;
+import com.model.Business;
+import com.model.Land;
+import com.model.Care;
+import com.model.Sheep;
+
+import com.model.Main; 
+//import function com.model.Utility.help;
+
+dialect "java"
+
+//rules Hobby sheepherder
+
+rule "Recommend Breed Soay"
+	when
+		$sheep: Sheep();
+		$business: Business(hobSemiPro == HOBBY);
+		$care : Care(wantsSelfBirth == OTHER,wantsSelfShave==OTHER )
+	then
+		$sheep.setAdvice("Since you want to be a hobby sheepherder the breed Soay is good for you. Since you don't want to do birth the sheep yourself and you don't want to shave them yourself ,"
+		+" Soay might be a good option for you since it does not need help with lambing and does not need shaving ");
+ 
+end 
+rule "Recomend breed Hampsindown, Suffok and Kerry Hill" salience 1
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == HOBBY); 
+	then
+		$sheep.setAdvice(" Sheep breeds good for hobby sheepherders are the Hampsindown, Suffok and Kerry Hill.");
+ 
+end
+rule "Recomend breed Skudde and Quessant"
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == HOBBY);
+		$care : Care(wantsSlaughter == false);
+	then
+		$sheep.setAdvice("Other good breeds for hobby sheepherders are the Soay and Quessant. They are small sheep, good for nature with less slaughter quality.");
+ 
+end
+	
+rule "Recomend breed Dutch land goat "
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == HOBBY); 
+		$shed : Shed(hasShed == false);
+		$land : Land(totalLandSize <7);
+	then
+		$sheep.setAdvice("Since you dont have a shed and you dont have much land the Dutch land goat (‘landgeit’) is perfect for you.");
+ 
+end	
+rule "Recomend breed  Noordhollander, Texelaar, Swifter, Boerentexelaar "
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == HOBBY); 
+		$care : Care(wantsSlaughter == true);
+		$land : Land(totalLandSize > 10);
+	then
+		$sheep.setAdvice("Since you have enough land and you want to use the sheep for slaughter the Dutch races  Noordhollander, Texelaar, Swifter and Boerentexelaar are perfect for you. Keep in mind they always need shaving and their wool has hardly any value");
+ 
+end
+		
+//rules Pro sheepherder
+rule "Recomend breed  Texelaar " salience 1
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == PRO); 
+	then
+		$sheep.setAdvice("Since you want to be a professional sheepherder, the sheep with best slaughter quaility is the Texelaar. Keep in mind the Texelaar has problem lambing");
+end	
+
+rule "Recomend breed  Swifter, Noordhollander, Boerentexelaar "
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == PRO); 
+	then
+		$sheep.setAdvice("The sheep Swifter, Noordhollander, Boerentexelaar, have less slaughter quaility than Texelaar but less trouble lambing. If you are not experienced with lambing and you want to lamb them yourself this might be a good option");
+ 
+end	
+
+rule "Recomend breed  Flevolander"
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == PRO); 
+	then
+		$sheep.setAdvice("The sheep breed Flevolander has the least slaughter quaility but they lamb 3 times in two years and have almost no issues when lambing.");
+
+end	
