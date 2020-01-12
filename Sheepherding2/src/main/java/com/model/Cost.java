@@ -30,7 +30,6 @@ public class Cost implements VariableDefinitions {
 	/* Sheep */
 	public int sheepBoughtCost;
 	public int sheepSoldEarnings;
-	public int phosphateRightsCost;
 	
 	/* Shed */
 	public double shedCost;
