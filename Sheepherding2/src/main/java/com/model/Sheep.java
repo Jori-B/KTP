@@ -7,7 +7,7 @@ public class Sheep extends Category implements VariableDefinitions {
 	public int ownsNSheep;
 	public int desiresNMoreSheep;
 	public int totalNSheepWanted; 
-	public double sheepCost;
+	//public double sheepCost;
 	public int maxAmountOfSheep; 
 	public int nSheepMore;
 	
@@ -16,9 +16,10 @@ public class Sheep extends Category implements VariableDefinitions {
 	}
 	
 	/* Calculations */
-	public void calcPriceSheep() {
+	public void setDesiresNMoreSheep() { //calcPriceSheep() {
 		this.desiresNMoreSheep = totalNSheepWanted - ownsNSheep;
-		this.sheepCost = desiresNMoreSheep * 100;
+		System.out.println("he wants " + desiresNMoreSheep);
+		//this.sheepCost = desiresNMoreSheep * 100;
 	}
 	
 	public void calcNumberOfSheepMore(double totalLandSize) {
@@ -61,13 +62,13 @@ public class Sheep extends Category implements VariableDefinitions {
 		this.totalNSheepWanted = (int) totalNSheepWanted.getAnswer();
 	}
 
-	public double getSheepCost() {
-		return sheepCost;
-	}
-
-	public void setSheepCost(int sheepCost) {
-		this.sheepCost = sheepCost;
-	}
+//	public double getSheepCost() {
+//		return sheepCost;
+//	}
+//
+//	public void setSheepCost(int sheepCost) {
+//		this.sheepCost = sheepCost;
+//	}
 
 	public int getMaxAmountOfSheep() {
 		return maxAmountOfSheep;

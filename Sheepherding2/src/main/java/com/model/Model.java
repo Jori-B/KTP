@@ -48,7 +48,7 @@ public class Model implements VariableDefinitions {
 	public Business business = new Business();
 	public Shed shed = new Shed();
 	public Care care = new Care();
-	public Cost costs; 
+	public Cost costs = new Cost(); 
     
     public Model() {
     	createKnowledgeBase();
@@ -274,29 +274,32 @@ public class Model implements VariableDefinitions {
 	}
     
     public void enterCosts() {
-    	costs = new Cost(sheep.totalNSheepWanted, sheep.ownsNSheep, care.getWantsSlaughter());
+    	int totalNSheepWanted = sheep.getTotalNSheepWanted(); 	
+    	/* Business */
+    	costs.setAdminastrativeCost(totalNSheepWanted, sheep.ownsNSheep, care.getWantsSlaughter()); 
+    	/* Sheep */
+    	costs.setSheepSoldEarnings(totalNSheepWanted);
+    	/* Care */
+    	costs.setWormCost(totalNSheepWanted);
+    	costs.setMyasTreatmentCost(totalNSheepWanted, care.getWantsSlaughter());
     	/* Materials */
     	costs.setTractorCost(materials.getNeedsNewTractor(), materials.getNeedsBigTractor());
     	costs.setGrassMaterialCost(materials.hasMower, materials.hasShaker, materials.hasRaker, materials.hasFertilizerSpreader);
     	costs.setShaverCost(materials.getHasShaver());
     	/* Land */
     	costs.setToeslagrechtEarnings(land.toeslagrecht);
-    	costs.setLandNeededCost(land.landNeeded); 
-    	/* Care */
-    	costs.setShaveOtherCost(care.shaveOtherCost);
-    	costs.setWoolEarnings(care.woolEarnings);
-    	/* Sheep */
+    	/* Shed */
     	costs.setShedCost(shed.getGoalCurSizeDiff());
     	costs.setFertilizerPlateCost(shed.getHasFertilizerPlate());
     	costs.setEatingFenceCost(shed.getLengthShed(), shed.getShedTooSmall(), shed.getCurShedSize(), shed.getGoalSize(), shed.getHasEatingFences());
-    	costs.setAdjFenceCost(sheep.getTotalNSheepWanted(), shed.getHasAdjustableFences());
+    	costs.setAdjFenceCost(totalNSheepWanted, shed.getHasAdjustableFences());
     	/* Calculate totals */
     	costs.setTotalCost();
     	costs.setTotalEarnings();
     	costs.setMoneyNeeded();
     	business.setMoneyNeeded(costs.getMoneyNeeded());
     	costs.setMoneyToSpend(business.getMoneyToSpend());
-    	setCost(costs); 
+
     	ksession.insert(costs);
     }
     
@@ -421,12 +424,15 @@ public class Model implements VariableDefinitions {
     	ksession.insert(this);
     	ksession.fireAllRules();
     }
+    
     public void setCost(Cost costs) {
     	this.costs = costs;
     }
+    
     public Cost getCost() {
     	return costs;
     }
+    
 	public Land getLand() {
 		return land;
 	}

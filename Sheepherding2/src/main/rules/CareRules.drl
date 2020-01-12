@@ -53,24 +53,26 @@ rule "Pro doesn't want lambs"
 		Cost($sheepSoldEarnings : sheepSoldEarnings);
 	then
 		$care.setAdvice("As a professional it is recommended that you breed sheep. It is your main earning. Every sheep get roughly 2 lambs " +
-		"and sells for 95�. Therefore, with " + $nSheep + " you're expected to gain " + $sheepSoldEarnings +
+		"and sells for 95 euros. Therefore, with " + $nSheep + " you're expected to gain " + $sheepSoldEarnings +
 		" euros from selling lambs.");
 end
 
 rule "Shave self"
 	when 
-		$care : Care(wantsSelfShave, $woolEarnings : woolEarnings, $shaveOtherCost : shaveOtherCost);
+		$care : Care(wantsSelfShave);
+		Cost($shaveOtherCost : shaveOtherCost, $woolEarnings : woolEarnings);
 		Sheep($totalNSheepWanted : totalNSheepWanted); 
 	then
-		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50�. In your case you want " + 
-		$totalNSheepWanted + "sheep. Therefore, this will earn you about " + $woolEarnings + " euros. ");
+		$care.setAdvice("Keep in mind that Shaving is not profitable. Per sheep you receive roughly 1.50 euros. In your case you want " + 
+		$totalNSheepWanted + " sheep. Therefore, this will earn you about " + $woolEarnings + " euros. ");
 		$care.setAdvice("One can also hire someone to do it for them. Per sheep it costs roughly 3.50 euros. Therefore this would cost you around " +
 		$shaveOtherCost + " euros.");
 end
 
 rule "Shave other"
 	when 
-		$care : Care(wantsSelfShave == false, $shaveOtherCost : shaveOtherCost);
+		$care : Care(wantsSelfShave == false);
+		Cost($shaveOtherCost : shaveOtherCost);
 		Sheep($totalNSheepWanted : totalNSheepWanted); 
 	then
 		$care.setAdvice("Shaving is not profitable. However, shaving your sheep needs to happen roughly one time per year." +

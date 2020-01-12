@@ -12,7 +12,7 @@ import com.model.Care;
 import com.model.Sheep;
 
 import com.model.Main; 
-//import function com.model.Utility.help;
+import function com.model.Utility.help;
 
 dialect "java"
 
@@ -299,33 +299,38 @@ rule "All questions asked, sheep calculations"
 	when
 		Model(allQuestionsAsked == true, $sheep : getSheep());
 	then 
-		$sheep.calcPriceSheep();
-		//$sheep.calcPhosphateRights();
+		$sheep.setDesiresNMoreSheep();//calcPriceSheep();
 		insert( $sheep );
 end
 
 rule "All questions asked, land calculations"
 	salience 9
+	no-loop
 	when
-		Model(allQuestionsAsked == true, $land : getLand(), $sheep : getSheep());
+		// the != 0 is used for endless loop problem
+		Model(allQuestionsAsked == true, $land : getLand(), $cost : getCost(), getCost().getSheepBoughtCost() == 0);
+		$sheep : Sheep($desiresNMoreSheep : desiresNMoreSheep);
 	then 
-		
+		//help(drools, "anything happenings??");
+		$cost.setSheepBoughtCost( $desiresNMoreSheep );
 		$land.calcLandSize();
 		$land.calcLandNeeded( $sheep.getTotalNSheepWanted() );
-		$land.calcCostLandNeeded();
+		//$land.calcCostLandNeeded();
+		$cost.setLandNeededCost( $land.getLandNeeded() );
 		insert( $land );
 		// I think this modify works, but it needs to be tested
-		modify( $sheep ) { calcNumberOfSheepMore($land.getTotalLandSize()) };
+		modify( $sheep ) { calcNumberOfSheepMore( $land.getTotalLandSize() ) };
 end
 
 rule "All questions asked, care calculations"
 	salience 8
 	when
-		Model(allQuestionsAsked == true, $care : getCare(), $shed : getShed(), $materials : getMaterials());
+		Model(allQuestionsAsked == true, $care : getCare(), $shed : getShed(), $materials : getMaterials(), $cost : getCost());
 		Sheep( $nSheep : totalNSheepWanted );
 	then 
-		$care.calcShaveOtherCost($nSheep);	
-		$care.calcWoolEarning($nSheep);
+		$cost.setShaveOtherCost($nSheep);	
+		$cost.setWoolEarnings($nSheep);
+		//$care.calcWoolEarning($nSheep);
 		insert($care);
 		
 		$shed.calcGoalSize($nSheep);

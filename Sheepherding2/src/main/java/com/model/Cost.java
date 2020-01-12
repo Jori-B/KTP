@@ -15,7 +15,7 @@ public class Cost implements VariableDefinitions {
 	public double landNeededCost; 
 	/* Pachtovereenkomsten. Regionorm is 600 euros / acre on average 
 	 * https://www.rvo.nl/onderwerpen/agrarisch-ondernemen/grond/pachten-en-verpachten/pachtnormen-en-pachtprijzen-berekenen */
-
+	public double boughtLandNeededCost;
 	
 	/* Care */
 	public double shaveOtherCost;
@@ -47,15 +47,12 @@ public class Cost implements VariableDefinitions {
 	public int moneyNeeded;
 	public double moneyToSpend;
 	
-	public Cost(int totalNSheepWanted, int ownsNSheep, boolean wantsSlaugter) {
-    	setMyasTreatmentCost(totalNSheepWanted, true);
-    	/* Business */
-    	setAdminastrativeCost(totalNSheepWanted, ownsNSheep, wantsSlaugter); 
-    	/* Sheep */
-    	setSheepBoughtCost(totalNSheepWanted, ownsNSheep);
-    	setSheepSoldEarnings(totalNSheepWanted);
-    	/* Care */
-    	setWormCost(totalNSheepWanted);
+	public Cost() {
+
+	}
+	
+	public String toString() {
+		return String.format(twoDigits.format(this));
 	}
 	
 	public void setTractorCost(boolean needsNewTractor, boolean needsBigTractor) {
@@ -102,7 +99,12 @@ public class Cost implements VariableDefinitions {
 	public void setLandNeededCost(double landNeeded) {
 		if (landNeeded > 0) {
 			this.landNeededCost = landNeeded * 600;
+			this.boughtLandNeededCost = landNeeded * 50000;
 		} else { this.landNeededCost = 0; }
+	}
+	
+	public double getBoughtLandNeededCost() {
+		return boughtLandNeededCost;
 	}
 	
 	public void setMyasTreatmentCost(int totalNSheepWanted, boolean isBeginner) {
@@ -147,8 +149,8 @@ public class Cost implements VariableDefinitions {
 		return sheepBoughtCost;
 	}
 
-	public void setSheepBoughtCost(int totalNSheepWanted, int ownsNSheep) {
-		this.sheepBoughtCost = (totalNSheepWanted - ownsNSheep) * 95;
+	public void setSheepBoughtCost(int desiresNMoreSheep/* int totalNSheepWanted, int ownsNSheep */) {
+		this.sheepBoughtCost = /*(totalNSheepWanted - ownsNSheep)*/desiresNMoreSheep * 95;
 	}
 	
 	public void setEatingFenceCost(double lengthShed, boolean shedTooSmall, double curSize, double goalSizeShed, boolean hasEatingFences) {
@@ -289,16 +291,17 @@ public class Cost implements VariableDefinitions {
 		return shaveOtherCost;
 	}
 
-	public void setShaveOtherCost(double shaveOtherCost) {
-		this.shaveOtherCost = shaveOtherCost;
+	public void setShaveOtherCost(int totalNSheepWanted) {
+		this.shaveOtherCost = totalNSheepWanted * 3.5;
 	}
 
 	public double getWoolEarnings() {
 		return woolEarnings;
 	}
 
-	public void setWoolEarnings(double woolEarnings) {
-		this.woolEarnings = woolEarnings;
+	public void setWoolEarnings(int totalNSheepWanted) {
+		/* 1.50 euros per sheep */ 
+		this.woolEarnings = totalNSheepWanted * 1.5;
 	}
 
 	public double getMyasTreatmentCost() {

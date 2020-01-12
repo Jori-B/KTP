@@ -6,8 +6,8 @@ public class Care extends Category implements VariableDefinitions {
 	public boolean wantsLambs;
 	public boolean wantsSelfShave;
 	public boolean wantsSelfBirth;
-	public double shaveOtherCost;
-	public double woolEarnings;
+//	public double shaveOtherCost;
+//	public double woolEarnings;
 	public boolean wantsSlaughter;
 	// public int sheepBorn;
 	// public int sheepSoldEarnings;
@@ -18,13 +18,13 @@ public class Care extends Category implements VariableDefinitions {
 		
 	}
 	
-	public void calcShaveOtherCost(int totalNSheepWanted) {
-		this.shaveOtherCost = totalNSheepWanted * 3.5;
-	}
+//	public void calcShaveOtherCost(int totalNSheepWanted) {
+//		this.shaveOtherCost = totalNSheepWanted * 3.5;
+//	}
 	
-	public void calcWoolEarning(int totalNSheepWanted) {
-		this.woolEarnings = totalNSheepWanted * 1.5;
-	}
+//	public void calcWoolEarning(int totalNSheepWanted) {
+//		this.woolEarnings = totalNSheepWanted * 1.5;
+//	}
 	
 	public boolean getWantsLambs() {
 		return wantsLambs;
@@ -63,20 +63,20 @@ public class Care extends Category implements VariableDefinitions {
 		return wantsSlaughter;
 	}
 
-	public double getShaveOtherCost() {
-		return shaveOtherCost;
-	}
+//	public double getShaveOtherCost() {
+//		return shaveOtherCost;
+//	}
+//
+//	public void setShaveOtherCost(double shaveOtherCost) {
+//		this.shaveOtherCost = shaveOtherCost;
+//	}
 
-	public void setShaveOtherCost(double shaveOtherCost) {
-		this.shaveOtherCost = shaveOtherCost;
-	}
-
-	public double getWoolEarnings() {
-		return woolEarnings;
-	}
-
-	public void setWoolEarnings(double woolEarnings) {
-		this.woolEarnings = woolEarnings;
-	}
+//	public double getWoolEarnings() {
+//		return woolEarnings;
+//	}
+//
+//	public void setWoolEarnings(double woolEarnings) {
+//		this.woolEarnings = woolEarnings;
+//	}
 
 }

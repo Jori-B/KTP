@@ -11,7 +11,7 @@ public class Land extends Category implements VariableDefinitions {
 	public double landSizeToeslag;
 	public double toeslagrecht;
 	public double landNeeded;
-	public double costLandNeeded; /* This is the cost when you buy instead of lease */
+//	public double costLandNeeded; /* This is the cost when you buy instead of lease */
 	public boolean landIsBigEnough;
 	
 	public Land() {
@@ -43,9 +43,9 @@ public class Land extends Category implements VariableDefinitions {
 		/* 2.5 times the amount of sheep is arbitrary*/
 	}
 	
-	public void calcCostLandNeeded() { 
-		this.costLandNeeded = 50000 * landNeeded; 
-	} 
+//	public void calcCostLandNeeded() { 
+//		this.costLandNeeded = 50000 * landNeeded; 
+//	} 
 
 	/* Getters and setters */
 	public boolean getHasLand() {
@@ -106,13 +106,13 @@ public class Land extends Category implements VariableDefinitions {
 		this.landNeeded = landNeeded;
 	}
 
-	public double getCostLandNeeded() {
-		return costLandNeeded;
-	}
-
-	public void setCostLandNeeded(double costLandNeeded) {
-		this.costLandNeeded = costLandNeeded;
-	}
+//	public double getCostLandNeeded() {
+//		return costLandNeeded;
+//	}
+//
+//	public void setCostLandNeeded(double costLandNeeded) {
+//		this.costLandNeeded = costLandNeeded;
+//	}
 	
 	public double getToeslagrecht() {
 		return toeslagrecht;
