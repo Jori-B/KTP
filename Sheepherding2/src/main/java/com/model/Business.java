@@ -6,9 +6,9 @@ public class Business extends Category implements VariableDefinitions {
 	public double hobSemiPro;
 	public boolean isUBNRegistered;
 	public boolean isKvKRegistered;
-	public double moneyToSpend; // We still need a total calculation for if money to spend is smaller than money needed
+	public double moneyToSpend; 
 	public int timeWillingToSpend;
-	public int timeRequired; // This is not calculated yet
+	public int timeRequired; 
 	public double moneyNeeded; 
 	public boolean hasEnoughMoney;
 	

@@ -25,12 +25,7 @@ public class ListClickAction {
 	private void addAction() {
 		list.addMouseListener(new MouseAdapter(){
 	          @Override
-	          public void mouseClicked(MouseEvent e) {
-	              System.out.println("Mouse click.");
-	              int index = list.getSelectedIndex();
-	              System.out.println("Index Selected: " + index);
-	              String s = (String) list.getSelectedValue();
-	              System.out.println("Value Selected: " + s.toString()); 
+	          public void mouseClicked(MouseEvent e) { 
 	              Question current = model.getSelectedQuestion(list.getSelectedValue());
 	              model.setCurrentQuestion(current);
 	              frame.updateGUI(current, true);

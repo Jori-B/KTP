@@ -299,9 +299,6 @@ public class MainView extends JFrame implements VariableDefinitions {
 		setNextBtn(btnNext);
 		btnNext.setBorder(raisedbevel);
 		
-		/* Tried to import an image here. It did not work to get the size small.
-		 * This should be a way to enter a scaled down image, however I can't get it to work */
-		
 		JTextField lengthArea = new JTextField();
 		lengthArea.setText("");
 		lengthArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
@@ -330,12 +327,6 @@ public class MainView extends JFrame implements VariableDefinitions {
 		Border margin = new EmptyBorder(10,10,10,10);
 		lblInformationText.setBorder(new CompoundBorder(loweredbevel, margin));
 		setLblInformationText(lblInformationText);
-//		lblSheepimg.setBounds(20,20,330, 204);
-//		ImageIcon sheepPic = new ImageIcon("resources/sheep_pic.jpg");
-//		Image img = sheepPic.getImage();
-//		Image newImg = img.getScaledInstance(lblSheepimg.getWidth(), lblSheepimg.getHeight(), Image.SCALE_SMOOTH);
-//		ImageIcon image = new ImageIcon(newImg);
-//		lblSheepimg.setIcon(image);
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -459,7 +450,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 		/* Set opening question */
 		setButtons(model.getCurrentQuestion());	
 		textArea.setVisible(false);
-		/* Set text to zero so the system accepts it as an answer, whithout the user needing to answer anything */
+		/* Set text to zero so the system accepts it as an answer, without the user needing to answer anything */
 		textArea.setText("0");
 		lblQuestion.setIcon(new ImageIcon(AdviceWindow.class.getResource("/com/resources/sheepImg.png")));
 	}
@@ -477,54 +468,26 @@ public class MainView extends JFrame implements VariableDefinitions {
 	private void setModel(Model model) {
 		this.model = model;
 	}
-	
-//	private Model getModel() {
-//		return model;
-//	}
-//	
-//	private JButton getYesBtn() {
-//		return btnLeft;
-//	}
 
 	private void setYesBtn(JButton btnLeft) {
 		this.btnLeft = btnLeft;
 	}
-	
-//	private JButton getNoBtn() {
-//		return btnRight;
-//	}
 
 	private void setNoBtn(JButton btnRight) {
 		this.btnRight = btnRight;
 	}
-	
-//	private JButton getInputBtn() {
-//		return btnEnterInput;
-//	}
 
 	private void setInputBtn(JButton btnEnterInput) {
 		this.btnEnterInput = btnEnterInput;
 	}
 
-//	private JTextField getTextArea() {
-//		return textArea;
-//	}
-
 	private void setTextArea(JTextField textArea) {
 		this.textArea = textArea;
 	}
 
-//	private JButton getPrevBtn() {
-//		return btnPrevious;
-//	}
-
 	private void setPrevBtn(JButton btnPrevious) {
 		this.btnPrevious = btnPrevious;
 	}
-	
-//	private JButton getNextBtn() {
-//		return btnPrevious;
-//	}
 
 	private void setNextBtn(JButton btnNext) {
 		this.btnNext = btnNext;

@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import org.apache.poi.hssf.util.HSSFColor.GREEN;
+
 import com.model.Cost;
 import com.model.Materials;
 import com.model.Model;
@@ -64,21 +66,25 @@ public class CostTable implements VariableDefinitions {
 		lblCosts.setOpaque(true);
 		lblCosts.setBackground(new Color(168, 191, 174));
 		frmCosts.getContentPane().add(lblCosts);
+		
 		Materials materials = model.getMaterials();
-		int getTractor = 0;
-		if(materials.getNeedsNewTractor()) {
-			getTractor = 1;
-		}
+		
 		int getMower = 1 - booleanToInt(materials.getHasMower());
 		int getShaker = 1 - booleanToInt(materials.getHasShaker());
 		int getRaker = 1 - booleanToInt(materials.getHasRaker());
 		int getFertilizerSpreader = 1 - booleanToInt(materials.getHasFertilizerSpreader());
 		int getShaver = 1 - booleanToInt(materials.getHasShaver());
+		int getFertilizerPlate = 1 - booleanToInt(model.getShed().getHasFertilizerPlate());
+		
+		int getTractor = 0;
+		if(materials.getNeedsNewTractor()) {
+			getTractor = 1;
+		}
+		
 		double shaveCost = 0;
 		if(!model.getCare().getWantsSelfShave()) {
 			shaveCost = costs.getShaveOtherCost();
 		}
-		int getFertilizerPlate = 1 - booleanToInt(model.getShed().getHasFertilizerPlate());
 
 		double shedDiff = model.getShed().getGoalCurSizeDiff();
 		if(shedDiff <= 0) {
@@ -104,6 +110,7 @@ public class CostTable implements VariableDefinitions {
 			slaughterSheep = totalNSheepWanted;
 		}
 		
+		/* Make money needed red or green, same for moneyDiff */
 		double moneyNeeded = costs.getMoneyNeeded();
 		String colMoneyNeeded;
 		if(moneyNeeded < 0) {
@@ -114,7 +121,6 @@ public class CostTable implements VariableDefinitions {
 		
 		double moneyDiff = costs.getMoneyToSpend() - moneyNeeded;
 		String spendMinNeed;
-		
 		if(moneyDiff >= 0) {
 			spendMinNeed = "<html><p style=\"background:#8FBC8F;\">" + "€"+twoDigits.format(moneyDiff) +  "</p><html>";
 		} else {
@@ -156,7 +162,7 @@ public class CostTable implements VariableDefinitions {
 						{"<html><b>&emsp; YOUR BUSINESS <html> ","",""},
 						//{"----------- YOUR BUSINESS ---------------","-------------------------------------------------","-------------------------------------------------"},
 						{"Money to spend",				"",										"€"+twoDigits.format(costs.getMoneyToSpend())},
-						{"Your spending minus projected earnings",		"",								spendMinNeed},
+						{"Your spending minus projected earnings",		"",						spendMinNeed},
 		};
 		
 

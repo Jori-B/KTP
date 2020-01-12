@@ -22,12 +22,12 @@ public class AdvPreviousAction {
 		addAction();
 	}
 		
-		private void addAction() {
-			btnPrev.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					frame.setPage(frame.getPageNumber() - 1);
-				}
-			});
-		}
+	private void addAction() {
+		btnPrev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setPage(frame.getPageNumber() - 1);
+			}
+		});
+	}
 
 }

@@ -37,7 +37,7 @@ import javax.swing.ImageIcon;
 public class AdviceWindow extends JFrame implements VariableDefinitions {
 
 	/**
-	 * 
+	 * Advice window prints all the advice from the Category subclasses and puts it neatly into three pages.
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -171,7 +171,6 @@ public class AdviceWindow extends JFrame implements VariableDefinitions {
 		
 		lblSheepAdvice.setBorder(new CompoundBorder(loweredbevel, margin));
 		layeredPane.add(lblSheepAdvice);
-		/* Roughly 130 characters fit on a line and 7 lines fit in the advice label */
 		
 		this.lblLandAdvice = new JLabel("Land advice");
 		lblLandAdvice.setFont(new Font("Tahoma", Font.PLAIN, 14));

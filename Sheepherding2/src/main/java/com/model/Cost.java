@@ -8,7 +8,6 @@ public class Cost implements VariableDefinitions {
 	public int rakerCost;
 	public int fertilizerSpreaderCost;
 	public int shaverCost;
-	//public int haypackerRentCost;
 	
 	/* Land */
 	public double toeslagrechtEarnings;
@@ -19,7 +18,6 @@ public class Cost implements VariableDefinitions {
 	
 	/* Care */
 	public double shaveOtherCost;
-	//public int birthOtherCost; // maybe just remove this? 
 	public double woolEarnings;
 	public double myasTreatmentCost; 
 	public double wormCost;
@@ -38,6 +36,7 @@ public class Cost implements VariableDefinitions {
 	public double shedCost;
 	public int fertilizerPlateCost;
 	public double eatingFenceCost;
+		// This should be in the shed file but might cause bugs so we left it here, due to time.
 		public double lengthEatFencesNeeded;
 	public double adjustableFenceCost;
 		public double lengthAdjFencesNeeded;
@@ -149,8 +148,8 @@ public class Cost implements VariableDefinitions {
 		return sheepBoughtCost;
 	}
 
-	public void setSheepBoughtCost(int desiresNMoreSheep/* int totalNSheepWanted, int ownsNSheep */) {
-		this.sheepBoughtCost = /*(totalNSheepWanted - ownsNSheep)*/desiresNMoreSheep * 95;
+	public void setSheepBoughtCost(int desiresNMoreSheep) {
+		this.sheepBoughtCost = desiresNMoreSheep * 95;
 	}
 	
 	public void setEatingFenceCost(double lengthShed, boolean shedTooSmall, double curSize, double goalSizeShed, boolean hasEatingFences) {

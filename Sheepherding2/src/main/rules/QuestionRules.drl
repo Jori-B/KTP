@@ -153,6 +153,8 @@ rule "Has shed changed"
         hasFertilizer: Question(Question.Name == "Has Fertilizer"); 
     	hasFlatFloor: Question(Question.Name == "Has Flat Floor");
     	hasElectricity: Question(Question.Name ==  "Has Electricity");
+    	hasAdjustableFences : Question(Question.Name == "Has Adjustable Fences"); 
+        hasEatingFences : Question(Question.Name == "Has Eating Fences");
 	then
 		//help(drools,"he has changed having a shed");
 		modify(nmShedSize) { setAskNow(false) }
@@ -161,18 +163,29 @@ rule "Has shed changed"
         modify(hasFertilizer) { setAskNow(false) }
     	modify(hasFlatFloor) { setAskNow(false) }
     	modify(hasElectricity) { setAskNow(false) }
+    	modify(hasAdjustableFences) { setAskNow(false) }
+        modify(hasEatingFences) { setAskNow(false) }
 		// MAYBE THE SHEDSIZE ANSWER SHOULD BE SET TO 0 AS WELL???
 end
 
-rule "Calc goal current shed size difference"
-	salience 1
+rule "Calc goal size for non-shed holders"
+	salience 2
 	when
 		Question(Question.Name == "Number Of Sheep", $nSheep : answer > 0);
-		$nmShedSize: Question(Question.Name =="Shed Size", answer > 0, $shed : model.getShed());
+		Question(Question.Name == "Has Shed", answer == NO, $shed : model.getShed());
 	then 
 		insert (new Question("Goal Size", $shed.calcGoalSize((int)$nSheep)));
-		//help(drools,"calculating shed goal size");
-		
+		//help(drools,"calculating shed goal size");	
+end
+
+rule "Calc goal current shed size difference"
+	salience 2
+	when
+		Question(Question.Name =="Shed Size", answer > 0, $shed : model.getShed());
+		Question(Question.Name == "Number Of Sheep", $nSheep : answer > 0);
+	then 
+		insert (new Question("Goal Size", $shed.calcGoalSize((int)$nSheep)));
+		//help(drools,"calculating shed goal size");	
 end
 
 rule "Shed too small" 
@@ -349,8 +362,6 @@ rule "All questions asked"
 	when
 		model : Model(allQuestionsAsked == true, $business : getBusiness());
 	then 
-		//advice(model.getSheep().getSheepCost());
-		//help(drools, "all q asked, sheep, land, care, shed inserted");
 		
 		model.enterCosts();
 		insert($business);

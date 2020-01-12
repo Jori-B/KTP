@@ -16,11 +16,9 @@ public class Question implements VariableDefinitions {
 	private String question;
 	private String explanation;
 	private double answer;
-//	private String warning;
 	public boolean askNow;
 	
 	private int status = NOANSWER;
-//	private boolean isModified = false;
    
 	/* This instantiation is used for questions that always need to be asked */
 	public Question(String name, int questionType, StatefulKnowledgeSession ksession, String question, String explanation, boolean askNow, Model model) {
@@ -128,22 +126,6 @@ public class Question implements VariableDefinitions {
 	public int getQuestionType() {
 		return questionType;
 	}
-  
-//	public void setWarning(String warning){
-//		this.warning = warning;
-//	}
-//	
-//	public String getWarning(){
-//		return warning;
-//	}
-	
-//	public boolean getIsModified() {
-//		return isModified;
-//	}
-//	
-//	public void setIsModified(boolean isModified) {
-//		this.isModified = isModified;
-//	}
 	
 	public Model getModel() {
 		return model;

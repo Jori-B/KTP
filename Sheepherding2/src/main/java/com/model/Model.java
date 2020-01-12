@@ -187,9 +187,9 @@ public class Model implements VariableDefinitions {
     				"<html>Sheep need water.<html>", DONTASK, model));
     		// If shedTooSmall
     		questions.add(new Question("Is Allowed To Build", YESNO, ksession, "Are you allowed to build a shed or expand your shed somewhere?", 
-    				"<html>Your shed is considered too small. <br>According to the nuisance law are you allowed to build more shed? <br>Approval needs to be asked for this in case you dont<html>", DONTASK, model));
+    				"<html>Your shed is considered too small or non existant. <br>According to the nuisance law are you allowed to build more shed? <br>Approval needs to be asked for this in case you dont<html>", DONTASK, model));
     		questions.add(new Question("Room For Shed", NUMB, ksession, "How much room do you have to build a shed (in meters squared)?", 
-    				"<html>Your shed is considered too small.<html>", DONTASK, model));
+    				"<html>Your shed is considered too small or non existant.<html>", DONTASK, model));
         
         /*Materials questions*/
         questions.add(new Question("Has Tractor", YESNO, ksession, "Do you have a tractor?", 
