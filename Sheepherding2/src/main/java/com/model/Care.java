@@ -6,13 +6,8 @@ public class Care extends Category implements VariableDefinitions {
 	public boolean wantsLambs;
 	public boolean wantsSelfShave;
 	public boolean wantsSelfBirth;
-//	public double shaveOtherCost;
-//	public double woolEarnings;
 	public boolean wantsSlaughter;
-	// public int sheepBorn;
-	// public int sheepSoldEarnings;
-	// public int costOtherBirth;
-//	public String advice = "<html>&emsp;";
+
 	
 	public Care() {
 		

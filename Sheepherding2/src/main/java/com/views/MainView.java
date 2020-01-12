@@ -122,13 +122,12 @@ public class MainView extends JFrame implements VariableDefinitions {
 	
 	private void setButtons(Question current) {
 		/* If it's the first question, there is no previous question, so button disabled */
-		if (model.getFacts().indexOf(current) == 0 || model.getFacts().indexOf(current) == 1) {
-
-			btnEnterInput.setText("Enter");
+		if (model.getFacts().indexOf(current) == 0) {
 			btnPrevious.setEnabled(false);
 		/* Else enable the button */
 		} else {
 			btnPrevious.setEnabled(true);
+			btnEnterInput.setText("Enter");
 		}
 		/* Depending on the question type certain buttons need to be visible or have their text adjusted */
 		switch(current.getQuestionType()) {
@@ -342,49 +341,48 @@ public class MainView extends JFrame implements VariableDefinitions {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-							.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGap(48)
-										.addComponent(lblInformationText, GroupLayout.PREFERRED_SIZE, 555, GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addComponent(lblInfo))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGap(110)
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-											.addGroup(gl_contentPane.createSequentialGroup()
-												.addComponent(lblLength, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
-												.addGap(45)
-												.addComponent(lengthArea, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
-											.addGroup(gl_contentPane.createSequentialGroup()
-												.addComponent(lblWidth, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
-												.addGap(42)
-												.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)))))
-								.addGap(66))
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addGap(54)
-								.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)
-								.addGap(57))
-							.addGroup(gl_contentPane.createSequentialGroup()
-								.addGap(252)
-								.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap()))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 697, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+											.addGroup(gl_contentPane.createSequentialGroup()
+												.addGap(48)
+												.addComponent(lblInformationText, GroupLayout.PREFERRED_SIZE, 555, GroupLayout.PREFERRED_SIZE)
+												.addGap(18)
+												.addComponent(lblInfo))
+											.addGroup(gl_contentPane.createSequentialGroup()
+												.addGap(110)
+												.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+													.addGroup(gl_contentPane.createSequentialGroup()
+														.addComponent(lblLength, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+														.addGap(45)
+														.addComponent(lengthArea, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
+													.addGroup(gl_contentPane.createSequentialGroup()
+														.addComponent(lblWidth, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+														.addGap(42)
+														.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)))))
+										.addGap(66))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGap(54)
+										.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)
+										.addGap(57)))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblQuestion, GroupLayout.PREFERRED_SIZE, 697, GroupLayout.PREFERRED_SIZE)
+									.addContainerGap())))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
+							.addGap(250))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
-					.addContainerGap())
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(50, Short.MAX_VALUE)
+					.addContainerGap(110, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblInfo)
 						.addComponent(lblInformationText, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE))
@@ -405,6 +403,7 @@ public class MainView extends JFrame implements VariableDefinitions {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnEnterInput, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addGap(210))
+				.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
 		);
 		gl_contentPane.setHonorsVisibility(false);
 		gl_contentPane.setAutoCreateGaps(true);

@@ -11,7 +11,7 @@ public class Land extends Category implements VariableDefinitions {
 	public double landSizeToeslag;
 	public double toeslagrecht;
 	public double landNeeded;
-//	public double costLandNeeded; /* This is the cost when you buy instead of lease */
+	public double freeLand; 
 	public boolean landIsBigEnough;
 	
 	public Land() {
@@ -36,16 +36,13 @@ public class Land extends Category implements VariableDefinitions {
 		 * 10 to 15 sheep (with lambs) per hectare. Therefore one needs 1/12.5 = 0.08 hectare per sheep */ 
 		this.landNeeded = (totalNSheepWanted * 0.08 - totalLandSize);
 		if(landNeeded < 0) {
+			this.freeLand = totalLandSize - landNeeded;
 			this.landIsBigEnough = true;
 		} else {
 			this.landIsBigEnough = false;
 		}
 		/* 2.5 times the amount of sheep is arbitrary*/
 	}
-	
-//	public void calcCostLandNeeded() { 
-//		this.costLandNeeded = 50000 * landNeeded; 
-//	} 
 
 	/* Getters and setters */
 	public boolean getHasLand() {
@@ -106,13 +103,10 @@ public class Land extends Category implements VariableDefinitions {
 		this.landNeeded = landNeeded;
 	}
 
-//	public double getCostLandNeeded() {
-//		return costLandNeeded;
-//	}
-//
-//	public void setCostLandNeeded(double costLandNeeded) {
-//		this.costLandNeeded = costLandNeeded;
-//	}
+	public double getFreeLand() {
+		return freeLand;
+	}
+
 	
 	public double getToeslagrecht() {
 		return toeslagrecht;

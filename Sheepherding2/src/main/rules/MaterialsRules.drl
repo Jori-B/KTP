@@ -78,9 +78,10 @@ rule "All grass materials"
 	then
 		$materials.setAdvice("You have all the most essential materials for working the grass. Namely, a mower, raker, shaker and mest spreader");
 end
+
 rule "Has no shaving machine"
 	when
-		$materials : Materials(hasMower, hasRaker, hasShaker, hasMestSpreader);
+		$materials : Materials(hasShaver == false);
 	then
 		$materials.setAdvice("You should get a shavig machine when the sheep have worms and the sheep's skin needs cleaning. A shaving machine costs 400.- euros");
 end
@@ -148,6 +149,7 @@ rule "Mest Gatherer missing"
 		$materials.setAdvice("It is nice to have a mest gatherer. The mest from the sheep in the shed can be used as fertilizer " + 
 		"on the land. When you don't have a lot of money, you can get by without one.");
 end
+
 rule "No tractor no rent"
 	when
 		$materials : Materials(hasTractor == false);

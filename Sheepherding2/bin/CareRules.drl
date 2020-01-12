@@ -113,7 +113,7 @@ rule "Explain Calculations MyasTreatmentCost"
 	then
 		$care.setAdvice("You have to do Myas treatments for your sheep. You do the "+
 		"treatments 3 times per year costing 3.50.- euros per sheep. In total "+
-		"this will cost you "+ $myasTreatmentCost +".- euros.");
+		"this will cost you "+ (int)$myasTreatmentCost +".- euros.");
 end
 
 rule "Explain Calculations WormingCost"

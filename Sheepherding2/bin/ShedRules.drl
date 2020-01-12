@@ -98,7 +98,6 @@ rule "Hobby, small shed, no build"
 		$shed : Shed( hasShed, goalCurSizeDiff > 0, isAllowedToBuild == false);
 		Business(hobSemiPro == HOBBY);
 	then
-		// Which sheep to advice exactly???
 		$shed.setAdvice("Your shed is too small for the amount of sheep you want and you cannot build. You could consider " +
 		"herding sheep that don't need a shed. Some of those only need a small shed on the land you have, like the dutch land goat ('landgeit').");
 end

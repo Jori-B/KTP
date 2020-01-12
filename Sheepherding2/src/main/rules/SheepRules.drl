@@ -68,29 +68,52 @@ rule "Recomend breed  Noordhollander, Texelaar, Swifter, Boerentexelaar "
 end
 		
 //rules Pro sheepherder
-rule "Recomend breed  Texelaar " salience 1
+rule "Recomend breed Texelaar " 
+	salience 5
 	when
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == PRO); 
 	then
-		$sheep.setAdvice("Since you want to be a professional sheepherder, the sheep with best slaughter quaility is the Texelaar. Keep in mind the Texelaar has problem lambing");
+		$sheep.setAdvice("Since you want to be a professional sheepherder, the sheep with best slaughter quaility is the Texelaar. Keep in mind the Texelaar has problems lambing.");
+end	
+
+rule "Recomend slaughter Texelaar " 
+	salience 4
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == PRO); 
+		Care(wantsSlaughter)
+	then
+		$sheep.setAdvice(" Because you want to sell slaughter sheep a good choice would be the Texelaar.", true);
 end	
 
 rule "Recomend breed  Swifter, Noordhollander, Boerentexelaar "
+	salience 3
 	when
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == PRO); 
 	then
 		$sheep.setAdvice("The sheep Swifter, Noordhollander, Boerentexelaar, have less slaughter quaility than Texelaar but less trouble lambing. If you are not experienced with lambing and you want to lamb them yourself this might be a good option");
- 
 end	
 
-rule "Recomend breed  Flevolander"
+rule "Recomend breed Swifter, Noordhollander, Boerentexelaar "
+	salience 2
+	when
+		$sheep: Sheep();
+		$business : Business(hobSemiPro == PRO); 
+		Care(wantsSelfBirth == OTHER)
+	then
+		$sheep.setAdvice(" Since you did not want to birth youself these easy birthing sheep might be an option for you", true);
+end	
+
+
+rule "Recomend breed Flevolander"
+	salience 1
 	when
 		$sheep: Sheep();
 		$business : Business(hobSemiPro == PRO); 
 	then
-		$sheep.setAdvice("The sheep breed Flevolander has the least slaughter quaility but they lamb 3 times in two years and have almost no issues when lambing.");
+		$sheep.setAdvice("Lastly, the sheep breed Flevolander has the least slaughter quaility but they lamb 3 times in two years and have almost no issues when lambing.");
 end
 
 rule "Explain Calculations sheepBoughtCost"
