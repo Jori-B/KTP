@@ -53,7 +53,7 @@ rule "Recomend breed Dutch land goat "
 		$shed : Shed(hasShed == false);
 		$land : Land(totalLandSize <7);
 	then
-		$sheep.setAdvice("Since you dont have a shed and you dont have much land the Dutch land goat (‘landgeit’) is perfect for you.");
+		$sheep.setAdvice("Since you dont have a shed and you dont have much land the Dutch land goat (\"landgeit\") is perfect for you.");
  
 end	
 rule "Recomend breed  Noordhollander, Texelaar, Swifter, Boerentexelaar "

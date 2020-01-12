@@ -1,7 +1,7 @@
 package com.model;
 
 public class Category implements VariableDefinitions {
-	public String advice = "<html>&emsp;";
+	public String advice = "<html>";
 	
 	public static boolean doubleToBoolean(double answer) {
     	if(answer == YES) {
@@ -16,10 +16,10 @@ public class Category implements VariableDefinitions {
 	}
 
 	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>&emsp;")) {
+		if(this.advice.equals("<html>")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br>&emsp;" + advice;
+			this.advice = this.advice + "<br>" + advice;
 		}
 	}
 }

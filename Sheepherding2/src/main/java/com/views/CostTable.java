@@ -52,7 +52,7 @@ public class CostTable implements VariableDefinitions {
 		frmCosts.setIconImage(Toolkit.getDefaultToolkit().getImage(CostTable.class.getResource("/com/resources/icon_sheep.png")));
 		frmCosts.setTitle("Costs");
 		frmCosts.setVisible(true);
-		frmCosts.getContentPane().setBackground(new Color(149, 172, 191));
+		frmCosts.getContentPane().setBackground(new Color(168, 191, 174));
 		frmCosts.getContentPane().setLayout(null);
 		
 		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
@@ -61,10 +61,10 @@ public class CostTable implements VariableDefinitions {
 		lblCosts.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCosts.setVerticalAlignment(SwingConstants.TOP);
 		lblCosts.setFont(new Font("Arial Black", Font.BOLD, 16));
-		lblCosts.setBounds(10, 13, 114, 30);
+		lblCosts.setBounds(26, 13, 114, 30);
 		lblCosts.setBorder(raisedbevel);
 		lblCosts.setOpaque(true);
-		lblCosts.setBackground(new Color(217, 217, 217));
+		lblCosts.setBackground(new Color(168, 191, 174));
 		frmCosts.getContentPane().add(lblCosts);
 		Materials materials = model.getMaterials();
 		int getTractor = 0;
@@ -143,6 +143,7 @@ public class CostTable implements VariableDefinitions {
 
 		table = new JTable(costsArray, colNames);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table.setBackground(new Color(242, 242, 242));
 //		table.setBounds(12, 24, 816, 293);
 		
 		frmCosts.getContentPane().add(table);
@@ -150,6 +151,13 @@ public class CostTable implements VariableDefinitions {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(10, 56, 772, 510);
 		frmCosts.getContentPane().add(scrollPane);
+		
+		JLabel lblBackground = new JLabel("");
+		lblBackground.setBounds(10, 0, 772, 56);
+		lblBackground.setOpaque(true);
+		lblBackground.setBackground(new Color(208, 217, 209));
+		lblBackground.setBorder(raisedbevel);
+		frmCosts.getContentPane().add(lblBackground);
 //		frame.getContentPane().add(table.getTableHeader(), BorderLayout.PAGE_START);
 		frmCosts.setBounds(100, 100, 814, 626);
 		frmCosts.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

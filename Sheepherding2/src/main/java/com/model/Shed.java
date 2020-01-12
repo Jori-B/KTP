@@ -20,6 +20,7 @@ public class Shed extends Category implements VariableDefinitions {
 	public boolean hasElectricity;
 	public boolean hasWater;
 	public double goalSize; 
+	public double lengthGoal;
 	public double goalCurSizeDiff;
 	public boolean shedTooSmall;
 	
@@ -35,7 +36,7 @@ public class Shed extends Category implements VariableDefinitions {
 		 * 2.5 square meters per sheep is needed in a shed. Dividing this by 11 yields the required length
 		 */
 		double sheepRoomRequired = (totalNSheepWanted * 2.5);
-		double lengthGoal =  sheepRoomRequired / 11;
+		this.lengthGoal =  sheepRoomRequired / 11;
 		/* After this the length needs to be multiplied by the path width needed 
 		 * This is then added to find the final goal size
 		 */
@@ -214,6 +215,10 @@ public class Shed extends Category implements VariableDefinitions {
 
 	public void setGoalSize(double goalSize) {
 		this.goalSize = goalSize;
+	}
+	
+	public double getLengthGoal() {
+		return lengthGoal;
 	}
 	
 	public double getGoalCurSizeDiff() {

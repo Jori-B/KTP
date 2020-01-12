@@ -364,8 +364,8 @@ rule "Explain Calculations MyasTreatmentCost"
 		$care : Care();
 	then
 		$care.setAdvice("You have to do Myas treatments for your sheep. You do the "+
-		"treatments 3 times per year costing 3.50 euros per sheep. In total "+
-		"this will cost you "+$myasTreatmentCost+" euros.");
+		"treatments 3 times per year costing 3.50.- euros per sheep. In total "+
+		"this will cost you "+ $myasTreatmentCost +".- euros.");
 end
 
 rule "Explain Calculations WormingCost"
@@ -377,7 +377,7 @@ rule "Explain Calculations WormingCost"
 	then
 		$care.setAdvice("Ewes need to be wormed only once a year, "+
 		"while lambs need to be wormed 2-3 times a year, ewes get rougly two lambs. With 2.5 "+
-		"liters you can worm 250 lambs. 2.5 liters cost around 150 euros. For the amount of sheep you have it will cost you  "+$wormCost+" euros.");
+		"liters you can worm 250 lambs. 2.5 liters cost around 150.- euros. For the amount of sheep you have it will cost you " + $wormCost + ".- euros.");
 end
 
 rule "Explain Calculations earMarkCost"
@@ -389,7 +389,7 @@ rule "Explain Calculations earMarkCost"
 	then
 		$business.setAdvice("Sheep need earmarks when you register them. "+
 		"Ear marks cost around 1 euro per piece. For you that will cost "+
-		$earMarkCost+" euros in total.");
+		$earMarkCost+".- euros in total.");
 end
 rule "Explain Calculations slaughterCost"
 	salience -1
@@ -399,8 +399,8 @@ rule "Explain Calculations slaughterCost"
 		$business : Business();
 	then
 		$business.setAdvice("Registering you sheep for slaughter will cost you "+
-		"0.5 euros per sheep. That would be "+
-		$slaughterCost+" euros in total.");
+		"0.5.- euros per sheep. That would be "+
+		$slaughterCost+".- euros in total.");
 end
 rule "Explain Calculations RVOAdminCost"
 	salience -1
@@ -410,8 +410,8 @@ rule "Explain Calculations RVOAdminCost"
 		$business : Business();
 	then
 		$business.setAdvice("Registering your sheep at RVO will cost you "+
-		"1.5 euros per sheep. That would be  "+
-		$RVOAdminCost+" euros in total.");
+		"1.5.- euros per sheep. That would be  "+
+		$RVOAdminCost+".- euros in total.");
 end
 
 rule "Explain Calculations sheepBoughtCost"
@@ -421,9 +421,9 @@ rule "Explain Calculations sheepBoughtCost"
 		Cost($sheepBoughtCost : sheepBoughtCost);
 		$sheep : Sheep();
 	then
-		$sheep.setAdvice("A sheep costs around 95 euros. In total for all  "+
+		$sheep.setAdvice("A sheep costs around 95.- euros. In total for all  "+
 		$sheep.desiresNMoreSheep + " sheep you have to buy that will cost you "+
-		$sheepBoughtCost+" euros in total.");
+		$sheepBoughtCost+".- euros in total.");
 end
 rule "Explain Calculations ShedCost"
 	salience -1
@@ -432,9 +432,9 @@ rule "Explain Calculations ShedCost"
 		 Cost($shedCost : shedCost);
 		 $shed : Shed();
 	then 
-		$shed.setAdvice("Building a shed costs 350 euros per square meter. "+
+		$shed.setAdvice("Building a shed costs 350.- euros per square meter. "+
 		" Rougly half of the cost is for the construction of the shed, quarter for installing the electrical system and  another quarter for installing the water system. "+
-		"This means that it will cost you "+ $shedCost+ "  euros in total, from witch around "+$shedCost/2+" euros for installing water and electricity");
+		"This means that it will cost you "+ (int)$shedCost + ".- euros in total, from witch around "+ (int)$shedCost/2 +".- euros for installing water and electricity");
 end
 rule "Explain Calculations adjustableFenceCost"
 	salience -1 
@@ -443,9 +443,9 @@ rule "Explain Calculations adjustableFenceCost"
 		$cost : Cost();
 		$shed : Shed();
 	then
-		$shed.setAdvice("One movable fence costs 50 euros. You need roughly 2 fences per sheep, but since half of your sheep enter the shed "+
-		" at the same time you need to spend only 50 euros per sheep for the fences. "+
-		"This means that fences will cost you "+ $cost.adjustableFenceCost+ "  euros in total");
+		$shed.setAdvice("One movable fence costs 50.- euros. You need roughly 2 fences per sheep, but since half of your sheep enter the shed "+
+		" at the same time you need to spend only 50.- euros per sheep for the fences. "+
+		"This means that fences will cost you "+ (int)$cost.adjustableFenceCost + ".- euros in total");
 end
 rule "Explain Calculations eatingFenceCost"
 	salience -1 
@@ -454,9 +454,10 @@ rule "Explain Calculations eatingFenceCost"
 		$cost : Cost();
 		$shed : Shed();
 	then
-		$shed.setAdvice("Eating fences cost 90 euros per meter. They have to be on both sides of the path so you need" +
-		$shed.getLengthShed()*2+" meters of eating fences. "+
-		"This means that eating fences will cost you "+ $cost.eatingFenceCost+ "  euros in total");
+		$shed.setAdvice("Eating fences cost 90.- euros per meter. They have to be on both sides of the path. " +
+		"The goal lenght of your shed is " + (int)$shed.getLengthGoal() + " so you need " +
+		(int)$cost.getLengthEat() + " meters of eating fences. "+
+		"This means that eating fences will cost you "+ (int)$cost.eatingFenceCost+ ".- euros in total");
 end
 		
 		
