@@ -2,6 +2,9 @@ package com.model;
 
 import java.text.DecimalFormat;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+
 public interface VariableDefinitions {
 	/* All question types have a name. As of right now we don't really use these */ 
 	public static final int YESNO = 0;
@@ -27,5 +30,8 @@ public interface VariableDefinitions {
     public static final boolean DONTASK = false;
     
     DecimalFormat twoDigits = new DecimalFormat("##.00");
+
+    Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
     
 }

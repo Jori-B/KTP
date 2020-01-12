@@ -190,14 +190,7 @@ rule "No fertilizer plate"
 		$shed.setAdvice("A mest plate is needed for not letting the defecation get below the shed floor. Such a plate costs roughly 20.000 euro");
 end
 
-rule "No fences"
-	when
-		$shed : Shed( hasShed, hasAdjustableFences == false);
-	then
-		$shed.setAdvice("Movable fences are handy for separating sheep in the shed when they have lambs. This is also handy for administration purposes.");
-end
-
-rule "No lamps"
+rule "No electricity"
 	when
 		$shed : Shed( hasShed, hasElectricity == false);
 	then

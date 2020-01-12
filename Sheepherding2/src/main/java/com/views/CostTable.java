@@ -55,8 +55,6 @@ public class CostTable implements VariableDefinitions {
 		frmCosts.getContentPane().setBackground(new Color(168, 191, 174));
 		frmCosts.getContentPane().setLayout(null);
 		
-		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-		
 		JLabel lblCosts = new JLabel("Cost table");
 		lblCosts.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCosts.setVerticalAlignment(SwingConstants.TOP);
@@ -144,7 +142,6 @@ public class CostTable implements VariableDefinitions {
 		table = new JTable(costsArray, colNames);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		table.setBackground(new Color(242, 242, 242));
-//		table.setBounds(12, 24, 816, 293);
 		
 		frmCosts.getContentPane().add(table);
 		
@@ -158,7 +155,7 @@ public class CostTable implements VariableDefinitions {
 		lblBackground.setBackground(new Color(208, 217, 209));
 		lblBackground.setBorder(raisedbevel);
 		frmCosts.getContentPane().add(lblBackground);
-//		frame.getContentPane().add(table.getTableHeader(), BorderLayout.PAGE_START);
+
 		frmCosts.setBounds(100, 100, 814, 626);
 		frmCosts.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

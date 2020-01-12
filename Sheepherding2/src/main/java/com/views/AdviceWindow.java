@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.model.Cost;
 import com.model.Model;
-
+import com.model.VariableDefinitions;
 import com.views.FrameLocationSetter;
 
 import controller.AdvNextAction;
@@ -34,7 +34,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
-public class AdviceWindow extends JFrame {
+public class AdviceWindow extends JFrame implements VariableDefinitions {
 
 	/**
 	 * 
@@ -72,8 +72,8 @@ public class AdviceWindow extends JFrame {
 		setTitle("Advice");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AdviceWindow.class.getResource("/com/resources/icon_sheep.png")));
 		
-		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
-		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+//		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+//		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1124, 998);
@@ -293,89 +293,50 @@ public class AdviceWindow extends JFrame {
 	
 	public void setPage(int pageNumber) {
 		this.pageNumber = pageNumber;
+		boolean isPageOne = false;
+		boolean isPageTwo = false;
+		boolean isPageThree = false;
+		if(pageNumber == 0) {
+			isPageOne = true;
+			btnNext.setEnabled(true);
+			btnPrev.setEnabled(false);
+
+		}
+		if(pageNumber == 1) {
+			isPageTwo = true;
+			btnNext.setEnabled(true);
+			btnPrev.setEnabled(true);
+		}
+		if(pageNumber == 2) {
+			isPageThree = true;
+			btnNext.setEnabled(false);
+			btnPrev.setEnabled(true);
+
+		}
 		setPageLbl();
 		/* PAGE NUMBER: 0		1				2
 		 * upper holds: land, 	materials 	and business
 		 * lower holds: shed, 	sheep 		and care */
-		if(pageNumber == 0) {
-			lblShed.setVisible(true);
-			lblShedAdvice.setVisible(true);
-			lblShedimg.setVisible(true);
-			lblLand.setVisible(true);
-			lblLandAdvice.setVisible(true);
-			lblLandimg.setVisible(true);
-			
-			btnNext.setEnabled(true);
-			btnPrev.setEnabled(false);
-			
-			lblSheep.setVisible(false);
-			lblSheepAdvice.setVisible(false);
-			lblSheepimg.setVisible(false);
-			lblMaterials.setVisible(false);
-			lblMaterialsAdvice.setVisible(false);
-			lblMaterialsimg.setVisible(false);
-			
-			lblBusiness.setVisible(false);
-			lblBusinessAdvice.setVisible(false);
-			lblBusinessimg.setVisible(false);
-			lblCare.setVisible(false);
-			lblCareAdvice.setVisible(false);
-			lblCareimg.setVisible(false);	
-
-		}
+		lblShed.setVisible(isPageOne);
+		lblShedAdvice.setVisible(isPageOne);
+		lblShedimg.setVisible(isPageOne);
+		lblLand.setVisible(isPageOne);
+		lblLandAdvice.setVisible(isPageOne);
+		lblLandimg.setVisible(isPageOne);
 		
-		if(pageNumber == 1) { 
-			lblShed.setVisible(false);
-			lblShedAdvice.setVisible(false);
-			lblShedimg.setVisible(false);
-			lblLand.setVisible(false);
-			lblLandAdvice.setVisible(false);
-			lblLandimg.setVisible(false);
-			
-			btnNext.setEnabled(true);
-			btnPrev.setEnabled(true);
-			
-			lblSheep.setVisible(true);
-			lblSheepAdvice.setVisible(true);
-			lblSheepimg.setVisible(true);
-			lblMaterials.setVisible(true);
-			lblMaterialsAdvice.setVisible(true);
-			lblMaterialsimg.setVisible(true);
-			
-			lblBusiness.setVisible(false);
-			lblBusinessAdvice.setVisible(false);
-			lblBusinessimg.setVisible(false);
-			lblCare.setVisible(false);
-			lblCareAdvice.setVisible(false);
-			lblCareimg.setVisible(false);	
-		}
+		lblSheep.setVisible(isPageTwo);
+		lblSheepAdvice.setVisible(isPageTwo);
+		lblSheepimg.setVisible(isPageTwo);
+		lblMaterials.setVisible(isPageTwo);
+		lblMaterialsAdvice.setVisible(isPageTwo);
+		lblMaterialsimg.setVisible(isPageTwo);
 		
-		if(pageNumber == 2) { 
-			lblShed.setVisible(false);
-			lblShedAdvice.setVisible(false);
-			lblShedimg.setVisible(false);
-			lblLand.setVisible(false);
-			lblLandAdvice.setVisible(false);
-			lblLandimg.setVisible(false);
-			
-			btnNext.setEnabled(false);
-			btnPrev.setEnabled(true);
-			
-			lblSheep.setVisible(false);
-			lblSheepAdvice.setVisible(false);
-			lblSheepimg.setVisible(false);
-			lblMaterials.setVisible(false);
-			lblMaterialsAdvice.setVisible(false);
-			lblMaterialsimg.setVisible(false);
-			
-			lblBusiness.setVisible(true);
-			lblBusinessAdvice.setVisible(true);
-			lblBusinessimg.setVisible(true);
-			lblCare.setVisible(true);
-			lblCareAdvice.setVisible(true);
-			lblCareimg.setVisible(true);	
-		}
-		
+		lblBusiness.setVisible(isPageThree);
+		lblBusinessAdvice.setVisible(isPageThree);
+		lblBusinessimg.setVisible(isPageThree);
+		lblCare.setVisible(isPageThree);
+		lblCareAdvice.setVisible(isPageThree);
+		lblCareimg.setVisible(isPageThree);	
 		
 	}
 	

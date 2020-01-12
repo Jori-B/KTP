@@ -16,10 +16,10 @@ public class Category implements VariableDefinitions {
 	}
 
 	public void setAdvice(String advice) {
-		if(this.advice.equals("<html>")) {
+		if(this.advice.equals("<html>- ")) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br><br>" + advice;
+			this.advice = this.advice + "<br>- " + advice;
 		}
 	}
 	
@@ -27,7 +27,7 @@ public class Category implements VariableDefinitions {
 		if(noEnter) {
 			this.advice = this.advice + advice;
 		} else {
-			this.advice = this.advice + "<br><br>" + advice;
+			this.advice = this.advice + "<br>- " + advice;
 		}
 	}
 }

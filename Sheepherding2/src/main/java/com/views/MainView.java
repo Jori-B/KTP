@@ -246,10 +246,6 @@ public class MainView extends JFrame implements VariableDefinitions {
 	
 	private void initComponents() {
 		
-		Border loweredbevel, raisedbevel;
-		loweredbevel = BorderFactory.createLoweredBevelBorder();
-		raisedbevel = BorderFactory.createRaisedBevelBorder();
-		
 		//SETTING UP FRAME
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainView.class.getResource("/com/resources/icon_sheep.png")));
 		setTitle("Sheep Herder System");
