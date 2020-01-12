@@ -74,20 +74,26 @@ end
 
 rule "All grass materials"
 	when
-		$materials : Materials(hasMower, hasRaker, hasShaker);
+		$materials : Materials(hasMower, hasRaker, hasShaker, hasMestSpreader);
 	then
-		$materials.setAdvice("You have all the most essential materials for working the grass. Namely, a mower, raker and shaker.");
+		$materials.setAdvice("You have all the most essential materials for working the grass. Namely, a mower, raker, shaker and mest spreader");
+end
+rule "Has no shaving machine"
+	when
+		$materials : Materials(hasMower, hasRaker, hasShaker, hasMestSpreader);
+	then
+		$materials.setAdvice("You should get a shavig machine when the sheep have worms and the sheep's skin needs cleaning. A shaving machine costs 400 euros");
 end
 
 rule "Grass material missing"
 	// Higher salience so that this sentence is printed before the sentences about which one is missing
 	salience 2
 	when
-		$materials : Materials(hasMower == false || hasRaker == false || hasShaker == false);
+		$materials : Materials(hasMower == false || hasRaker == false || hasShaker == false || hasMestSpreader == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
 		$materials.setAdvice("There are three essential tools for working the grass when you have a lot of sheep; a mower, shaker " + 
-		"and raker. For every professional it is recommended to buy them. You don't have all of these.");
+		"raker and a mest spreader. For every professional it is recommended to buy them. You don't have all of these.");
 end
 
 rule "Mower missing"
@@ -97,7 +103,7 @@ rule "Mower missing"
 		$materials : Materials(hasMower == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
-		$materials.setAdvice("You should get a mower.");
+		$materials.setAdvice("You should get a mower. It costs around 6600 euros");
 end
 
 rule "Shaker missing"
@@ -107,7 +113,7 @@ rule "Shaker missing"
 		$materials : Materials(hasShaker == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
-		$materials.setAdvice("You should get a shaker.");
+		$materials.setAdvice("You should get a shaker. It costs around 6600 euros");
 end
 
 rule "Raker missing"
@@ -117,7 +123,7 @@ rule "Raker missing"
 		$materials : Materials(hasRaker == false);
 		Sheep($totalNSheepWanted : totalNSheepWanted > 10);
 	then
-		$materials.setAdvice("You should get a raker.");
+		$materials.setAdvice("You should get a raker. It costs around 6600 euros");
 end
 
 rule "Haypacker missing"
@@ -132,7 +138,7 @@ rule "Fertilizer spreader missing"
 	when
 		$materials : Materials(hasFertilizerSpreader == false);
 	then
-		$materials.setAdvice("A fertilizer spreader can be useful. However, when money is sparse one can get by without one.");
+		$materials.setAdvice("A fertilizer spreader can be useful. It costs around 1000 euros");
 end
 
 rule "Mest Gatherer missing"
