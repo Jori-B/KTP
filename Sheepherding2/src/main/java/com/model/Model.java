@@ -1,6 +1,6 @@
 package com.model;
 
-import java.awt.EventQueue;	
+import java.awt.EventQueue;		
 import java.util.ArrayList;
 import java.util.HashMap;
 

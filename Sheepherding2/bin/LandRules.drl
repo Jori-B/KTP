@@ -82,6 +82,20 @@ rule "Toeslagrechten zero hectares"
 		"So, when getting more land it is recommended to check wheter it has these, since they cannot be bought anymore.");	
 end	
 
-		
+rule "Has Enough land for more sheep"
+	when
+		$sheep : Sheep($nSheep : totalNSheepWanted);
+		$land : Land(landIsBigEnough == true,  totalLandSize -landNeeded >= 0.08 ,$freeLand : totalLandSize -landNeeded, $totalLandSize: totalLandSize); 
+	then
+		$land.setAdvice("It is best to use your land fully. Since you will have " + $totalLandSize + " hecatars of land you can fit " + $freeLand/0.08 + 
+		" more sheep. If you do not want to do that you can always work the land, create haybales for your sheep and sell the excess");	
+end	
+rule "Too much land needed"
+	when
+		$land : Land(landNeeded > 10, $landNeeded: landNeeded); 
+	then
+		$land.setAdvice("You need" + $landNeeded + " hectars. That much amount of land might be difficult to acqure next to your farm. You might want to move the another location" + 
+		"where this is possible or care for less sheep ");	
+end			
 		
 		
