@@ -48,7 +48,7 @@ rule "Shed is big enough, but dimensions off"
 		$shed : Shed( hasShed, goalCurSizeDiff < 0);
 		Shed(isTallerThan3 == false || isPathWiderThan3 == false);
 	then
-		$shed.setAdvice("Your shed is big enough, but the it is not tall enough and the path is too narrow.");
+		$shed.setAdvice("Your shed is big enough, but it is not tall enough and the path is too narrow.");
 end
 
 rule "Shed not big enough and dimensions off"

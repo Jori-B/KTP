@@ -96,7 +96,7 @@ rule "Too much land needed"
 	when
 		$land : Land($landNeeded : landNeeded > 10); 
 	then
-		$land.setAdvice("You need" + $landNeeded + " hectares. That much amount of land might be difficult to acqure next to your farm. You might want to move the another location" + 
+		$land.setAdvice("You need" + $landNeeded + " hectares. That much amount of land might be difficult to acquire next to your farm. You might want to move the another location" + 
 		"where this is possible or care for less sheep.");	
 end			
 
